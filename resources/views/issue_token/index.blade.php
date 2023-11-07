@@ -160,22 +160,22 @@
                     $('#phone').val(null);
                     $('#email').val(null);
                     $('#name').val(null);
-                    // let html = `
-                    //         <p style="font-size: 15px; font-weight: bold; margin-top:-15px;">` + response.settings.name + ` ` + response.settings.location + `
-                    //         </p>
-                    //         <p style="font-size: 10px; margin-top:-15px;">` + response.queue.service.name + `</p>
-                    //         <h3 style="font-size: 20px; margin-bottom: 5px; font-weight: bold; margin-top:-12px; margin-bottom:16px;">` + response.queue.letter + ` - ` + response.queue.number + `</h3>
-                    //         <p style="font-size: 12px; margin-top: -16px;margin-bottom: 27px;">` + response.queue.formated_date + `</p>
-                    //         <div style="margin-top:-20px; margin-bottom:15px;" align="center">
-                    //         </div>
-                    //         <p style="font-size: 10px; margin-top:-12px;">{{__('messages.issue_token.please wait for your turn')}}</p>
-                    //         <p style="font-size: 10px; margin-top:-12px;">{{__('messages.issue_token.customer waiting')}}:` + response.customer_waiting + ` 
-                    //         </p>
-                    //         <p style="text-align:left !important;font-size:8px;"></p>
-                    //         <p style="text-align:right !important; margin-top:-23px;font-size:8px;"></p>`;
-                    // $('#printarea').html(html);
-                    // $('body').addClass('loaded');
-                    // window.print();
+                    let html = `
+                            <p style="font-size: 15px; font-weight: bold; margin-top:-15px;">` + response.settings.name + ` ` + response.settings.location + `
+                            </p>
+                            <p style="font-size: 10px; margin-top:-15px;">` + response.queue.service.name + `</p>
+                            <h3 style="font-size: 20px; margin-bottom: 5px; font-weight: bold; margin-top:-12px; margin-bottom:16px;">` + response.queue.letter + ` - ` + response.queue.number + `</h3>
+                            <p style="font-size: 12px; margin-top: -16px;margin-bottom: 27px;">` + response.queue.formated_date + `</p>
+                            <div style="margin-top:-20px; margin-bottom:15px;" align="center">
+                            </div>
+                            <p style="font-size: 10px; margin-top:-12px;">{{__('messages.issue_token.please wait for your turn')}}</p>
+                            <p style="font-size: 10px; margin-top:-12px;">{{__('messages.issue_token.customer waiting ')}}:` + response.customer_waiting + ` 
+                            </p>
+                            <p style="text-align:left !important;font-size:8px;"></p>
+                            <p style="text-align:right !important; margin-top:-23px;font-size:8px;"></p>`;
+                    $('#printarea').html(html);
+                    $('body').addClass('loaded');
+                    window.print();
                     $.ajax({
                         url : "{{route('print-token')}}",
                         type: "POST",

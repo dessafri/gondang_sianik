@@ -101,7 +101,7 @@
                                 </div>
                             </div>
                             <div class="input-field col m3 s3">
-                                <input id="starting_date" name="starting_date" type="text" class="datepicker" data-error=".starting_date" value="{{$selected['starting_date']}}">
+                                <input id="starting_date" name="starting_date" type="text" class="datepicker" data-error=".starting_date" value="0{{$selected['starting_date']}}">
                                 <label for="starting_date">{{__('messages.reports.starting date')}}</label>
                                 <div class="starting_date">
                                     @if ($errors->has('starting_date'))
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="input-field col m3 s3">
-                                <input id="ending_date" name="ending_date" type="text" class="datepicker" value="{{$selected['ending_date']}}" data-error=".ending_date">
+                                <input id="ending_date" name="ending_date" type="text" class="datepicker" value="0{{$selected['ending_date']}}" data-error=".ending_date">
                                 <label for="ending_date">{{__('messages.reports.ending date')}}</label>
                                 <div class="ending_date">
                                     @if ($errors->has('ending_date'))
@@ -222,6 +222,17 @@
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
+
+        // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
+        var yyyy = today.getFullYear();
+        var currentDate = yyyy + '-' + mm + '-' + dd;
+
+        // Mengisi input starting_date dengan tanggal hari ini
+        $('#starting_date').val(currentDate);
+        $('#ending_date').val(currentDate);
 
         $('body').addClass('loaded');
 

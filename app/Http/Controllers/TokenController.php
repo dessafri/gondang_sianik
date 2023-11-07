@@ -25,6 +25,7 @@ class TokenController extends Controller
         $this->tokenRepository = $tokenRepository;
     }
 
+    //memanggil semua service dann menampilkan di index issue_token
     public function issueToken()
     {
         return view(
@@ -33,6 +34,7 @@ class TokenController extends Controller
         );
     }
 
+    //input ke antrian dan mendapatkan token
     public function createToken(Request $request, Service $service)
     {
         DB::beginTransaction();
@@ -119,9 +121,9 @@ class TokenController extends Controller
 
     public function printToken(Request $request)
     {
-        //dump($request);exit;
-       // $queue = $queue->load('service');
-     //   dd($settings);//exit;
+        // dump($request);exit;
+        // $queue = $queue->load('service');
+        // dd($settings);exit;
         $printer = new ReceiptPrinter;
         $printer->init(
             config('receiptprinter.connector_type'),

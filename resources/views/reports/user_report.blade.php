@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field col m5 s5">
-                                    <input id="date" name="date" type="text" class="datepicker" value="{{$selected_date}}" data-error=".date">
+                                    <input id="date" name="date" type="text" class="datepicker" value="0{{$selected_date}}" data-error=".date">
                                     <label for="date">{{__('messages.reports.date')}}</label>
                                     <div class="date">
                                         @if ($errors->has('date'))
@@ -118,27 +118,36 @@
 
 <script>
     $(document).ready(function() {
-        let a = $(".input-field").find('.select-wrapper')
-        a.css('display','block');
+        let a = $(".input-field").find('.select-wrapper');
+        a.css('display', 'block');
+        // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
+        var yyyy = today.getFullYear();
+        var currentDate = yyyy + '-' + mm + '-' + dd;
+
+        // Mengisi input tanggal dengan tanggal hari ini
+        $('#date').val(currentDate);
+
+        // Inisialisasi datepicker
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
 
-
-        $('body').addClass('loaded');
-        var ndate = $('#date').val();
-
-        if (ndate == "") {
-            $('#gobtn').attr('disabled', 'disabled');
-        } else {
-            $('#gobtn').removeAttr('disabled');
-        }
-
-    });
-    $('#date').change(function(event) {
-        var date = $('#date').val();
-
-        if (date == "") {
+        // Cek tanggal saat mengganti nilai input
+        $('#date').change(function(event) {
+            var date = $('#date').val();
+            if (date == "") {
+                $('#gobtn').attr('disabled', 'disabled');
+            } else {
+                $('#gobtn').removeAttr('disabled');
+            }
+        });
+        
+        // Cek tanggal saat halaman dimuat
+        var initialDate = $('#date').val();
+        if (initialDate == "") {
             $('#gobtn').attr('disabled', 'disabled');
         } else {
             $('#gobtn').removeAttr('disabled');
