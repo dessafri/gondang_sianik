@@ -58,6 +58,9 @@
   <li class="bold"><a class="waves-effect waves-cyan @yield('profile') " href="{{route('profile')}}"><i class="material-icons">person</i><span class="menu-title" data-i18n="Kanban">{{__('messages.common.profile')}}</span></a>
   </li>
   @endcan
+  @can('view profile')
+  <li class="bold"><a class="waves-effect waves-cyan @yield('logout') " href="{{route('logout')}}" ontouchstart="logout()"><i class="material-icons">keyboard_tab</i> <span class="menu-title" data-i18n="Kanban">{{__('messages.common.logout')}}</span></a></li>
+  @endcan
 
   </ul>
   <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>
