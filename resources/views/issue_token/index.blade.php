@@ -169,7 +169,7 @@
                             <div style="margin-top:-20px; margin-bottom:15px;" align="center">
                             </div>
                             <p style="font-size: 10px; margin-top:-12px;">{{__('messages.issue_token.please wait for your turn')}}</p>
-                            <p style="font-size: 10px; margin-top:-12px;">{{__('messages.issue_token.customer waiting ')}}:` + response.customer_waiting + ` 
+                            <p style="font-size: 10px; margin-top:-12px;">Pelanggan Menunggu : ` + response.customer_waiting + ` 
                             </p>
                             <p style="text-align:left !important;font-size:8px;"></p>
                             <p style="text-align:right !important; margin-top:-23px;font-size:8px;"></p>`;

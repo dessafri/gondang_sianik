@@ -10,7 +10,7 @@
   @elseif(Route::current()->getName() == 'display')
   <title>Display</title>
   @else
-  <title>SI ANIK</title>
+  <title>Si ANIK</title>
   @endif
   <link rel="apple-touch-icon" href="{{asset('app-assets/images/icon/favicon.ico')}}">
   <link rel="shortcut icon" type="image/x-icon" href="{{asset('app-assets/images/icon/favicon.ico')}}">
@@ -50,11 +50,11 @@
         <div class="nav-wrapper">
           @if(\App::currentLocale() == 'sa')
           <ul class="navbar-list left" style="padding-right: 60px;">
-            <li><span style="font-weight: bold; font-size: x-large; ">SI ANIK</span></li>
+            <li><span style="font-weight: bold; font-size: x-large; ">Si ANIK (Sistem Antrian Elektronik)</span></li>
           </ul>
           @else
           <ul class="navbar-list left" style="padding-left: 60px;">
-            <li><span style="font-weight: bold; font-size: x-large; ">SI ANIK (Sistem Antrian Elektronik)</span></li>
+            <li><span style="font-weight: bold; font-size: x-large; ">Si ANIK (Sistem Antrian Elektronik)</span></li>
           </ul>
           @endif
           <ul class="navbar-list right">
@@ -180,7 +180,7 @@
     <div class="footer-copyright">
     <div class="container">
             <span>Powered by&nbsp;<a href="https://www.primavisiglobalindo.com" target="_blank" style="color:#ffffff;font-weight: bolder;">PT. Prima Visi Globalindo</a>&nbsp;All rights reserved</span>
-            <span style="text-align: left; float:left; font-size:13px">Version {{AppVersion::VERSION}}</span>
+            <span style="text-align: left; float:left; font-size:13px"></span>
     </div>
     </div>
   </footer>
@@ -189,7 +189,7 @@
     <div class="footer-copyright">
     <div class="container">
             <span>Powered by&nbsp;<a href="https://www.primavisiglobalindo.com" target="_blank" style="color:#ffffff;font-weight: bolder;">PT. Prima Visi Globalindo</a>&nbsp;All rights reserved</span>
-            <span style="text-align: right; float:right; font-size:13px">Version {{AppVersion::VERSION}}</span>
+            <span style="text-align: right; float:right; font-size:13px"></span>
     </div>
     </div>
   </footer>
@@ -199,9 +199,9 @@
     <div class="container">
             <span>Powered by&nbsp;<a href="https://www.primavisiglobalindo.com" target="_blank" style="color:#ffffff;font-weight: bolder;">PT. Prima Visi Globalindo</a>&nbsp;All rights reserved</span>
             @if(\App::currentLocale() == 'sa')
-            <span style="text-align: left; float:left; font-size:13px">Version {{AppVersion::VERSION}}</span>
+            <span style="text-align: left; float:left; font-size:13px"></span>
             @else
-            <span style="text-align: right; float:right; font-size:13px">Version {{AppVersion::VERSION}}</span>
+            <span style="text-align: right; float:right; font-size:13px"></span>
             @endif
     </div>
     </div>

@@ -130,9 +130,9 @@
         <div class="container">
             <span>Powered by&nbsp;<a href="https://www.primavisiglobalindo.com" target="_blank" style="color:#ffffff;font-weight: bolder;">PT. Prima Visi Globalindo</a>&nbsp;All rights reserved</span>
             @if(\App::currentLocale() == 'sa')
-            <span style="text-align: left; float:left; font-size:13px">Version {{AppVersion::VERSION}}</span>
+            <span style="text-align: left; float:left; font-size:13px"></span>
             @else
-            <span style="text-align: right; float:right; font-size:13px">Version {{AppVersion::VERSION}}</span>
+            <span style="text-align: right; float:right; font-size:13px"></span>
             @endif
     </div>
         </div>

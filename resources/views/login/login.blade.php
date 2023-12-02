@@ -9,7 +9,7 @@
     <meta name="keywords" content="ASTIN Admin template">
     <meta name="author" content="ThemeSelect">
     <!-- <meta name="_token" content="{!! csrf_token() !!}" /> -->
-    <title>ADMIN LOGIN | SI ANIK</title>
+    <title>ADMIN LOGIN | Si ANIK</title>
     <link rel="apple-touch-icon" href="{{asset('app-assets/images/icon/favicon.ico')}}">
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('app-assets/images/icon/favicon.ico')}}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -47,8 +47,11 @@
                             @csrf
 
                             <div class="row">
-                                <div class="input-field col s12 offset-m4">
-                                    <h5 class="ml-4" style="font-weight: 800;">SI ANIK</h5>
+                                <div class="input-field col s12 ">
+                                    <center>
+                                        <h5 style="font-weight: 800;">Si ANIK</h5>
+                                        <h6 style="font-weight: 800;">(Sistem Antrian Elektronik)</h6>
+                                    </center>
                                 </div>
                             </div>
                             <div class="row margin">
@@ -81,7 +84,7 @@
                                     <button type="submit" class="btn waves-effect waves-light border-round  col s12">Login</button>
                                 </div>
                             </div>
-                            <div class="row"  style="text-align: center; padding-bottom: 7px; font-size: 13px">Version {{AppVersion::VERSION}}</div>
+                            <div class="row"  style="text-align: center; padding-bottom: 7px; font-size: 13px"></div>
                         </form>
                     </div>
                 </div>
