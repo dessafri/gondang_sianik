@@ -188,8 +188,8 @@
                                                     <td>{{$report->service_name}}</td>
                                                     <td>{{$report->counter_name ? $report->counter_name : 'Nil'}}</td>
                                                     <td>{{$report->date ? \Carbon\Carbon::parse($report->date)->timezone($timezone)->format('d F Y h:i A') : 'Nil'}}</td>
-                                                    <td>{{$report->called_at ? \Carbon\Carbon::parse($report->called_at)->timezone($timezone)->format('d F Y h:i A') :'Nil'}}</td>
-                                                    <td>{{$report->served_at ? \Carbon\Carbon::parse($report->served_at)->timezone($timezone)->format('d F Y h:i A') : 'Nil'}}</td>
+                                                    <td>{{$report->called_at ? \Carbon\Carbon::parse($report->called_at)->timezone($timezone)->format('h:i A') :'Nil'}}</td>
+                                                    <td>{{$report->served_at ? \Carbon\Carbon::parse($report->served_at)->timezone($timezone)->format('h:i A') : 'Nil'}}</td>
                                                     <td>{{$report->waiting_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s', $report->waiting_time), true, true, 2) : 'Nil'}}</td>
                                                     <td>{{$report->served_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s', $report->served_time), true, true, 2) : 'Nil'}}</td>
                                                     <td>{{$report->total_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s',$report->total_time), true, true, 2): 'Nil'}}</td>
