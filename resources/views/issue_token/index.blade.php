@@ -169,7 +169,8 @@
                             <div style="margin-top:-20px; margin-bottom:15px;" align="center">
                             </div>
                             <p style="font-size: 10px; margin-top:-12px;">{{__('messages.issue_token.please wait for your turn')}}</p>
-                            <p style="font-size: 10px; margin-top:-12px;">Pelanggan Menunggu : ` + response.customer_waiting + ` 
+                            <p style="font-size: 10px; margin-top:-12px;">Pelanggan Menunggu : ` + response.customer_waiting + `  
+                            <p style="font-size: 10px; margin-top:-12px;">No reff : ` + response.queue.reference_no + ` 
                             </p>
                             <p style="text-align:left !important;font-size:8px;"></p>
                             <p style="text-align:right !important; margin-top:-23px;font-size:8px;"></p>`;
@@ -211,6 +212,10 @@
                         $('.phone').html('<span class="text-danger errbk">' + response.errors['phone'][0] + '</span>')
                     }
                     $('body').addClass('loaded');
+                    M.toast({
+                        html: 'Antrian Sudah Penuh !',
+                        classes: "toast-error"
+                    });
                 } else {
                     $('#modal1').modal('close');
                     $('#phone').val(null);

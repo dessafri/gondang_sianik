@@ -94,6 +94,7 @@ Route::middleware(['setLocale'])->group(function () {
     });
     // Route::group(['middleware' => ['permission:issue token']], function () {
     Route::get('kiosk', [TokenController::class, 'issueToken'])->name('issue_token');
+    Route::get('kiosk-online', [TokenController::class, 'onlineToken'])->name('online_token');
     Route::post('queue', [TokenController::class, 'createToken'])->name('create-token');
     Route::post('queueonline', [TokenController::class, 'createTokenOnline'])->name('create-token-online');
     Route::post('print', [TokenController::class, 'printToken'])->name('print-token');

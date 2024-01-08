@@ -29,6 +29,8 @@ class SettingsController extends Controller
             'email' => 'required|email',
             'address' => 'required',
             'phone' => 'required|numeric',
+            'offline_queue_limit' => 'required|numeric',
+            'online_queue_limit' => 'required|numeric',
             'timezone' => 'required',
             'location' => 'required',
 

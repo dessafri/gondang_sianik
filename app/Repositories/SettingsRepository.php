@@ -22,6 +22,8 @@ class SettingsRepository
                 'address' => $data['address'],
                 'location' => $data['location'],
                 'phone' => $data['phone'],
+                'offline_queue_limit' => $data['offline_queue_limit'],
+                'online_queue_limit' => $data['online_queue_limit'],
                 'timezone' => $data['timezone'],
                 'logo' => $path
             ]);
@@ -41,6 +43,8 @@ class SettingsRepository
             $settings->address = $data['address'];
             $settings->location = $data['location'];
             $settings->phone = $data['phone'];
+            $settings->offline_queue_limit = $data['offline_queue_limit'];
+            $settings->online_queue_limit = $data['online_queue_limit'];
             $settings->timezone = $data['timezone'];
             $settings->save();
             return $settings;

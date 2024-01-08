@@ -86,6 +86,26 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="input-field col s6">
+                                            <input id="offline_queue_limit" name="offline_queue_limit" type="text" value="{{$settings->offline_queue_limit}}" data-error=".offline_queue_limit">
+                                            <label for="password">Limit Offline</label>
+                                            <div class="offline_queue_limit">
+                                                @if ($errors->has('offline_queue_limit'))
+                                                <span class="text-danger errbk">{{ $errors->first('offline_queue_limit') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <input id="online_queue_limit" name="online_queue_limit" type="text" value="{{$settings->online_queue_limit}}" data-error=".online_queue_limit">
+                                            <label for="online_queue_limit">Limit Online</label>
+                                            <div class="online_queue_limit">
+                                                @if ($errors->has('online_queue_limit'))
+                                                <span class="text-danger errbk">{{ $errors->first('online_queue_limit') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="input-field col s12">
                                             <select name="timezone" id="timezone" data-error=".timezone">
                                                 <option value="" disabled selected>{{__('messages.settings.select timezone')}}</option>
@@ -335,6 +355,14 @@
                 },
                 address: {
                     required: true
+                },
+                offline_queue_limit: {
+                    required: true,
+                    number: true
+                },
+                online_queue_limit: {
+                    required: true,
+                    number: true
                 },
                 timezone: {
                     required: true
