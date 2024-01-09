@@ -103,26 +103,19 @@ class TokenController extends Controller
             return response()->json(['status_code' => 422, 'errors' => ['limit' => ['The queue limit for today has been reached.']]]);
         }else{
             DB::beginTransaction();
-            try {                
-
+            try {
                 $service = Service::findOrFail($request->service_id);
 
                 $request->validate([
                     'service_id' => 'required|exists:services,id',
                     'with_details' => 'required',
-                    'name' => Rule::requiredIf(function () use ($request, $service) {
-                        return $request->with_details && ($service->name_required == 1);
-                    }),
-                    'email' => [Rule::requiredIf(function () use ($request, $service) {
-                        return $request->with_details && ($service->email_required == 1);
-                    })],
-                    'phone' => [Rule::requiredIf(function () use ($request, $service) {
-                        return $request->with_details && ($service->email_required == 1);
+                    'date' => [Rule::requiredIf(function () use ($request, $service) {
+                        return $request->with_details && ($service->date_required == 1);
                     })],
                 ]);
 
                 // Proses pembuatan token hanya jika validasi berhasil dan jumlah antrian masih di bawah batas
-                $queue = $this->tokenRepository->createToken($service, $request->all(), $request->with_details ? true : false);
+                $queue = $this->tokenRepository->createTokenOnline($service, $request->all(), $request->with_details ? true : false);
                 $customer_waiting = $this->tokenRepository->customerWaiting($service);
                 $customer_waiting = $customer_waiting > 0 ?  $customer_waiting - 1 : $customer_waiting;
                 $settings = Setting::first();
@@ -133,6 +126,7 @@ class TokenController extends Controller
 
                 $this->tokenRepository->setTokensOnFile();
             } catch (\Exception $e) {
+                dd($e->getMessage());
                 if ($e instanceof \Illuminate\Validation\ValidationException) {
                     $errors = $e->errors();
                     $message = $e->getMessage();

@@ -47,9 +47,8 @@
                         <div class="row">
                             <div class="input-field col s10" id="date_tab">
                                 <input id="date" name="date" type="date" value="" data-error=".date">
-                                <label for="date">{{__('messages.settings.date')}}</label>
+                                <label for="date">Pilih Tanggal</label>
                                 <div class="date">
-
                                 </div>
                             </div>
                         </div>
@@ -73,16 +72,10 @@
     })
     var service;
     
-    function queueDept(value) {
-        // $('#modal_button').removeAttr('disabled');
-        // $('#modal1').modal('open');
-
-        $('body').removeClass('loaded');
-        let data = {
-            service_id: value.id,
-            with_details: false
-        }
-        downloadImage(data);
+    function queueDept(value) {        
+        service = value;
+        $('#modal_button').removeAttr('disabled');
+        $('#modal1').modal('open');
     }
 
     function downloadImage(data) {
@@ -99,8 +92,7 @@
                         <h4 style="font-size: 20px; margin-top:-15px; margin-left: 60px;">${response.queue.service.name}</h4>
                         <h3 style="font-size: 40px;  font-weight: bold; margin-top:-30px; margin-bottom:15px; margin-left: 80px;">${response.queue.letter} - ${response.queue.number}</h3>
                         <h4 style="font-size: 24px; margin-top: -16px;margin-bottom: 27px; margin-left: 40px;">${response.queue.formated_date}</h4>
-                        <h4 style="font-size: 15px; margin-top:-12px; margin-left: 15px;">Tunggu sampai giliran anda berikutnya</h4>
-                        <h4 style="font-size: 20px; margin-top:-12px; margin-left: 30px;">Pelanggan Menunggu : ${response.customer_waiting}</h4>
+                        <h4 style="font-size: 15px; margin-top:-12px; margin-left: 80px;">Silahkan datang pada <br>tanggal yang tertera</h4>
                     `;
 
                     // Membuat elemen baru untuk menampung konten HTML
@@ -132,6 +124,7 @@
                     });
                     
                     $('body').addClass('loaded');
+                    $('#modal1').modal('close');
                 } else if (response.status_code == 422 && response.errors) {
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
@@ -165,13 +158,17 @@
             submitHandler: function(form) {
                 $('#modal_button').attr('disabled', 'disabled');
                 $('body').removeClass('loaded');
-                let selectedDate = $('#date').val();
+
+                // Mendapatkan nilai dari input datetime-local
+                let dateInput = document.getElementById('date');
+                let selectedDateTime = dateInput.value;
+                let formattedDate = new Date(selectedDateTime).toISOString().slice(0, 19).replace('T', ' ');
 
                 let data = {
                     service_id: service.id,
-                    date: selectedDate,
+                    date: formattedDate,
                     with_details: true
-                }                
+                }
                 downloadImage(data);
             }
         });

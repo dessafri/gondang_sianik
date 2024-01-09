@@ -13,7 +13,11 @@ class TokenRepository
 {
     public function createToken(Service $service, $data, $is_details)
     {
-        $last_token = Queue::where('created_at', '>=', Carbon::now()->startOfDay())->where('created_at', '<', Carbon::now()->endOfDay())->where('service_id', $service->id)->orderBy('created_at', 'desc')->first();
+        $last_token = Queue::where('created_at', '>=', Carbon::now()->startOfDay())
+        ->where('created_at', '<', Carbon::now()
+        ->endOfDay())->where('service_id', $service->id)
+        ->orderBy('created_at', 'desc')
+        ->first();
         if ($last_token) $token_number = $last_token->number + 1;
         else $token_number = $service->start_number;
         $queue = Queue::create([
@@ -27,6 +31,33 @@ class TokenRepository
             'phone' => ($is_details && $service->ask_phone == 1) ? $data['phone'] : null,
             'position' => $this->customerWaiting($service) + 1
         ]);
+        return $queue;
+    }
+
+    public function createTokenOnline(Service $service, $data, $is_details)
+    {
+        $date_add = date('Y-m-d' ,strtotime($data['date']. '+1 day'));
+        $last_token = Queue::where('created_at', '>=', $data['date'])
+        ->where('created_at', '<', $date_add)
+        ->where('service_id', $service->id)
+        ->orderBy('number', 'desc')
+        ->first();
+        if ($last_token) $token_number = $last_token->number + 1;
+        else $token_number = $service->start_number;
+        $queue = Queue::create([
+            'service_id' => $service->id,
+            'number' => $token_number,
+            'called' => false,
+            'reference_no' => Str::random(9),
+            'letter' => $service->letter,
+            'name' => ($is_details && $service->ask_name == 1) ? $data['name'] : null,
+            'email' => ($is_details && $service->ask_email == 1) ? $data['email'] : null,
+            'phone' => ($is_details && $service->ask_phone == 1) ? $data['phone'] : null,
+            'position' => $this->customerWaiting($service) + 1,
+            'created_at' => $data['date'],
+            'updated_at' => $data['date'],
+        ]);
+        
         return $queue;
     }
 
