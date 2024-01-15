@@ -58,24 +58,24 @@ class TokenRepository
             'updated_at' => $data['date'],
         ]);
 
-        $reply_message = 
-            "*_Bukti Reservasi Sistem Antrian Online_*
-            *_Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk_*
-            Nama : ".$data['name']."
-            Tanggal : ".$data['date']."
+        // $reply_message = 
+        //     "*_Bukti Reservasi Sistem Antrian Online_*
+        //     *_Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk_*
+        //     Nama : ".$data['name']."
+        //     Tanggal : ".$data['date']."
 
-            *_Silahkan datang pada tanggal yang tertera. Terima Kasih_*";
+        //     *_Silahkan datang pada tanggal yang tertera. Terima Kasih_*";
 
-        $post = [
-            'userId' => $data['id'],
-            'message' => $reply_message
-        ];
+        // $post = [
+        //     'userId' => $data['id'],
+        //     'message' => $reply_message
+        // ];
             
-        $ch = curl_init('http://10.35.18.8/lasmini.salipuk/sendMessage');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        // $ch = curl_init('http://10.35.18.8/lasmini.salipuk/sendMessage');
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         
-        $response = curl_exec($ch);
+        // $response = curl_exec($ch);
         // echo $response;
 
         // $post = [
@@ -101,7 +101,7 @@ class TokenRepository
         // $response = curl_exec($ch);
 
         // // Tutup koneksi cURL
-        curl_close($ch);
+        // curl_close($ch);
         
         return $queue;
     }

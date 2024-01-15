@@ -2,7 +2,7 @@
 @section('content')
     <style>
         #modal1 {
-            width: 30%;
+            width: 50%;
             height: 15%;
         }
     </style>
