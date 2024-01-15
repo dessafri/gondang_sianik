@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="modal_button" type="submit" class="modal-action waves-effect waves-green btn-flat" style="background: #009688; color:#fff" onclick="issueToken()">{{__('messages.common.submit')}}</button>
+                <button id="modal_button" type="submit" class="modal-action waves-effect waves-green btn-flat btn-lg btn-block" style="background: #009688; color:#fff;" onclick="issueToken()">{{__('messages.common.submit')}}</button>
             </div>
         </form>
     </div>
