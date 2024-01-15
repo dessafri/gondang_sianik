@@ -1,5 +1,11 @@
 @extends('layout.call_page')
 @section('content')
+    <style>
+        #modal1 {
+            width: 30%;
+            height: 15%;
+        }
+    </style>
 <!-- BEGIN: Page Main-->
 <div id="loader-wrapper">
     <div id="loader"></div>
@@ -31,15 +37,14 @@
 
                     <form action="{{route('create-token-online')}}" method="post" id="my-form-two" style="display: none;">
                         {{csrf_field()}}
-
-
                     </form>
                 </div>
             </div>
         </section>
     </div>
+
     <!-- Modal Structure -->
-    <div id="modal1" class="modal modal-fixed-footer" style="max-height: 30%; width:50%">
+    <div id="modal1" class="modal modal-fixed-footer">
         <form id="details_form">
             <div class="modal-content" style="padding-bottom:0">
                 <div id="inline-form">
@@ -51,6 +56,9 @@
                                 <div class="date">
                                 </div>
                             </div>
+                            <input type="hidden" name="name" id="name" value="<?=$_GET['nama']?>">
+                            <input type="hidden" name="phone" id="phone" value="<?=$_GET['phone']?>">
+                            <input type="hidden" name="id" id="id" value="<?=$_GET['id']?>">
                         </div>
                     </div>
                 </div>
@@ -58,7 +66,7 @@
             <div class="modal-footer">
                 <button id="modal_button" type="submit" class="modal-action waves-effect waves-green btn-flat" style="background: #009688; color:#fff" onclick="issueToken()">{{__('messages.common.submit')}}</button>
             </div>
-        <form>
+        </form>
     </div>
 </div>
 @endsection
@@ -129,7 +137,7 @@
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
                     M.toast({
-                        html: 'Antrian Sudah Penuh !',
+                        html: response.errors.limit[0],
                         classes: "toast-error"
                     });
                 }
@@ -167,6 +175,9 @@
                 let data = {
                     service_id: service.id,
                     date: formattedDate,
+                    name: $('#name').val(),
+                    phone: $('#phone').val(),
+                    id: $('#id').val(),
                     with_details: true
                 }
                 downloadImage(data);

@@ -100,44 +100,53 @@ class TokenController extends Controller
         $totalQueueToday = Queue::whereDate('created_at', $date)->count(); // Menghitung total antrian pada tanggal saat ini
         $queueLimit = Setting::value('online_queue_limit');
         if ($totalQueueToday >= $queueLimit) {
-            return response()->json(['status_code' => 422, 'errors' => ['limit' => ['The queue limit for today has been reached.']]]);
+            return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian sudah Mencapai Limit.']]]);
         }else{
-            DB::beginTransaction();
-            try {
-                $service = Service::findOrFail($request->service_id);
+            $phoneNumber = $request->phone;
+            $created_at = $request->date;
+            $existingQueue = Queue::whereDate('created_at', $created_at)
+                                ->where('phone', $phoneNumber)
+                                ->exists();
+            if ($existingQueue) {
+                return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
+            } else {
+                DB::beginTransaction();
+                try {
+                    $service = Service::findOrFail($request->service_id);
 
-                $request->validate([
-                    'service_id' => 'required|exists:services,id',
-                    'with_details' => 'required',
-                    'date' => [Rule::requiredIf(function () use ($request, $service) {
-                        return $request->with_details && ($service->date_required == 1);
-                    })],
-                ]);
+                    $request->validate([
+                        'service_id' => 'required|exists:services,id',
+                        'with_details' => 'required',
+                        'date' => [Rule::requiredIf(function () use ($request, $service) {
+                            return $request->with_details && ($service->date_required == 1);
+                        })],
+                    ]);
 
-                // Proses pembuatan token hanya jika validasi berhasil dan jumlah antrian masih di bawah batas
-                $queue = $this->tokenRepository->createTokenOnline($service, $request->all(), $request->with_details ? true : false);
-                $customer_waiting = $this->tokenRepository->customerWaiting($service);
-                $customer_waiting = $customer_waiting > 0 ?  $customer_waiting - 1 : $customer_waiting;
-                $settings = Setting::first();
-                
-                if ($service->sms_enabled && $service->optin_message_enabled && $queue->phone && $settings->sms_url) {
-                    SendSmsJob::dispatch($queue, $service->optin_message_format, $settings, 'issue_token');
+                    // Proses pembuatan token hanya jika validasi berhasil dan jumlah antrian masih di bawah batas
+                    $queue = $this->tokenRepository->createTokenOnline($service, $request->all(), $request->with_details ? true : false);
+                    $customer_waiting = $this->tokenRepository->customerWaiting($service);
+                    $customer_waiting = $customer_waiting > 0 ?  $customer_waiting - 1 : $customer_waiting;
+                    $settings = Setting::first();
+                    
+                    if ($service->sms_enabled && $service->optin_message_enabled && $queue->phone && $settings->sms_url) {
+                        SendSmsJob::dispatch($queue, $service->optin_message_format, $settings, 'issue_token');
+                    }
+
+                    $this->tokenRepository->setTokensOnFile();
+                } catch (\Exception $e) {
+                    dd($e->getMessage());
+                    if ($e instanceof \Illuminate\Validation\ValidationException) {
+                        $errors = $e->errors();
+                        $message = $e->getMessage();
+                        return response()->json(['status_code' => 422, 'errors' => $errors]);
+                    }
+                    DB::rollback();
+                    return response()->json(['status_code' => 500]);
                 }
-
-                $this->tokenRepository->setTokensOnFile();
-            } catch (\Exception $e) {
-                dd($e->getMessage());
-                if ($e instanceof \Illuminate\Validation\ValidationException) {
-                    $errors = $e->errors();
-                    $message = $e->getMessage();
-                    return response()->json(['status_code' => 422, 'errors' => $errors]);
-                }
-                DB::rollback();
-                return response()->json(['status_code' => 500]);
+                DB::commit();
+                $queue = $queue->load('service');
+                return response()->json(['status_code' => 200, 'queue' => $queue, 'customer_waiting' => $customer_waiting, 'settings' => $settings]);
             }
-            DB::commit();
-            $queue = $queue->load('service');
-            return response()->json(['status_code' => 200, 'queue' => $queue, 'customer_waiting' => $customer_waiting, 'settings' => $settings]);
         }
     }
 

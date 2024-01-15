@@ -50,13 +50,58 @@ class TokenRepository
             'called' => false,
             'reference_no' => Str::random(9),
             'letter' => $service->letter,
-            'name' => ($is_details && $service->ask_name == 1) ? $data['name'] : null,
+            'name' => $data['name'],
             'email' => ($is_details && $service->ask_email == 1) ? $data['email'] : null,
-            'phone' => ($is_details && $service->ask_phone == 1) ? $data['phone'] : null,
+            'phone' => $data['phone'],
             'position' => $this->customerWaiting($service) + 1,
             'created_at' => $data['date'],
             'updated_at' => $data['date'],
         ]);
+
+        $reply_message = 
+            "*_Bukti Reservasi Sistem Antrian Online_*
+            *_Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk_*
+            Nama : ".$data['name']."
+            Tanggal : ".$data['date']."
+
+            *_Silahkan datang pada tanggal yang tertera. Terima Kasih_*";
+
+        $post = [
+            'userId' => $data['id'],
+            'message' => $reply_message
+        ];
+            
+        $ch = curl_init('http://10.35.18.8/lasmini.salipuk/sendMessage');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        
+        $response = curl_exec($ch);
+        // echo $response;
+
+        // $post = [
+        //     'userId' => $data['id'],
+        //     'message' => $reply_message
+        // ];
+        
+        // $vpn_url = 'http://10.35.18.8/lasmini.salipuk/sendMessage';
+        // $vpn_settings = [
+        //     CURLOPT_URL            => $vpn_url,
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_POSTFIELDS     => $post,
+        //     CURLOPT_PROXY          => 'http://10.35.18.8:80',
+        //     CURLOPT_PROXYUSERPWD   => 'adminserver:disdukchatbot',
+        //     CURLOPT_PROXYTYPE      => CURLPROXY_HTTP, // Sesuaikan dengan jenis VPN yang Anda gunakan
+        // ];
+
+        // // Inisialisasi cURL dengan pengaturan VPN
+        // $ch = curl_init();
+        // curl_setopt_array($ch, $vpn_settings);
+
+        // // Eksekusi cURL dan dapatkan respons
+        // $response = curl_exec($ch);
+
+        // // Tutup koneksi cURL
+        curl_close($ch);
         
         return $queue;
     }
