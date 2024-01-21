@@ -47,6 +47,8 @@ class ServiceRepository
             'name_required' => $data['ask_name'] == 1 ? $data['name_required'] : false,
             'ask_email' => $data['ask_email'],
             'email_required' => $data['ask_email'] == 1 ? $data['email_required'] : false,
+            'offline_limit' => $data['offline_limit'],
+            'online_limit' => $data['online_limit'],
         ]);
         return $service;
     }
@@ -75,6 +77,8 @@ class ServiceRepository
         $service->email_required = ($data['ask_email'] == 1) ? $data['email_required'] : false;
         $service->ask_phone = $data['ask_phone'];
         $service->phone_required = ($data['ask_phone'] == 1) ? $data['phone_required'] : false;
+        $service->online_limit = $data['online_limit'];
+        $service->offline_limit = $data['offline_limit'];
         $service->save();
         return $service;
     }

@@ -17,6 +17,7 @@ class UserRepository
             'email' => $data['email'],
             'image'=> $path,
             'password' => Hash::make($data['password']),
+            'role_id' => $data['role'],
         ]);
         $user->assignRole($data['role']);
         return $user;

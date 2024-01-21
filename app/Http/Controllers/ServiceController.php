@@ -81,6 +81,8 @@ class ServiceController extends Controller
             'email_required' => 'nullable',
             'ask_phone' => 'required',
             'phone_required' => 'nullable',
+            'offline_limit' => 'nullable',
+            'online_limit' => 'nullable',
         ]);
         DB::beginTransaction();
         try {
@@ -152,6 +154,8 @@ class ServiceController extends Controller
             'email_required' => 'nullable',
             'ask_phone' => 'required',
             'phone_required' => 'nullable',
+            'offline_limit' => 'nullable',
+            'online_limit' => 'nullable',
         ]);
         DB::beginTransaction();
         try {

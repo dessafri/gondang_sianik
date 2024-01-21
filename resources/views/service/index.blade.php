@@ -39,8 +39,10 @@
                                                     <th>{{__('messages.service_page.name')}}</th>
                                                     <th>{{__('messages.service_page.letter')}}</th>
                                                     <th>{{__('messages.service_page.starting number')}}</th>
-                                                    <th>{{__('messages.service_page.status')}}</th>
-                                                    <th>{{__('messages.service_page.action')}}</th>
+                                                    <th>{{__('messages.service_page.starting number')}}</th>
+                                                    <th>{{__('messages.service_page.starting number')}}</th>
+                                                    <th>Limit Online</th>
+                                                    <th>Limit Offline</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -50,6 +52,8 @@
                                                     <td>{{$service->name}}</td>
                                                     <td>{{$service->letter}}</td>
                                                     <td>{{$service->start_number}}</td>
+                                                    <td>{{$service->online_limit}}</td>
+                                                    <td>{{$service->offline_limit}}</td>
                                                     <td>
                                                         <div class="switch">
                                                             <label>

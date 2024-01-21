@@ -30,6 +30,7 @@ class AuthController extends Controller
 
         return view('login.login');
     }
+
     public function authenticate(Request $request)
     {
 
@@ -39,19 +40,27 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+
+            $user = Auth::user();
+
             $request->session()->regenerate();
             $settings = Setting::first();
             session(['settings' => $settings]);
             if ($settings->language_id) {
                 session(['locale' => $settings->language->code]);
             }
-            return redirect()->intended('dashboard')->with('success', 'Succesfully Logged in');
+            if ($user->role_id == 2) {
+                return redirect()->route('show_call_page');
+            } else {
+                return redirect()->intended('dashboard')->with('success', 'Succesfully Logged in');
+            }
         }
 
         return back()->withErrors([
             'error' => 'The provided credentials do not match our records.',
         ]);
     }
+    
     public function logout()
     {
         session()->invalidate();

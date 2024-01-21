@@ -6,16 +6,50 @@
             height: 15%;
         }
     </style>
+    <?php    
+    $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://10.35.18.8/lasmini.salipuk/api/decrypt',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS =>'{
+        "data": {
+                "token":"'.$_GET['q'].'"
+            }
+        }',
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
+        ),
+        ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    $data = json_decode($response);
+
+    if (isset($data->data->phone)) {
+        $phone = $data->data->phone;
+        $email = $data->data->id;
+    } else {
+        $phone = null; 
+        $email = null;
+    }
+    ?>
 <!-- BEGIN: Page Main-->
 <div id="loader-wrapper">
     <div id="loader"></div>
-
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
-
 <div id="main" class="noprint" style="padding: 15px 15px 0px;">
     <div class="wrapper">
         <section class="content-wrapper no-print">
@@ -56,9 +90,9 @@
                                 <div class="date">
                                 </div>
                             </div>
-                            <input type="hidden" name="name" id="name" value="<?=$_GET['nama']?>">
-                            <input type="hidden" name="phone" id="phone" value="<?=$_GET['phone']?>">
-                            <input type="hidden" name="id" id="id" value="<?=$_GET['id']?>">
+                            <input type="hidden" name="name" id="name" value="<?=$_GET['q']?>">
+                            <input type="hidden" name="email" id="email" value="<?=$email?>">
+                            <input type="hidden" name="phone" id="phone" value="<?=$phone?>">
                         </div>
                     </div>
                 </div>
@@ -176,10 +210,11 @@
                     service_id: service.id,
                     date: formattedDate,
                     name: $('#name').val(),
+                    email: $('#email').val(),
                     phone: $('#phone').val(),
-                    id: $('#id').val(),
                     with_details: true
                 }
+                
                 downloadImage(data);
             }
         });

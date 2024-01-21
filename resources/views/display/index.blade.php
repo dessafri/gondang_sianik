@@ -15,12 +15,8 @@
             <div id="callarea" class="row" style="line-height:1.23;display:flex; flex-direction:row-reverse">
                 <div class="col m4">
                     <div class="card-panel center-align p-0" style="margin-bottom:0;height:74vh" id="side-token-display">
-                        <div style="border-bottom:1px solid #ddd;height:25%;display:flex;flex-direction:row;justify-content:center;align-items:center">
-                            <div>
-                                <span v-if="tokens[1]" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">@{{tokens[1]?.token_letter}}-@{{tokens[1]?.token_number}}</span>
-                                <span v-if="!tokens[1]" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">{{__('messages.display.nil')}}</span><br>
-                                <small v-if="tokens[1]" class="bolder-color" id="counter1" style="font-size:25px; font-weight:bold;">@{{tokens[1]?.counter.name}}</small>
-                                <small v-if="!tokens[1]" class="bolder-color" id="counter1" style="font-size:25px; font-weight:bold;">{{__('messages.display.nil')}}</small><br>
+                        <div style="border-bottom:1px solid #ddd;height:25%;dis
+                         id="counter1" style="font-size:25px; font-weight:bold;">{{__('messages.display.nil')}}</small><br>
                                 <small v-if="tokens[1]?.call_status_id == {{CallStatuses::SERVED}}" style="font-size:20px; color:#009688; font-weight:bold;">{{__('messages.display.served')}}</small>
                                 <small v-if="tokens[1]?.call_status_id == {{CallStatuses::NOSHOW}}" style="font-size:20px;font-weight:bold;color:red">{{__('messages.display.noshow')}}</small>
                                 <small v-if="tokens[1] && tokens[1]?.call_status_id == null" style="font-size:20px; color:orange; font-weight:bold;">{{__('messages.display.serving')}}</small>

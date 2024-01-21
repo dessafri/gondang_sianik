@@ -31,6 +31,7 @@ class TokenRepository
             'phone' => ($is_details && $service->ask_phone == 1) ? $data['phone'] : null,
             'position' => $this->customerWaiting($service) + 1
         ]);
+
         return $queue;
     }
 
@@ -58,50 +59,40 @@ class TokenRepository
             'updated_at' => $data['date'],
         ]);
 
+        
         // $reply_message = 
-        //     "*_Bukti Reservasi Sistem Antrian Online_*
-        //     *_Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk_*
-        //     Nama : ".$data['name']."
-        //     Tanggal : ".$data['date']."
+        // "*_Bukti Reservasi Sistem Antrian Online_*
+        // Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk
+        // Tanggal : " . date('d F Y', strtotime($data['date'])) . "
 
-        //     *_Silahkan datang pada tanggal yang tertera. Terima Kasih_*";
-
-        // $post = [
-        //     'userId' => $data['id'],
-        //     'message' => $reply_message
-        // ];
-            
-        // $ch = curl_init('http://10.35.18.8/lasmini.salipuk/sendMessage');
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-        
-        // $response = curl_exec($ch);
-        // echo $response;
+        // Silahkan datang pada tanggal yang tertera. Terima Kasih
+        // *_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran , apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir_*.";
 
         // $post = [
-        //     'userId' => $data['id'],
+        //     'userId' => $data['email'],
         //     'message' => $reply_message
         // ];
         
-        // $vpn_url = 'http://10.35.18.8/lasmini.salipuk/sendMessage';
-        // $vpn_settings = [
-        //     CURLOPT_URL            => $vpn_url,
+        // $curl_message = curl_init();
+
+        //     curl_setopt_array($curl_message, array(
+        //     CURLOPT_URL => 'http://10.35.18.8/lasmini.salipuk/api/sendMessage',
         //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_POSTFIELDS     => $post,
-        //     CURLOPT_PROXY          => 'http://10.35.18.8:80',
-        //     CURLOPT_PROXYUSERPWD   => 'adminserver:disdukchatbot',
-        //     CURLOPT_PROXYTYPE      => CURLPROXY_HTTP, // Sesuaikan dengan jenis VPN yang Anda gunakan
-        // ];
+        //     CURLOPT_ENCODING => '',
+        //     CURLOPT_MAXREDIRS => 10,
+        //     CURLOPT_TIMEOUT => 0,
+        //     CURLOPT_FOLLOWLOCATION => true,
+        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST => 'POST',
+        //     CURLOPT_POSTFIELDS => json_encode($post),
+        //     CURLOPT_HTTPHEADER => array(
+        //         'Content-Type: application/json',
+        //         'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
+        //     ),
+        //     ));
 
-        // // Inisialisasi cURL dengan pengaturan VPN
-        // $ch = curl_init();
-        // curl_setopt_array($ch, $vpn_settings);
-
-        // // Eksekusi cURL dan dapatkan respons
-        // $response = curl_exec($ch);
-
-        // // Tutup koneksi cURL
-        // curl_close($ch);
+        // $response_message = curl_exec($curl_message);
+        // curl_close($curl_message);
         
         return $queue;
     }

@@ -146,6 +146,26 @@
                                         </div>
                                         @endif
                                     </div>
+                                    <div class="row form_align">
+                                        <div class="input-field col s6">
+                                            <label for="online_limit">Limit Online</label>
+                                            <input id="online_limit" name="online_limit" type="number" value="{{old('online_limit')}}" data-error=".online_limit">
+                                            <div class="online_limit">
+                                                @if ($errors->has('online_limit'))
+                                                <span class="text-danger errbk">{{ $errors->first('online_limit') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <label for="offline_limit">Limit Offline</label>
+                                            <input id="offline_limit" name="offline_limit" type="number" value="{{old('offline_limit')}}" data-error=".offline_limit">
+                                            <div class="offline_limit">
+                                                @if ($errors->has('offline_limit'))
+                                                <span class="text-danger errbk">{{ $errors->first('offline_limit') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                     @if($settings->sms_enabled)
                                     <div id="sms_tab">
                                         <div class="row form_align">
@@ -342,6 +362,14 @@
                     maxlength: 2
                 },
                 start_number: {
+                    required: true,
+                    min: 0
+                },
+                online_limit: {
+                    required: true,
+                    min: 0
+                },
+                offline_limit: {
                     required: true,
                     min: 0
                 },
