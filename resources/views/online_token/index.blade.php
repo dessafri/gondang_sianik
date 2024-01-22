@@ -10,7 +10,7 @@
     $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'http://10.35.18.8/lasmini.salipuk/api/decrypt',
+        CURLOPT_URL => 'http://lasmini.cloud/api/decrypt',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
