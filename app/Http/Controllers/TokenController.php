@@ -45,7 +45,7 @@ class TokenController extends Controller
             'online_token.index',
             ['services' => $this->services->getAllActiveServicesOnline(), 
             'settings' => Setting::first(),
-            // 'limits' => $this->services->getAllActiveServicesWithLimitsOnline(),
+            'limits' => $this->services->getAllActiveServicesWithLimitsOnline(),
         ]);
     }
 

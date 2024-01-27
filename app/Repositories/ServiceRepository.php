@@ -44,16 +44,16 @@ class ServiceRepository
     {
         $tomorrow = Carbon::tomorrow();
     
-        $services = Service::where('status_online', true)
-            ->leftJoin('queues', function ($join) use ($tomorrow) {
-                $join->on('services.id', '=', 'queues.service_id')
-                    ->whereDate('queues.created_at', '=', $tomorrow)
-                    ->where('queues.status_queue', '=', 'Online');
-            })
-            ->groupBy('services.id')
-            ->get(['services.*', DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit')]);
-    
-        return $services;
+        return DB::table('services')
+        ->select('services.id', 'services.name', DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit'))
+        ->leftJoin('queues', function ($join) use ($tomorrow) {
+            $join->on('services.id', '=', 'queues.service_id')
+                ->whereDate('queues.created_at', '=', $tomorrow)
+                ->where('queues.status_queue', '=', 'Online');
+        })
+        ->where('services.status_online', 1)
+        ->groupBy('services.id', 'services.name', 'services.online_limit')
+        ->get();
     }
     
 
