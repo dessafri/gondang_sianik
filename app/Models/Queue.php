@@ -10,7 +10,7 @@ class Queue extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'service_id','number','called','letter','reference_no','phone','email','name','position','created_at','updated_at'
+        'service_id','number','called','letter','reference_no','phone','email','name','position','created_at','updated_at','nik','status_queue'
     ];
 
     protected $appends = ['formated_date','token_number'];

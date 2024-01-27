@@ -130,7 +130,20 @@
                                                 <span class="text-danger errbk">{{ $errors->first('phone_required') }}</span>
                                                 @endif
                                             </div>
+                                        </div>                                        
+                                        <div class="input-field col s3">
+                                            <select name="ask_nik" id="ask_nik" data-error=".ask_nik">
+                                                <option value="0" selected>No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <label>Minta NIK untuk Token</label>
+                                            <div class="ask_nik">
+                                                @if ($errors->has('ask_nik'))
+                                                <span class="text-danger errbk">{{ $errors->first('ask_nik') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
+
                                         @if($settings->sms_enabled)
                                         <div class="input-field col s6">
                                             <select name="sms" id="sms" data-error=".sms" onchange="changeSMS()">

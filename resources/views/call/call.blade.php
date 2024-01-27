@@ -49,7 +49,7 @@
 
                                                     </div>
                                                     <div class="input-field col s6">
-                                                        <button class="btn waves-effect waves-light center submit call-bt" type="submit" @click="recallToken(token.id)" name="action" style="min-width:165px" :disabled="!isCalled || recallClicked">{{__('messages.call_page.recall')}}
+                                                        <button class="btn waves-effect waves-light center submit call-bt" type="submit" @click="recallToken(token.id)" name="action" style="min-width:165px" :disabled="!isCalled || recallClicked">Ulangi
                                                             <i class="material-icons right">send</i>
                                                         </button>
                                                     </div>

@@ -29,7 +29,9 @@ class TokenRepository
             'name' => ($is_details && $service->ask_name == 1) ? $data['name'] : null,
             'email' => ($is_details && $service->ask_email == 1) ? $data['email'] : null,
             'phone' => ($is_details && $service->ask_phone == 1) ? $data['phone'] : null,
-            'position' => $this->customerWaiting($service) + 1
+            'position' => $this->customerWaiting($service) + 1,
+            'nik' => ($is_details && $service->ask_nik == 1) ? $data['nik'] : null,
+            'status_queue' => "Offline"
         ]);
 
         return $queue;
@@ -51,18 +53,22 @@ class TokenRepository
             'called' => false,
             'reference_no' => Str::random(9),
             'letter' => $service->letter,
-            'name' => $data['name'],
-            'email' => ($is_details && $service->ask_email == 1) ? $data['email'] : null,
-            'phone' => $data['phone'],
+            'name' => ($data['name'] != '') ? $data['name'] : null,
+            'email' => ($data['email'] != '') ? $data['email'] : null,
+            'phone' => ($data['phone'] != '') ? $data['phone'] : null,
             'position' => $this->customerWaiting($service) + 1,
             'created_at' => $data['date'],
             'updated_at' => $data['date'],
+            'nik' => $data['nik'],
+            'status_queue' => "Online"
         ]);
 
         
         $reply_message = 
         "*_Bukti Reservasi Sistem Antrian Online_*
         Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk
+        Atas Nama : ".$data['name']."
+        Antrian : ".$service->letter." - ".$token_number."
         Tanggal : " . date('d F Y', strtotime($data['date'])) . "
 
         Silahkan datang pada tanggal yang tertera. Terima Kasih

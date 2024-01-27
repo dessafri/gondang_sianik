@@ -3,7 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Service;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class ServiceRepository
 {
@@ -17,10 +19,49 @@ class ServiceRepository
         return Service::where('status', true)->get();
     }
 
+    public function getAllActiveServicesOnline()
+    {
+        return Service::where('status_online', true)->get();
+    }
+
+    public function getAllActiveServicesWithLimits()
+    {
+        $today = Carbon::today();
+
+        $services = Service::where('status', true)
+            ->leftJoin('queues', function ($join) use ($today) {
+                $join->on('services.id', '=', 'queues.service_id')
+                    ->whereDate('queues.created_at', '=', $today)
+                    ->where('queues.status_queue', '=', 'Offline');
+            })
+            ->groupBy('services.id')
+            ->get(['services.*', DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit')]);
+
+        return $services;
+    }
+
+    public function getAllActiveServicesWithLimitsOnline()
+    {
+        $tomorrow = Carbon::tomorrow();
+    
+        $services = Service::where('status_online', true)
+            ->leftJoin('queues', function ($join) use ($tomorrow) {
+                $join->on('services.id', '=', 'queues.service_id')
+                    ->whereDate('queues.created_at', '=', $tomorrow)
+                    ->where('queues.status_queue', '=', 'Online');
+            })
+            ->groupBy('services.id')
+            ->get(['services.*', DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit')]);
+    
+        return $services;
+    }
+    
+
     public function getServiceById($id)
     {
         return Service::find($id);
     }
+    
     public function create($data)
     {
         if (!isset($data['sms'])) $data['sms'] = false;
@@ -29,6 +70,7 @@ class ServiceRepository
             'letter' => $data['letter'],
             'start_number' => $data['start_number'],
             'status' => 1,
+            'status_online' => 1,
             'ask_phone' => $data['ask_phone'],
             'phone_required' => $data['ask_phone'] == 1 ?  $data['phone_required'] : false,
             'sms_enabled' => $data['ask_phone'] == 1 ? $data['sms'] : false,
@@ -49,9 +91,11 @@ class ServiceRepository
             'email_required' => $data['ask_email'] == 1 ? $data['email_required'] : false,
             'offline_limit' => $data['offline_limit'],
             'online_limit' => $data['online_limit'],
+            'ask_nik' => $data['ask_nik'],
         ]);
         return $service;
     }
+
     public function update($data, $service)
     {
         if (!isset($data['sms'])) $data['sms'] = false;
@@ -79,9 +123,11 @@ class ServiceRepository
         $service->phone_required = ($data['ask_phone'] == 1) ? $data['phone_required'] : false;
         $service->online_limit = $data['online_limit'];
         $service->offline_limit = $data['offline_limit'];
+        $service->ask_nik = $data['ask_nik'];
         $service->save();
         return $service;
     }
+
     public function delete($data, $service)
     {
         Storage::delete('public/service_' . $service->id . '_display.json');

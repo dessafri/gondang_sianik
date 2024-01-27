@@ -2,45 +2,45 @@
 @section('content')
     <style>
         #modal1 {
-            width: 50%;
-            height: 15%;
+            width: 80%;
+            height: 50%;
         }
     </style>
     <?php    
-    $curl = curl_init();
+        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'http://lasmini.cloud/api/decrypt',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS =>'{
-        "data": {
-                "token":"'.$_GET['q'].'"
-            }
-        }',
-        CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json',
-            'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
-        ),
-        ));
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://lasmini.cloud/api/decrypt',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS =>'{
+            "data": {
+                    "token":"'.$_GET['q'].'"
+                }
+            }',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
+            ),
+            ));
 
-    $response = curl_exec($curl);
-    curl_close($curl);
+        $response = curl_exec($curl);
+        curl_close($curl);
 
-    $data = json_decode($response);
+        $data = json_decode($response);
 
-    if (isset($data->data->phone)) {
-        $phone = $data->data->phone;
-        $email = $data->data->id;
-    } else {
-        $phone = null; 
-        $email = null;
-    }
+        if (isset($data->data->phone)) {
+            $phone = $data->data->phone;
+            $email = $data->data->id;
+        } else {
+            $phone = null; 
+            $email = null;
+        }
     ?>
 <!-- BEGIN: Page Main-->
 <div id="loader-wrapper">
@@ -51,6 +51,7 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 <div id="main" class="noprint" style="padding: 15px 15px 0px;">
+
     <div class="wrapper">
         <section class="content-wrapper no-print">
             <div class="container no-print">
@@ -58,7 +59,28 @@
                     <div class="col s12">
                         <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
                             <span class="card-title" style="line-height:1;font-size:70px"> {{__('messages.issue_token.click one service to issue token')}}</span>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2"><h3>Sisa Limit Antrian</h3></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($limits as $limit)
+                                    <tr>
+                                        <td style="color: balck; font-weight: bold;">{{$limit->name}}</td>
+                                        <td style="color: red; font-weight: bold;">{{$limit->remaining_limit}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <br>
+                            <span style="font-weight: bold;">
+                                #Antrian Online hanya akan mengambil tanggal 1 hari kedepan<br>
+                                #Harap datang sesuai tanggal dan jam operasional Kantor Dispendukcapil - Kab. Nganjuk
+                            </span>
                             <div class="divider" style="margin:10px 0 10px 0;"></div>
+                            
                             <center>
                             @foreach($services as $service)
                             <span class="btn btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688; height: 100px; font-size: 50px; align:center; display: flex; justify-content: center; align-items: center;" onclick="queueDept({{$service}})">
@@ -84,13 +106,24 @@
                 <div id="inline-form">
                     <div class="card-content">
                         <div class="row">
-                            <div class="input-field col s10" id="date_tab">
-                                <input id="date" name="date" type="date" value="" data-error=".date">
-                                <label for="date">Pilih Tanggal</label>
-                                <div class="date">
+                            <div class="input-field col s6" id="nik_tab">
+                                <input id="nik" name="nik" type="number" value="" data-error=".nik">
+                                <label for="nik">Masukkan NIK</label>
+                                <div class="nik">
                                 </div>
                             </div>
-                            <input type="hidden" name="name" id="name" value="<?=$_GET['q']?>">
+                            <div class="input-field col s6" id="name_tab">
+                                <input id="name" name="name" type="text" value="" data-error=".name">
+                                <label for="name">Masukkan Nama</label>
+                                <div class="name"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6" id="date_tab">
+                                <input id="date" name="date" type="text" value="0" readonly data-error=".date">
+                                <label for="date">Tanggal</label>
+                                <div class="date"></div>
+                            </div>
                             <input type="hidden" name="email" id="email" value="<?=$email?>">
                             <input type="hidden" name="phone" id="phone" value="<?=$phone?>">
                         </div>
@@ -111,6 +144,13 @@
     $(document).ready(function() {
         $('body').addClass('loaded');
         $('.modal').modal();
+
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        // Mengonversi tanggal besok ke dalam format "YYYY-MM-DD 00:00:00"
+        var formattedTomorrow = tomorrow.toISOString().split('T')[0] + ' 00:00:00';
+        // Menetapkan nilai input tanggal dengan tanggal besok
+        $('#date').val(formattedTomorrow);
     })
     var service;
     
@@ -135,6 +175,7 @@
                         <h3 style="font-size: 40px;  font-weight: bold; margin-top:-30px; margin-bottom:15px; margin-left: 80px;">${response.queue.letter} - ${response.queue.number}</h3>
                         <h4 style="font-size: 24px; margin-top: -16px;margin-bottom: 27px; margin-left: 40px;">${response.queue.formated_date}</h4>
                         <h4 style="font-size: 15px; margin-top:-12px; margin-left: 80px;">Silahkan datang pada <br>tanggal yang tertera</h4>
+                        <h4 style="font-size: 24px; margin-top: -16px;margin-bottom: 27px; margin-left: 40px;">${response.queue.nik}</h4>
                     `;
 
                     // Membuat elemen baru untuk menampung konten HTML
@@ -167,6 +208,7 @@
                     
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
+                    alert('Silahkan ambil No. Antrian anda!');
                 } else if (response.status_code == 422 && response.errors) {
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
@@ -187,6 +229,16 @@
                         return service.date_required == "1";
                     },
                 },
+                nik: {
+                    required: function(element) {
+                        return service.nik_required == "1";
+                    },
+                },
+                name: {
+                    required: function(element) {
+                        return service.name_required == "1";
+                    },
+                },
             },
             errorElement: 'div',
             errorPlacement: function(error, element) {
@@ -201,17 +253,13 @@
                 $('#modal_button').attr('disabled', 'disabled');
                 $('body').removeClass('loaded');
 
-                // Mendapatkan nilai dari input datetime-local
-                let dateInput = document.getElementById('date');
-                let selectedDateTime = dateInput.value;
-                let formattedDate = new Date(selectedDateTime).toISOString().slice(0, 19).replace('T', ' ');
-
                 let data = {
                     service_id: service.id,
-                    date: formattedDate,
+                    date: $('#date').val(),
                     name: $('#name').val(),
                     email: $('#email').val(),
                     phone: $('#phone').val(),
+                    nik: $('#nik').val(),
                     with_details: true
                 }
                 

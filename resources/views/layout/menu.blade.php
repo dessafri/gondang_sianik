@@ -23,6 +23,10 @@
     <li class="bold"><a class="waves-effect waves-cyan @yield('service') " href="{{route('services.index')}}"><i class="material-icons">business_center</i><span class="menu-title" data-i18n="Kanban">{{__('messages.menu.services')}}</span></a>
     </li>
     @endcan
+    @can('view operational_time')
+    <li class="bold"><a class="waves-effect waves-cyan @yield('operational_time') " href="{{route('operational_time.index')}}"><i class="material-icons">access_time</i><span class="menu-title" data-i18n="Kanban">Jam Operasional</span></a>
+    </li>
+    @endcan
     @can('view reports')
     <li class="bold @yield('report')"><a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)"><i class="material-icons">content_paste</i><span class="menu-title" data-i18n="Pages">{{__('messages.menu.reports')}}</span></a>
       <div class="collapsible-body">

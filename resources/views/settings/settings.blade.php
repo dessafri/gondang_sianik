@@ -85,7 +85,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <?php /* <div class="row">
                                         <div class="input-field col s6">
                                             <input id="offline_queue_limit" name="offline_queue_limit" type="text" value="{{$settings->offline_queue_limit}}" data-error=".offline_queue_limit">
                                             <label for="password">Limit Offline</label>
@@ -105,6 +105,25 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <select id="online_queue_limit" name="online_queue_limit" data-error=".online_queue_limit">
+                                                <option value="" disabled selected>Pilih Waktu Maksimal Tanggal Antrian</option>
+                                                <option value="0" @if($settings->online_queue_limit == 0) selected @endif>H + 0</option>
+                                                <option value="1" @if($settings->online_queue_limit == 1) selected @endif>H + 1</option>
+                                                <option value="2" @if($settings->online_queue_limit == 2) selected @endif>H + 2</option>
+                                                <option value="3" @if($settings->online_queue_limit == 3) selected @endif>H + 3</option>
+                                                <option value="4" @if($settings->online_queue_limit == 4) selected @endif>H + 4</option>
+                                                <option value="5" @if($settings->online_queue_limit == 5) selected @endif>H + 5</option>
+                                            </select>
+                                            <label for="online_queue_limit">Waktu Maksimal Tanggal Antrian</label>
+                                            <div class="online_queue_limit">
+                                                @if ($errors->has('online_queue_limit'))
+                                                    <span class="text-danger errbk">{{ $errors->first('online_queue_limit') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div> */?>
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <select name="timezone" id="timezone" data-error=".timezone">
@@ -355,14 +374,6 @@
                 },
                 address: {
                     required: true
-                },
-                offline_queue_limit: {
-                    required: true,
-                    number: true
-                },
-                online_queue_limit: {
-                    required: true,
-                    number: true
                 },
                 timezone: {
                     required: true

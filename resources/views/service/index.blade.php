@@ -39,10 +39,11 @@
                                                     <th>{{__('messages.service_page.name')}}</th>
                                                     <th>{{__('messages.service_page.letter')}}</th>
                                                     <th>{{__('messages.service_page.starting number')}}</th>
-                                                    <th>{{__('messages.service_page.starting number')}}</th>
-                                                    <th>{{__('messages.service_page.starting number')}}</th>
                                                     <th>Limit Online</th>
                                                     <th>Limit Offline</th>
+                                                    <th>Status Antrian Offline</th>
+                                                    <th>Status Antrian Online</th>
+                                                    <th>{{__('messages.user_page.action')}}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -58,6 +59,14 @@
                                                         <div class="switch">
                                                             <label>
                                                                 <input type="checkbox" {{$service->status?'checked':''}} onchange="changeStatus({{$service->id}})">
+                                                                <span class="lever"></span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox" {{$service->status_online?'checked':''}} onchange="changeStatusOnline({{$service->id}})">
                                                                 <span class="lever"></span>
                                                             </label>
                                                         </div>
@@ -110,6 +119,20 @@
         $.ajax({
             type: "POST",
             url: "{{Route('service_change_status')}}",
+            data: data,
+            cache: false,
+            success: function(response) {
+                location.reload(true);
+            }
+        });
+    }
+    
+    function changeStatusOnline(id) {
+        $('body').removeClass('loaded');
+        var data = "id=" + id + '&_token={{csrf_token()}}';
+        $.ajax({
+            type: "POST",
+            url: "{{Route('service_change_status_online')}}",
             data: data,
             cache: false,
             success: function(response) {

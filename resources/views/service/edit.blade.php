@@ -131,6 +131,19 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="input-field col s3">
+                                            <select name="ask_nik" id="ask_nik" data-error=".ask_nik">
+                                                <option value="0" @if($service->ask_nik==0) selected @endif>No</option>
+                                                <option value="1" @if($service->ask_nik==1) selected @endif>Yes</option>
+                                            </select>
+                                            <label>Minta NIK untuk Token</label>
+                                            <div class="ask_nik">
+                                                @if ($errors->has('ask_nik'))
+                                                <span class="text-danger errbk">{{ $errors->first('ask_nik') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
                                         @if($settings->sms_enabled)
                                         <div class="input-field col s6">
                                             <select name="sms" id="sms" data-error=".sms" onchange="changeSMS()">

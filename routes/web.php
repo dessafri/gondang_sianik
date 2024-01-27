@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CounterController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\OperationalTimeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\ProfileController;
@@ -42,8 +43,13 @@ Route::middleware(['setLocale'])->group(function () {
 
         Route::group(['middleware' => ['permission:view services']], function () {
             Route::post('services-change-status', [ServiceController::class, 'changeStatus'])->name('service_change_status');
+            Route::post('services-change-status-online', [ServiceController::class, 'changeStatusOnline'])->name('service_change_status_online');
             Route::get('display/{service_id}', [ServiceController::class, 'display'])->name('get_display_by_service');
             Route::resource('services', ServiceController::class)->names('services');
+        });
+
+        Route::group(['middleware' => ['permission:view operational_time']], function () {
+            Route::resource('operational_time', OperationalTimeController::class)->names('operational_time');
         });
 
         Route::group(['middleware' => ['permission:call token']], function () {

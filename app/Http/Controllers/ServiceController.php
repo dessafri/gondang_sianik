@@ -83,6 +83,7 @@ class ServiceController extends Controller
             'phone_required' => 'nullable',
             'offline_limit' => 'nullable',
             'online_limit' => 'nullable',
+            'ask_nik' => 'required',
         ]);
         DB::beginTransaction();
         try {
@@ -156,6 +157,7 @@ class ServiceController extends Controller
             'phone_required' => 'nullable',
             'offline_limit' => 'nullable',
             'online_limit' => 'nullable',
+            'ask_nik' => 'required',
         ]);
         DB::beginTransaction();
         try {
@@ -199,6 +201,24 @@ class ServiceController extends Controller
         DB::beginTransaction();
         try {
             $service->status = !$service->status;
+            $service->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('error', 'Something Went Wrong');
+            return 'Something went wrong';
+        }
+        DB::commit();
+        $request->session()->flash('success', 'Succesfully updated the record');
+        return 'Success';
+    }
+
+    public function changeStatusOnline(Request $request)
+    {
+        $service  = Service::find($request->id);
+
+        DB::beginTransaction();
+        try {
+            $service->status_online = !$service->status_online;
             $service->save();
         } catch (\Exception $e) {
             DB::rollback();
