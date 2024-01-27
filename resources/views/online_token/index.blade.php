@@ -59,7 +59,7 @@
                     <div class="col s12">
                         <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
                             <span class="card-title" style="line-height:1;font-size:70px"> {{__('messages.issue_token.click one service to issue token')}}</span>
-                            <table class="table">
+                            <?php /*<table class="table">
                                 <thead>
                                 <tr>
                                     <th rowspan="2"><h3>Sisa Limit Antrian</h3></th>
@@ -73,7 +73,7 @@
                                     </tr>
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table> */?>
                             <br>
                             <span style="font-weight: bold;">
                                 #Antrian Online hanya akan mengambil tanggal 1 hari kedepan<br>
