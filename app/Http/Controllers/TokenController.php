@@ -34,7 +34,7 @@ class TokenController extends Controller
             'issue_token.index',
             ['services' => $this->services->getAllActiveServices(), 
             'settings' => Setting::first(),
-            // 'limits' => $this->services->getAllActiveServicesWithLimits(),
+            'limits' => $this->services->getAllActiveServicesWithLimits(),
             ]
         );
     }

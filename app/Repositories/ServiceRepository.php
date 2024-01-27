@@ -28,16 +28,16 @@ class ServiceRepository
     {
         $today = Carbon::today();
 
-        $services = Service::where('status', true)
-            ->leftJoin('queues', function ($join) use ($today) {
-                $join->on('services.id', '=', 'queues.service_id')
-                    ->whereDate('queues.created_at', '=', $today)
-                    ->where('queues.status_queue', '=', 'Offline');
-            })
-            ->groupBy('services.id')
-            ->get(['services.*', DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit')]);
-
-        return $services;
+        return DB::table('services')
+        ->select('services.id', 'services.name', DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit'))
+        ->leftJoin('queues', function ($join) use ($today) {
+            $join->on('services.id', '=', 'queues.service_id')
+                ->whereDate('queues.created_at', '=', $today)
+                ->where('queues.status_queue', '=', 'Offline');
+        })
+        ->where('services.status', 1)
+        ->groupBy('services.id', 'services.name', 'services.offline_limit')
+        ->get();
     }
 
     public function getAllActiveServicesWithLimitsOnline()

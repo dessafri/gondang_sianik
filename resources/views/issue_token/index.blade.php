@@ -38,7 +38,7 @@
                             </span>
                             @endforeach
                             </center>
-                            <?php /* <table class="table">
+                            <table class="table">
                                 <thead>
                                 <tr>
                                     <th rowspan="2"><h3>Sisa Limit Antrian</h3></th>
@@ -52,7 +52,7 @@
                                     </tr>
                                     @endforeach
                                 </tbody>
-                            </table> */?>
+                            </table>
                         </div>
                     </div>
                     <form action="{{route('create-token')}}" method="post" id="my-form-two" style="display: none;">
