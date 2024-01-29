@@ -3,7 +3,7 @@
     <style>
         #modal1 {
             width: 80%;
-            height: 50%;
+            height: 16%;
         }
     </style>
     <?php    
@@ -106,20 +106,22 @@
                 <div id="inline-form">
                     <div class="card-content">
                         <div class="row">
-                            <div class="input-field col s6" id="nik_tab">
+                            <div class="input-field col s12" id="nik_tab">
                                 <input id="nik" name="nik" type="number" value="" data-error=".nik">
                                 <label for="nik">Masukkan NIK</label>
                                 <div class="nik">
                                 </div>
                             </div>
-                            <div class="input-field col s6" id="name_tab">
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12" id="name_tab">
                                 <input id="name" name="name" type="text" value="" data-error=".name">
                                 <label for="name">Masukkan Nama</label>
                                 <div class="name"></div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s6" id="date_tab">
+                            <div class="input-field col s12" id="date_tab">
                                 <input id="date" name="date" type="text" value="0" readonly data-error=".date">
                                 <label for="date">Tanggal</label>
                                 <div class="date"></div>
@@ -209,6 +211,7 @@
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
                     alert('Silahkan ambil No. Antrian anda!');
+                    window.location.reload();
                 } else if (response.status_code == 422 && response.errors) {
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
