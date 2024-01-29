@@ -3,7 +3,7 @@
     <style>
         #modal1 {
             width: 80%;
-            height: 25%;
+            height: 50%;
         }
     </style>
     <?php    
