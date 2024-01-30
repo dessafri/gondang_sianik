@@ -162,42 +162,44 @@
                                 </div>
                                 <div class="row">
                                     <div class="col s12">
-                                        <table id="page-length-option" class="display dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th width="10px">#</th>
-                                                    <th>{{__('messages.reports.user')}}</th>
-                                                    <th>{{__('messages.reports.token number')}}</th>
-                                                    <th>{{__('messages.reports.service')}}</th>
-                                                    <th>{{__('messages.reports.counter')}}</th>
-                                                    <th>{{__('messages.reports.date')}}</th>
-                                                    <th>{{__('messages.reports.called at')}}</th>
-                                                    <th>{{__('messages.reports.served at')}}</th>
-                                                    <th>{{__('messages.reports.waiting time')}}</th>
-                                                    <th>{{__('messages.reports.served time')}}</th>
-                                                    <th>{{__('messages.reports.total time')}}</th>
-                                                    <th>{{__('messages.counter_page.status')}}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($reports as $key=> $report)
-                                                <tr>
-                                                    <td>{{$key+1}}</td>
-                                                    <td>{{$report->user_name ? $report->user_name : 'Nil'}}</td>
-                                                    <td>{{$report->token_letter}}-{{$report->token_number}}</td>
-                                                    <td>{{$report->service_name}}</td>
-                                                    <td>{{$report->counter_name ? $report->counter_name : 'Nil'}}</td>
-                                                    <td>{{$report->date ? \Carbon\Carbon::parse($report->date)->timezone($timezone)->format('d F Y h:i A') : 'Nil'}}</td>
-                                                    <td>{{$report->called_at ? \Carbon\Carbon::parse($report->called_at)->timezone($timezone)->format('h:i A') :'Nil'}}</td>
-                                                    <td>{{$report->served_at ? \Carbon\Carbon::parse($report->served_at)->timezone($timezone)->format('h:i A') : 'Nil'}}</td>
-                                                    <td>{{$report->waiting_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s', $report->waiting_time), true, true, 2) : 'Nil'}}</td>
-                                                    <td>{{$report->served_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s', $report->served_time), true, true, 2) : 'Nil'}}</td>
-                                                    <td>{{$report->total_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s',$report->total_time), true, true, 2): 'Nil'}}</td>
-                                                    <td>{{$report->status ? $report->status : ($report->counter_name ? 'Serving' : 'Waiting')}}</td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table id="page-length-option" class="display dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10px">#</th>
+                                                        <th>{{__('messages.reports.user')}}</th>
+                                                        <th>{{__('messages.reports.token number')}}</th>
+                                                        <th>{{__('messages.reports.service')}}</th>
+                                                        <th>{{__('messages.reports.counter')}}</th>
+                                                        <th>{{__('messages.reports.date')}}</th>
+                                                        <th>{{__('messages.reports.called at')}}</th>
+                                                        <th>{{__('messages.reports.served at')}}</th>
+                                                        <th>{{__('messages.reports.waiting time')}}</th>
+                                                        <th>{{__('messages.reports.served time')}}</th>
+                                                        <th>{{__('messages.reports.total time')}}</th>
+                                                        <th>{{__('messages.counter_page.status')}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($reports as $key=> $report)
+                                                    <tr>
+                                                        <td>{{$key+1}}</td>
+                                                        <td>{{$report->user_name ? $report->user_name : 'Nil'}}</td>
+                                                        <td>{{$report->token_letter}}-{{$report->token_number}}</td>
+                                                        <td>{{$report->service_name}}</td>
+                                                        <td>{{$report->counter_name ? $report->counter_name : 'Nil'}}</td>
+                                                        <td>{{$report->date ? \Carbon\Carbon::parse($report->date)->timezone($timezone)->format('d F Y h:i A') : 'Nil'}}</td>
+                                                        <td>{{$report->called_at ? \Carbon\Carbon::parse($report->called_at)->timezone($timezone)->format('h:i A') :'Nil'}}</td>
+                                                        <td>{{$report->served_at ? \Carbon\Carbon::parse($report->served_at)->timezone($timezone)->format('h:i A') : 'Nil'}}</td>
+                                                        <td>{{$report->waiting_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s', $report->waiting_time), true, true, 2) : 'Nil'}}</td>
+                                                        <td>{{$report->served_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s', $report->served_time), true, true, 2) : 'Nil'}}</td>
+                                                        <td>{{$report->total_time ? \Carbon\Carbon::today()->diffForHumans(\Carbon\Carbon::createFromFormat('H:i:s',$report->total_time), true, true, 2): 'Nil'}}</td>
+                                                        <td>{{$report->status ? $report->status : ($report->counter_name ? 'Serving' : 'Waiting')}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

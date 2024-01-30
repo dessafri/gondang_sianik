@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Repositories\ReportRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Exports\QueueExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -30,6 +32,14 @@ class ReportController extends Controller
         }
         return view('reports.user_report', ['users' => User::get(), 'reports' => $report, 'selected_user_id' => $selected_user_id, 'selected_date' => $selected_date]);
     }
+
+    public function export()
+{
+    $dateToday = Carbon::now()->format('d-m-Y H:i:s'); 
+    $filename = "Report_Antrian_{$dateToday}.xlsx";
+
+    return Excel::download(new QueueExport, $filename);
+}
 
     public function showQueueListReport(Request $request)
     {

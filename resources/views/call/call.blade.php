@@ -21,11 +21,16 @@
                                         <div class="col  m12 s12" style="min-height: 500px;">
                                             <div class="row" style="min-width: 800px;">
                                                 <div class="col s12 center" v-if="token">
-                                                    <span style="font-size: 115px;" class="truncate">
+                                                    <span style="font-size: 100px;" class="truncate">
                                                         <a class="waves-effect waves-light  modal-trigger" href="#modal5" dismissible="false" style="color: #000;">
                                                             <input type="hidden" name="transfer_queue" id="transfer_queue" value="1989">
                                                             <input type="hidden" name="last_call" id="last_call" value="queue" v-cloak>
                                                             @{{token.letter?token.letter : token.token_letter }}-@{{token.number? token.number : token.token_number}}
+                                                            <span style="font-size: 15px; text-align:left;" class="truncate">
+                                                                NIK : @{{token.queue.nik}}<br>
+                                                                Nama : @{{token.queue.name}}<br>
+                                                                Telepon : @{{token.queue.phone}}<br>
+                                                            </span>
                                                         </a>
                                                     </span>
                                                 </div>

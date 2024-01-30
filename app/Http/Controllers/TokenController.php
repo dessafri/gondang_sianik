@@ -32,7 +32,7 @@ class TokenController extends Controller
     {
         return view(
             'issue_token.index',
-            ['services' => $this->services->getAllActiveServices(), 
+            ['services' => $this->services->getAllActiveServicesOffline(), 
             'settings' => Setting::first(),
             'limits' => $this->services->getAllActiveServicesWithLimits(),
             ]

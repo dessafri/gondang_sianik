@@ -53,6 +53,7 @@
                             </div>
                         </div>
                     </form>
+                    <a href="{{ url('reports/export') }}" class="btn btn-success">{{ __('Export to Excel') }}</a>
                 </div>
             </div>
         </div>
@@ -67,32 +68,40 @@
                             <div class="card-content">
                                 <div class="row">
                                     <div class="col s12">
-                                        <table id="page-length-option" class="display dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th width="10px">#</th>
-                                                    <th>{{__('messages.reports.service')}}</th>
-                                                    <th>{{__('messages.reports.date')}}</th>
-                                                    <th>{{__('messages.reports.token number')}}</th>
-                                                    <th>{{__('messages.reports.called')}}</th>
-                                                    <th>{{__('messages.reports.user')}}</th>
-                                                    <th>{{__('messages.reports.counter')}}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($reports as $key=>$report)
-                                                <tr>
-                                                    <td>{{ $key+1 }}</td>
-                                                    <td>{{$report->service_name}}</td>
-                                                    <td>{{\Carbon\Carbon::parse($report->date)->timezone($timezone)->toDateString()}}</td>
-                                                    <td>{{$report->token_letter}}-{{$report->token_number}}</td>
-                                                    <td>{{$report->called ==1 ? 'Yes' : 'No'}}</td>
-                                                    <td>{{$report->user_name ? $report->user_name : 'Nil' }}</td>
-                                                    <td>{{$report->counter_name ? $report->counter_name : 'Nil' }}</td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table id="page-length-option" class="display dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10px">#</th>
+                                                        <th>{{__('messages.reports.service')}}</th>
+                                                        <th>{{__('messages.reports.date')}}</th>
+                                                        <th>{{__('messages.reports.token number')}}</th>
+                                                        <th>Nama</th>
+                                                        <th>NIK</th>
+                                                        <th>Status</th>
+                                                        <th>{{__('messages.reports.called')}}</th>
+                                                        <th>{{__('messages.reports.user')}}</th>
+                                                        <th>{{__('messages.reports.counter')}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($reports as $key=>$report)
+                                                    <tr>
+                                                        <td>{{ $key+1 }}</td>
+                                                        <td>{{$report->service_name}}</td>
+                                                        <td>{{\Carbon\Carbon::parse($report->date)->timezone($timezone)->toDateString()}}</td>
+                                                        <td>{{$report->token_letter}}-{{$report->token_number}}</td>
+                                                        <td>{{$report->name}}</td>
+                                                        <td>{{$report->nik}}</td>
+                                                        <td>{{$report->status_queue}}</td>
+                                                        <td>{{$report->called ==1 ? 'Yes' : 'No'}}</td>
+                                                        <td>{{$report->user_name ? $report->user_name : 'Nil' }}</td>
+                                                        <td>{{$report->counter_name ? $report->counter_name : 'Nil' }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

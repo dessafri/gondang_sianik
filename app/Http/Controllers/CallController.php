@@ -30,11 +30,11 @@ class CallController extends Controller
 
     public function showCallPage(Request $request)
     {
-        return view('call.call', 
-        ['counters' => $this->counterRepository->getAllActiveCounters(), 
-        'services' => $this->serviceRepository->getAllActiveServices(), 
-        'date' => Carbon::now()->toDateString(), 
-        'show_menu' => true, 
+        return view('call.call',
+        ['counters' => $this->counterRepository->getAllActiveCounters(),
+        'services' => $this->serviceRepository->getAllActiveServices(),
+        'date' => Carbon::now()->toDateString(),
+        'show_menu' => true,
         'settings' => Setting::first()]);
     }
 

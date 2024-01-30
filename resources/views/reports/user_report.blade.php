@@ -74,28 +74,30 @@
                                 <div class="card-content">
                                     <div class="row">
                                         <div class="col s12">
-                                            <table id="page-length-option" class="display dataTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="10px">#</th>
-                                                        <th>{{__('messages.reports.service')}}</th>
-                                                        <th>{{__('messages.reports.token number')}}</th>
-                                                        <th>{{__('messages.reports.counter')}}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($reports as $key=> $report)
-                                                    <tr>
-                                                        <td>{{ $key+1}}</td>
-                                                        <td>{{$report->service_name}}</td>
-                                                        <td>{{$report->token_letter}}-{{$report->token_number}}</td>
-                                                        <td>{{$report->counter_name}}</td>
+                                            <div class="table-responsive">
+                                                <table id="page-length-option" class="display dataTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="10px">#</th>
+                                                            <th>{{__('messages.reports.service')}}</th>
+                                                            <th>{{__('messages.reports.token number')}}</th>
+                                                            <th>{{__('messages.reports.counter')}}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($reports as $key=> $report)
+                                                        <tr>
+                                                            <td>{{ $key+1}}</td>
+                                                            <td>{{$report->service_name}}</td>
+                                                            <td>{{$report->token_letter}}-{{$report->token_number}}</td>
+                                                            <td>{{$report->counter_name}}</td>
 
-                                                    </tr>
-                                                    @endforeach
+                                                        </tr>
+                                                        @endforeach
 
-                                                </tbody>
-                                            </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

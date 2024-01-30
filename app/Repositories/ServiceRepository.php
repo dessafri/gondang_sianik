@@ -16,6 +16,13 @@ class ServiceRepository
 
     public function getAllActiveServices()
     {
+        return Service::where('status', true)
+            ->orWhere('status_online', true)
+            ->get();
+    }
+
+    public function getAllActiveServicesOffline()
+    {
         return Service::where('status', true)->get();
     }
 
