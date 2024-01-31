@@ -232,9 +232,10 @@
                             <p style="font-size: 15px; font-weight: bold; margin-top:-15px;">` + response.settings.name + ` ` + response.settings.location + `
                             </p>
                             <p style="font-size: 20px; margin-top:-15px;">` + response.queue.service.name + `</p>
-                            <h3 style="font-size: 30px; margin-bottom: 5px; font-weight: bold; margin-top:-12px; margin-bottom:16px;">` + response.queue.letter + ` - ` + response.queue.number + `</h3>
+                            <h3 style="font-size: 35px; margin-bottom: 5px; font-weight: bold; margin-top:-12px; margin-bottom:16px;">` + response.queue.letter + ` - ` + response.queue.number + `</h3>
                             <div style="margin-top:-20px; margin-bottom:15px;" align="center">
                             </div>
+                            <br>
                             <p style="font-size: 20px; margin-top:-12px;">Antrian Menunggu : ` + response.customer_waiting + `  
                             <br>
                             </p>
