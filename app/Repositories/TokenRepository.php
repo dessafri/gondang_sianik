@@ -119,15 +119,8 @@ class TokenRepository
 
     public function getCalledTokens($service, $counter)
     {
-        $tokens =  Call::where('created_at', '>=', Carbon::now()->startOfDay())
-        ->where('created_at', '<=', Carbon::now())
-        ->where('service_id', $service->id)
-        ->where('counter_id', $counter->id)
-        ->orderByDesc('created_at')
-        ->join('queues', 'calls.queue_id', '=', 'queues.id')
-        ->select('calls.*', 'queues.nik')
-        ->get()
-        ->toArray();
+        $tokens =  Call::where('created_at', '>=', Carbon::now()->startOfDay())->where('created_at', '<=', Carbon::now())
+            ->where('service_id', $service->id)->where('counter_id', $counter->id)->orderByDesc('created_at')->get()->toArray();
 
         return $tokens;
     }

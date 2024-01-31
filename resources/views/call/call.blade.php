@@ -27,9 +27,15 @@
                                                             <input type="hidden" name="last_call" id="last_call" value="queue" v-cloak>
                                                             @{{token.letter?token.letter : token.token_letter }}-@{{token.number? token.number : token.token_number}}
                                                             <span style="font-size: 15px; text-align:left;" class="truncate">
-                                                                NIK : @{{token.queue.nik}}<br>
-                                                                Nama : @{{token.queue.name}}<br>
-                                                                Telepon : @{{token.queue.phone}}<br>
+                                                                @if(isset($token['queue']['nik']))
+                                                                    NIK : {{ $token['queue']['nik'] }}
+                                                                @endif
+                                                                @if(isset($token['queue']['name']))
+                                                                    Nama : {{ $token['queue']['name'] }}<br>
+                                                                @endif
+                                                                @if(isset($token['queue']['phone']))
+                                                                    Telepon : {{ $token['queue']['phone'] }}<br>
+                                                                @endif
                                                             </span>
                                                         </a>
                                                     </span>
