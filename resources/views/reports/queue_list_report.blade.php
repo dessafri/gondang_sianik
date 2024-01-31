@@ -28,7 +28,7 @@
                     <form action="{{route('queue_list_report')}}" id="queue_list_report_form" autocomplete="off">
                         <div class="row">
                             <div class="input-field col m5 s4">
-                                <input id="starting_date" name="starting_date" type="text" class="datepicker" data-error=".starting_date" value="0{{$selected_starting_date}}">
+                                <input id="starting_date" name="starting_date" type="text" class="datepicker" data-error=".starting_date" value="{{$selected_starting_date}}">
                                 <label for="starting_date">{{__('messages.reports.starting date')}}</label>
                                 <div class="starting_date">
                                     @if ($errors->has('starting_date'))
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                             <div class="input-field col m5 s4">
-                                <input id="ending_date" name="ending_date" type="text" class="datepicker" value="0{{$selected_ending_date}}" data-error=".ending_date">
+                                <input id="ending_date" name="ending_date" type="text" class="datepicker" value="{{$selected_ending_date}}" data-error=".ending_date">
                                 <label for="ending_date">{{__('messages.reports.ending date')}}</label>
                                 <div class="ending_date">
                                     @if ($errors->has('ending_date'))
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     </form>
-                    <a href="{{ url('reports/export') }}" class="btn btn-success">{{ __('Export to Excel') }}</a>
+                    <a href="{{ url('reports/export?starting_date=' . $selected_starting_date . '&ending_date=' . $selected_ending_date) }}" class="btn btn-success" id="exportBtn">{{ __('Export to Excel') }}</a>
                 </div>
             </div>
         </div>
@@ -124,6 +124,14 @@
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
+
+        // Jika kedua tanggal sudah diisi, tampilkan tombol export
+        if (startingDate && endingDate) {
+            $('#exportBtn').show();
+        } else {
+            // Jika salah satu atau kedua tanggal kosong, sembunyikan tombol export
+            $('#exportBtn').hide();
+        }
 
         // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
         var today = new Date();

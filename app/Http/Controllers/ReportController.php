@@ -33,13 +33,16 @@ class ReportController extends Controller
         return view('reports.user_report', ['users' => User::get(), 'reports' => $report, 'selected_user_id' => $selected_user_id, 'selected_date' => $selected_date]);
     }
 
-    public function export()
-{
-    $dateToday = Carbon::now()->format('d-m-Y H:i:s'); 
-    $filename = "Report_Antrian_{$dateToday}.xlsx";
+    public function export(Request $request)
+    {
+        $startingDate = $request->input('starting_date');
+        $endingDate = $request->input('ending_date');
 
-    return Excel::download(new QueueExport, $filename);
-}
+        $dateToday = Carbon::now()->format('d-m-Y H:i:s'); 
+        $filename = "Report_Antrian_{$dateToday}.xlsx";
+
+        return Excel::download(new QueueExport($startingDate, $endingDate), $filename);
+    }
 
     public function showQueueListReport(Request $request)
     {

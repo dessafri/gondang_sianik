@@ -12,9 +12,16 @@ class QueueExport implements FromCollection, WithHeadings, WithMapping
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection($startingDate = null, $endingDate = null)
     {
-        return Queue::all(['letter', 'number', 'name', 'phone', 'nik', 'created_at', 'status_queue']);
+        $query = Queue::select(['letter', 'number', 'name', 'phone', 'nik', 'created_at', 'status_queue']);
+
+        // Tambahkan kondisi berdasarkan starting_date dan ending_date jika disertakan
+        if ($startingDate && $endingDate) {
+            $query->whereBetween('created_at', [$startingDate, $endingDate]);
+        }
+
+        return $query->get();
     }
 
     public function headings(): array
