@@ -229,16 +229,15 @@
                     $('#name').val(null);
                     $('#nik').val(null);
                     let html = `
-                            <p style="font-size: 25px; font-weight: bold; margin-top:-15px;">` + response.settings.name + ` ` + response.settings.location + `
+                            <p style="font-size: 15px; font-weight: bold; margin-top:-15px;">` + response.settings.name + ` ` + response.settings.location + `
                             </p>
                             <p style="font-size: 20px; margin-top:-15px;">` + response.queue.service.name + `</p>
                             <h3 style="font-size: 30px; margin-bottom: 5px; font-weight: bold; margin-top:-12px; margin-bottom:16px;">` + response.queue.letter + ` - ` + response.queue.number + `</h3>
                             <p style="font-size: 22px; margin-top: -16px;margin-bottom: 27px;">` + response.queue.formated_date + `</p>
                             <div style="margin-top:-20px; margin-bottom:15px;" align="center">
                             </div>
-                            <p style="font-size: 20px; margin-top:-12px;">{{__('messages.issue_token.please wait for your turn')}}</p>
-                            <p style="font-size: 20px; margin-top:-12px;">Pelanggan Menunggu : ` + response.customer_waiting + `  
-                            <p style="font-size: 20px; margin-top:-12px;">No reff : ` + response.queue.reference_no + ` 
+                            <p style="font-size: 20px; margin-top:-12px;">Antrian Menunggu : ` + response.customer_waiting + `  
+                            <br>
                             </p>
                             ${response.queue.nik ? `<p style="font-size: 20px; margin-top:-12px;">NIK : ` + response.queue.nik + ` </p>` : ''}
                             <p style="text-align:left !important;font-size:18px;"></p>
