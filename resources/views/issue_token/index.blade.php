@@ -229,6 +229,7 @@
                     $('#name').val(null);
                     $('#nik').val(null);
                     let html = `
+                        <div style="text-align: center;">
                             <p style="font-size: 15px; font-weight: bold; margin-left:-15px; margin-top:-20px;">` + response.settings.name + ` ` + response.settings.location + `
                             </p>
                             <p style="font-size: 20px; margin-top:-15px;">` + response.queue.service.name + `</p>
@@ -244,7 +245,8 @@
                             <p style="font-size: 25px; margin-top: -16px;margin-bottom: 27px;"> </p>
                             ${response.queue.nik ? `<p style="font-size: 20px; margin-top:-12px;">NIK : ` + response.queue.nik + ` </p>` : ''}
                             <p style="text-align:left !important;font-size:18px;"></p>
-                            <p style="text-align:right !important; margin-top:-23px;font-size:18px;"></p>`;
+                            <p style="text-align:right !important; margin-top:-23px;font-size:18px;"></p>
+                        </div>`;
                     $('#printarea').html(html);
                     $('body').addClass('loaded');
                         window.print();
