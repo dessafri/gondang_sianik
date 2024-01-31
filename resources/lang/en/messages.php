@@ -203,18 +203,18 @@ return [
         'something went wrong' => 'something went wrong',
     ],
     'issue_token'=>[
-        'click one service to issue token'=>'Click one service to Issue Token',
-        'customer waiting'=>'Customer Waiting',
-        'please wait for your turn'=>'Please wait for your turn'
+        'click one service to issue token'=>'Klik satu layanan untuk Mengeluarkan No. Antrian',
+        'customer waiting'=>'Pelanggan Menunggu',
+        'please wait for your turn'=>'Silakan tunggu giliran Anda'
     ],
     'display'=>[
-        'token number'=>'Token Number',
-        'please proceed to'=>'Please proceed to',
-        'served'=>'SERVED',
-        'noshow'=>'NO SHOW',
-        'serving'=>'SERVING',
-        'nil'=>'NIL',
-        'display'=>'Display',
+        'token number'=>'Nomor Antrian',
+        'please proceed to'=>'Silakan lanjutkan ke',
+        'served'=>'MELAYANI',
+        'noshow'=>'TIDAK HADIR',
+        'serving'=>'MEMANGGIL',
+        'nil'=>'NOL',
+        'display'=>'Menampilkan',
     ],
     'profile'=>[
         'change password'=> 'Change Password',

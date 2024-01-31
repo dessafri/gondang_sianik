@@ -36,7 +36,7 @@
                                         </div>
                                         <div class="input-field col s6">
                                             <label for="email">{{__('messages.user_page.email')}}</label>
-                                            <input id="email" name="email" type="text" value="{{old('email')}}" data-error=".email">
+                                            <input id="email" name="text" type="text" value="{{old('email')}}" data-error=".email">
                                             <div class="email">
                                                 @if ($errors->has('email'))
                                                 <span class="text-danger errbk">{{ $errors->first('email') }}</span>
@@ -111,7 +111,6 @@
                 },
                 email: {
                     required: true,
-                    email: true,
                 },
                 password: {
                     required: true,

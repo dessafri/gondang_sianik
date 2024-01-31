@@ -113,8 +113,7 @@
             $('#login_form').validate({
                 rules: {
                     email: {
-                        required: true,
-                        email: true,
+                        required: true
                     },
                     password: {
                         required: true,
@@ -122,8 +121,7 @@
                 },
                 messages: {
                     email: {
-                        required: "Please enter the email",
-                        email: "enter your correct email address"
+                        required: "Please enter the email"
                     },
                     password: {
                         required: "Please enter the password",

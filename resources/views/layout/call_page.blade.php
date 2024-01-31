@@ -88,7 +88,7 @@
             <li class="dropdown-item" onclick="changeLanguage(5)" ontouchstart="changeLanguage(5)"><a class="grey-text text-darken-1" href="#!" data-language="sa"><i class="flag-icon flag-icon-es"></i> Spanish</a></li>
             <li class="dropdown-item" onclick="changeLanguage(6)" ontouchstart="changeLanguage(6)"><a class="grey-text text-darken-1" href="#!" data-language="sa"><i class="flag-icon flag-icon-pt"></i> Portuguese</a></li>
             <li class="dropdown-item" onclick="changeLanguage(7)" ontouchstart="changeLanguage(7)"><a class="grey-text text-darken-1" href="#!" data-language="sa"><i class="flag-icon flag-icon-it"></i> Italian</a></li>
-            <li class="dropdown-item" onclick="changeLanguage(8)" ontouchstart="changeLanguage(8)"><a class="grey-text text-darken-1" href="#!" data-language="sa"><i class="flag-icon flag-icon-id"></i> Indonesian</a></li>
+            <li class="dropdown-item" onclick="changeLanguage(8)" ontouchstart="changeLanguage(8)"><a class="grey-text text-darken-1" href="#!" data-language="id"><i class="flag-icon flag-icon-id"></i> Indonesian</a></li>
           </ul>
 
         </div>
@@ -175,7 +175,7 @@
 
   <!-- </div> -->
   <!-- BEGIN: Footer-->
-  @if((Route::current()->getName() == 'issue_token' || Route::current()->getName() == 'display') && \App::currentLocale() == 'sa')
+  @if((Route::current()->getName() == 'issue_token' || Route::current()->getName() == 'display') && \App::currentLocale() == 'id')
   <footer class="page-footer footer footer-static navbar-border navbar-shadow noprint" style="padding-right: 10px">
     <div class="footer-copyright">
     <div class="container">
@@ -184,7 +184,7 @@
     </div>
     </div>
   </footer>
-  @elseif((Route::current()->getName() == 'issue_token' || Route::current()->getName() == 'display') && \App::currentLocale() != 'sa')
+  @elseif((Route::current()->getName() == 'issue_token' || Route::current()->getName() == 'display') && \App::currentLocale() != 'id')
   <footer class="page-footer footer footer-static navbar-border navbar-shadow noprint" style="padding-left: 10px">
     <div class="footer-copyright">
     <div class="container">
