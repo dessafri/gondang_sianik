@@ -236,12 +236,12 @@
                             <div style="margin-top:-20px; margin-bottom:15px;" align="center">
                             </div>
                             <br>
-                            <p style="font-size: 20px; margin-top:-12px;">Antrian Menunggu : ` + response.customer_waiting + `  
+                            <p style="font-size: 15px; margin-top:-12px;">Antrian Menunggu : ` + response.customer_waiting + `  
                             <br>
                             </p>
                             <p style="font-size: 18px; margin-top: -16px;margin-bottom: 27px;">` + response.queue.formated_date + `</p>
                             <br>
-                            <p style="font-size: 18px; margin-top: -16px;margin-bottom: 27px;"> </p>
+                            <p style="font-size: 25px; margin-top: -16px;margin-bottom: 27px;"> </p>
                             ${response.queue.nik ? `<p style="font-size: 20px; margin-top:-12px;">NIK : ` + response.queue.nik + ` </p>` : ''}
                             <p style="text-align:left !important;font-size:18px;"></p>
                             <p style="text-align:right !important; margin-top:-23px;font-size:18px;"></p>`;
