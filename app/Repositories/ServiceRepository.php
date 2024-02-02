@@ -36,14 +36,75 @@ class ServiceRepository
         $today = Carbon::today();
 
         return DB::table('services')
-        ->select('services.*', DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit'))
+        ->select(
+            'services.id',
+            'services.name',
+            'services.letter',
+            'services.start_number',
+            'services.status',
+            'services.sms_enabled',
+            'services.optin_message_enabled',
+            'services.call_message_enabled',
+            'services.noshow_message_enabled',
+            'services.completed_message_enabled',
+            'services.status_message_enabled',
+            'services.optin_message_format',
+            'services.call_message_format',
+            'services.noshow_message_format',
+            'services.completed_message_format',
+            'services.status_message_format',
+            'services.status_message_positions',
+            'services.ask_name',
+            'services.name_required',
+            'services.ask_email',
+            'services.email_required',
+            'services.ask_phone',
+            'services.phone_required',
+            'services.created_at',
+            'services.updated_at',
+            'services.offline_limit',
+            'services.online_limit',
+            'services.status_online',
+            'services.ask_nik',
+            DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit')
+        )
         ->leftJoin('queues', function ($join) use ($today) {
             $join->on('services.id', '=', 'queues.service_id')
                 ->whereDate('queues.created_at', '=', $today)
                 ->where('queues.status_queue', '=', 'Offline');
         })
         ->where('services.status', 1)
-        ->groupBy('services.id', 'services.name', 'services.offline_limit')
+        ->groupBy(
+            'services.id',
+            'services.name',
+            'services.letter',
+            'services.start_number',
+            'services.status',
+            'services.sms_enabled',
+            'services.optin_message_enabled',
+            'services.call_message_enabled',
+            'services.noshow_message_enabled',
+            'services.completed_message_enabled',
+            'services.status_message_enabled',
+            'services.optin_message_format',
+            'services.call_message_format',
+            'services.noshow_message_format',
+            'services.completed_message_format',
+            'services.status_message_format',
+            'services.status_message_positions',
+            'services.ask_name',
+            'services.name_required',
+            'services.ask_email',
+            'services.email_required',
+            'services.ask_phone',
+            'services.phone_required',
+            'services.created_at',
+            'services.updated_at',
+            'services.offline_limit',
+            'services.online_limit',
+            'services.status_online',
+            'services.ask_nik'
+        )
         ->get();
     }
 
@@ -52,14 +113,75 @@ class ServiceRepository
         $tomorrow = Carbon::tomorrow();
     
         return DB::table('services')
-        ->select('services.*', DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit'))
+        ->select(
+            'services.id',
+            'services.name',
+            'services.letter',
+            'services.start_number',
+            'services.status',
+            'services.sms_enabled',
+            'services.optin_message_enabled',
+            'services.call_message_enabled',
+            'services.noshow_message_enabled',
+            'services.completed_message_enabled',
+            'services.status_message_enabled',
+            'services.optin_message_format',
+            'services.call_message_format',
+            'services.noshow_message_format',
+            'services.completed_message_format',
+            'services.status_message_format',
+            'services.status_message_positions',
+            'services.ask_name',
+            'services.name_required',
+            'services.ask_email',
+            'services.email_required',
+            'services.ask_phone',
+            'services.phone_required',
+            'services.created_at',
+            'services.updated_at',
+            'services.offline_limit',
+            'services.online_limit',
+            'services.status_online',
+            'services.ask_nik',
+            DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit')
+        )
         ->leftJoin('queues', function ($join) use ($tomorrow) {
             $join->on('services.id', '=', 'queues.service_id')
                 ->whereDate('queues.created_at', '=', $tomorrow)
                 ->where('queues.status_queue', '=', 'Online');
         })
         ->where('services.status_online', 1)
-        ->groupBy('services.id', 'services.name', 'services.online_limit')
+        ->groupBy(
+            'services.id',
+            'services.name',
+            'services.letter',
+            'services.start_number',
+            'services.status',
+            'services.sms_enabled',
+            'services.optin_message_enabled',
+            'services.call_message_enabled',
+            'services.noshow_message_enabled',
+            'services.completed_message_enabled',
+            'services.status_message_enabled',
+            'services.optin_message_format',
+            'services.call_message_format',
+            'services.noshow_message_format',
+            'services.completed_message_format',
+            'services.status_message_format',
+            'services.status_message_positions',
+            'services.ask_name',
+            'services.name_required',
+            'services.ask_email',
+            'services.email_required',
+            'services.ask_phone',
+            'services.phone_required',
+            'services.created_at',
+            'services.updated_at',
+            'services.offline_limit',
+            'services.online_limit',
+            'services.status_online',
+            'services.ask_nik'
+        )
         ->get();
     }
     
