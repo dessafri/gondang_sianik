@@ -33,26 +33,12 @@
                             <div class="divider" style="margin:10px 0 10px 0;"></div>
                             <center>
                             @foreach($services as $service)
-                            <span class="btn btn-large btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688" onclick="queueDept({{$service}})">
+                            <span class="btn btn-large btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688" onclick="queueDept({{ json_encode($service) }})">
                                 {{$service->name}}
+                                <span class="btn btn-danger btn-xs" readonly style="background: #a31035">{{$service->remaining_limit}}</span>
                             </span>
                             @endforeach
                             </center>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2"><h3>Sisa Limit Antrian</h3></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($limits as $limit)
-                                    <tr>
-                                        <td style="color: balck; font-weight: bold;">{{$limit->name}}</td>
-                                        <td style="color: red; font-weight: bold;">{{$limit->remaining_limit}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                     <form action="{{route('create-token')}}" method="post" id="my-form-two" style="display: none;">
@@ -147,6 +133,7 @@
     var service;
 
     function queueDept(value) {
+        console.log(value);
         if (value.ask_email == 1 || value.ask_name == 1 || value.ask_phone == 1 || value.ask_nik == 1) {
             if (value.ask_email == 1) $('#email_tab').show();
             else $('#email_tab').hide();
@@ -303,7 +290,7 @@
                     $('#nik').val(null);
                     $('body').addClass('loaded');
                     M.toast({
-                        html: 'something went wrong',
+                        html: response.errors.limit[0],
                         classes: "toast-error"
                     });
                 }
@@ -312,7 +299,7 @@
                 $('body').addClass('loaded');
                 $('#modal1').modal('close');
                 M.toast({
-                    html: 'something went wrong',
+                    html: response.errors.limit[0],
                     classes: "toast-error"
                 });
             }

@@ -372,7 +372,7 @@
                 },
                 letter: {
                     required: true,
-                    maxlength: 2
+                    maxlength: 4
                 },
                 start_number: {
                     required: true,

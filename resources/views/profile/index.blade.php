@@ -129,7 +129,6 @@
                 },
                 email: {
                     required: true,
-                    email: true
                 },
             },
             errorElement: 'div',

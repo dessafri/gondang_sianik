@@ -59,7 +59,7 @@
                     <div class="col s12">
                         <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
                             <span class="card-title" style="line-height:1;font-size:70px"> {{__('messages.issue_token.click one service to issue token')}}</span>
-                            <table class="table">
+                            <?php /* <table class="table">
                                 <thead>
                                 <tr>
                                     <th rowspan="2"><h3>Sisa Limit Antrian</h3></th>
@@ -73,7 +73,7 @@
                                     </tr>
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table> */ ?>
                             <br>
                             <span style="font-weight: bold;">
                                 #Antrian Online hanya akan mengambil tanggal 1 hari kedepan<br>
@@ -83,8 +83,9 @@
                             
                             <center>
                             @foreach($services as $service)
-                            <span class="btn btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688; height: 100px; font-size: 50px; align:center; display: flex; justify-content: center; align-items: center;" onclick="queueDept({{$service}})">
+                            <span class="btn btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688; height: 100px; font-size: 50px; align:center; display: flex; justify-content: center; align-items: center;" onclick="queueDept({{ json_encode($service) }})">
                                 {{$service->name}}
+                                <span class="btn btn-danger btn-xs" readonly style="background: #a31035">{{$service->remaining_limit}}</span>
                             </span>
                             @endforeach
                             </center>
@@ -206,12 +207,16 @@
 
                         // Menghapus elemen temporer setelah digunakan
                         document.body.removeChild(tempElement);
+
+                        window.location.reload();
                     });
                     
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
-                    alert('Silahkan ambil No. Antrian anda!');
-                    window.location.reload();
+                    M.toast({
+                        html: "Silahkan ambil No. Antrian anda!",
+                        classes: "toast-error"
+                    });
                 } else if (response.status_code == 422 && response.errors) {
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');

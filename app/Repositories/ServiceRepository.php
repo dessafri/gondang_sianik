@@ -36,7 +36,7 @@ class ServiceRepository
         $today = Carbon::today();
 
         return DB::table('services')
-        ->select('services.id', 'services.name', DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit'))
+        ->select('services.*', DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit'))
         ->leftJoin('queues', function ($join) use ($today) {
             $join->on('services.id', '=', 'queues.service_id')
                 ->whereDate('queues.created_at', '=', $today)
@@ -52,7 +52,7 @@ class ServiceRepository
         $tomorrow = Carbon::tomorrow();
     
         return DB::table('services')
-        ->select('services.id', 'services.name', DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit'))
+        ->select('services.*', DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit'))
         ->leftJoin('queues', function ($join) use ($tomorrow) {
             $join->on('services.id', '=', 'queues.service_id')
                 ->whereDate('queues.created_at', '=', $tomorrow)

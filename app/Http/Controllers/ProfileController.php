@@ -27,7 +27,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $validated = $request->validate([
             'name' => 'required|min:2',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|unique:users,email,' . $user->id,
             'image' => 'mimes:jpg,jpeg,png,gif|max:2048'
         ]);
         DB::beginTransaction();
