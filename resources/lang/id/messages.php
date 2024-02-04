@@ -20,7 +20,7 @@ return [
     ],
     'menu' => [
         'dashboard' => 'Dasbor',
-        'counters' => 'Penghitung',
+        'counters' => 'Loket',
         'services' => 'Jasa',
         'users' => 'Pengguna',
         'call' => 'Panggilan',
@@ -34,13 +34,13 @@ return [
         'display url' => 'URL tayangan',
     ],
     'counter_page' => [
-        'counters' => 'Penghitung',
+        'counters' => 'Loket',
         'name' => 'Nama',
         'status' => 'Status',
         'action' => 'Tindakan',
-        'add counter' => 'Tambahkan Penghitung',
-        'counter name' => 'Nama Penghitung',
-        'edit counter' => 'Sunting Penghitung'
+        'add counter' => 'Tambahkan Loket',
+        'counter name' => 'Nama Loket',
+        'edit counter' => 'Sunting Loket'
     ],
     'dashboard' => [
         'today queue' => 'Antrian hari ini',
@@ -111,7 +111,7 @@ return [
         'module' => 'Modul',
         'access' => 'Mengakses',
         'view dashboard' => 'Lihat Dasbor',
-        'view counters' => 'Lihat Penghitung',
+        'view counters' => 'Lihat Loket',
         'view services' => 'Lihat Layanan',
         'view users' => 'Lihat Pengguna',
         'call token' => 'Token Panggilan',
@@ -127,7 +127,7 @@ return [
     'reports' => [
         'select user' => 'Pilih Pengguna',
         'select service' => 'Pilih Layanan',
-        'select counter' => 'Pilih Penghitung',
+        'select counter' => 'Pilih Loket',
         'select status' => 'Pilih Status',
         'all users' => 'Semua pengguna',
         'all services' => 'Semua Layanan',
@@ -183,10 +183,10 @@ return [
         'timezone_message' => 'Mengubah zona waktu dapat berdampak pada pembuatan nomor antrian yang tidak merata selama 24 jam',
     ],
     'call_page' => [
-        'set service and counter' => "Setel Layanan Dan Penghitung",
+        'set service and counter' => "Setel Layanan Dan Loket",
         'service' => 'Melayani',
         'counter' => 'Menangkal',
-        'choose your counter' => 'Pilih Penghitung Anda',
+        'choose your counter' => 'Pilih Loket Anda',
         'choose your service' => 'Pilih Layanan Anda',
         'served' => 'Melayani',
         'noshow' => 'Tidak Hadir',

@@ -27,19 +27,27 @@
         <section class="content-wrapper no-print">
             <div class="container no-print">
                 <div class="row">
-                    <div class="col s12">
-                        <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
-                            <span class="card-title" style="line-height:1;font-size:22px"> {{__('messages.issue_token.click one service to issue token')}}</span>
-                            <div class="divider" style="margin:10px 0 10px 0;"></div>
+                    <div class="col s12"> 
+                        <?php if(!empty($operationalTime)) {?>
+                            <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
+                                <span class="card-title" style="line-height:1;font-size:22px"> {{__('messages.issue_token.click one service to issue token')}}</span>
+                                <div class="divider" style="margin:10px 0 10px 0;"></div>
+                                <center>
+                                @foreach($services as $service)
+                                <span class="btn btn-large btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688" onclick="queueDept({{ json_encode($service) }})">
+                                    {{$service->name}}
+                                    <span class="btn btn-danger btn-xs" readonly style="background: #a31035">{{$service->remaining_limit}}</span>
+                                </span>
+                                @endforeach
+                                </center>
+                            </div>
+                        <?php }else{ ?>
                             <center>
-                            @foreach($services as $service)
-                            <span class="btn btn-large btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688" onclick="queueDept({{ json_encode($service) }})">
-                                {{$service->name}}
-                                <span class="btn btn-danger btn-xs" readonly style="background: #a31035">{{$service->remaining_limit}}</span>
-                            </span>
-                            @endforeach
+                                <span class="btn btn-large btn-queue waves-effect waves-light mb-1" style="background: #a31035">
+                                    Maaf, waktu operasional layanan antrian telah berakhir. Silakan kembali lagi besok.
+                                </span>
                             </center>
-                        </div>
+                        <?php } ?>
                     </div>
                     <form action="{{route('create-token')}}" method="post" id="my-form-two" style="display: none;">
                         {{csrf_field()}}

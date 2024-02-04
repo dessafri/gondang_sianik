@@ -30,22 +30,44 @@ class TokenController extends Controller
     //memanggil semua service dann menampilkan di index issue_token
     public function issueToken()
     {
+        $date = now();
+        $dayOfWeek = $date->format('l');
+        $timeNow = $date->format('H:i:s');
+
+        $operationalTime = OperationalTime::where('day', $dayOfWeek)
+        ->where('status', 'Offline')
+        ->where('on_time', '<=', $timeNow)
+        ->where('off_time', '>=', $timeNow)
+        ->first();
+
         return view(
             'issue_token.index',
             ['services' => $this->services->getAllActiveServicesWithLimits(), 
             'settings' => Setting::first(),
-            'limits' => $this->services->getAllActiveServicesWithLimits(),
+            'operationalTime' => $operationalTime,
             ]
         );
     }
 
     public function onlineToken()
     {
+        $tomorrow = Carbon::tomorrow();
+        $dayOfWeekTomorrow = $tomorrow->format('l');
+
+        $currentTime = Carbon::now();
+        $timeNow = $currentTime->format('H:i:s');
+
+        $operationalTime = OperationalTime::where('day', $dayOfWeekTomorrow)
+        ->where('status', 'Online')
+        ->where('on_time', '<=', $timeNow)
+        ->where('off_time', '>=', $timeNow)
+        ->first();
+        
         return view(
             'online_token.index',
             ['services' => $this->services->getAllActiveServicesWithLimitsOnline(), 
             'settings' => Setting::first(),
-            'limits' => $this->services->getAllActiveServicesWithLimitsOnline(),
+            'operationalTime' => $operationalTime,
         ]);
     }
 
@@ -120,7 +142,7 @@ class TokenController extends Controller
         $requestDate = $request->date;
         $date_data = Carbon::parse($requestDate);
 
-        $dayOfWeek = $date_data->format('l'); // Mendapatkan hari saat ini
+        $dayOfWeek = $date_data->format('l'); 
         
         // Mengambil data jam operasional untuk hari ini dari tabel operational_time
         $operationalTime = OperationalTime::where('day', $dayOfWeek)

@@ -57,39 +57,47 @@
             <div class="container no-print">
                 <div class="row">
                     <div class="col s12">
-                        <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
-                            <span class="card-title" style="line-height:1;font-size:70px"> {{__('messages.issue_token.click one service to issue token')}}</span>
-                            <?php /* <table class="table">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2"><h3>Sisa Limit Antrian</h3></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($limits as $limit)
+                        <?php if(!empty($operationalTime)) {?>
+                            <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
+                                <span class="card-title" style="line-height:1;font-size:70px"> {{__('messages.issue_token.click one service to issue token')}}</span>
+                                <?php /* <table class="table">
+                                    <thead>
                                     <tr>
-                                        <td style="color: balck; font-weight: bold;">{{$limit->name}}</td>
-                                        <td style="color: red; font-weight: bold;">{{$limit->remaining_limit}}</td>
+                                        <th rowspan="2"><h3>Sisa Limit Antrian</h3></th>
                                     </tr>
-                                    @endforeach
-                                </tbody>
-                            </table> */ ?>
-                            <br>
-                            <span style="font-weight: bold;">
-                                #Antrian Online hanya akan mengambil tanggal 1 hari kedepan<br>
-                                #Harap datang sesuai tanggal dan jam operasional Kantor Dispendukcapil - Kab. Nganjuk
-                            </span>
-                            <div class="divider" style="margin:10px 0 10px 0;"></div>
-                            
+                                    </thead>
+                                    <tbody>
+                                        @foreach($limits as $limit)
+                                        <tr>
+                                            <td style="color: balck; font-weight: bold;">{{$limit->name}}</td>
+                                            <td style="color: red; font-weight: bold;">{{$limit->remaining_limit}}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table> */ ?>
+                                <br>
+                                <span style="font-weight: bold;">
+                                    #Antrian Online hanya akan mengambil tanggal 1 hari kedepan<br>
+                                    #Harap datang sesuai tanggal dan jam operasional Kantor Dispendukcapil - Kab. Nganjuk
+                                </span>
+                                <div class="divider" style="margin:10px 0 10px 0;"></div>
+                                
+                                <center>
+                                @foreach($services as $service)
+                                <span class="btn btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688; height: 100px; font-size: 50px; align:center; display: flex; justify-content: center; align-items: center;" onclick="queueDept({{ json_encode($service) }})">
+                                    {{$service->name}}
+                                    <span class="btn btn-danger btn-xs" readonly style="background: #a31035">{{$service->remaining_limit}}</span>
+                                </span>
+                                @endforeach
+                                </center>
+                            </div>                        
+                        <?php }else{ ?>
                             <center>
-                            @foreach($services as $service)
-                            <span class="btn btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688; height: 100px; font-size: 50px; align:center; display: flex; justify-content: center; align-items: center;" onclick="queueDept({{ json_encode($service) }})">
-                                {{$service->name}}
-                                <span class="btn btn-danger btn-xs" readonly style="background: #a31035">{{$service->remaining_limit}}</span>
-                            </span>
-                            @endforeach
+                                <span class="btn btn-large btn-queue waves-effect waves-light mb-1" style="background: #a31035">
+                                    Maaf, waktu operasional layanan antrian telah berakhir. Silakan kembali lagi besok.
+                                </span>
                             </center>
-                        </div>
+                        <?php } ?>
                     </div>
 
                     <form action="{{route('create-token-online')}}" method="post" id="my-form-two" style="display: none;">

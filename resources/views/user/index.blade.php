@@ -37,6 +37,7 @@
                                                 <tr>
                                                     <th width="10px">#</th>
                                                     <th>{{__('messages.user_page.name')}}</th>
+                                                    <th>{{__('messages.user_page.role')}}</th>
                                                     <th>{{__('messages.user_page.email')}}</th>
                                                     <th>{{__('messages.user_page.action')}}</th>
                                                 </tr>
@@ -46,6 +47,7 @@
                                                 <tr>
                                                     <td>{{$key+1}}</td>
                                                     <td>{{$user->name}}</td>
+                                                    <td>{{$user->name_role}}</td>
                                                     <td>{{$user->email}}</td>
                                                     <td>
                                                         <a class="btn-floating btn-action waves-effect waves-light orange tooltipped" href="{{route('users.edit',[$user->id])}}" data-position=top data-tooltip="{{__('messages.common.edit')}}"><i class="material-icons">edit</i></a>
