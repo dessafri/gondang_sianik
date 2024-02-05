@@ -157,11 +157,12 @@
         $('.modal').modal();
 
         var tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setDate(tomorrow.getDate());
         // Mengonversi tanggal besok ke dalam format "YYYY-MM-DD 00:00:00"
         var formattedTomorrow = tomorrow.toISOString().split('T')[0] + ' 00:00:00';
         // Menetapkan nilai input tanggal dengan tanggal besok
         $('#date').val(formattedTomorrow);
+
     })
     var service;
     
