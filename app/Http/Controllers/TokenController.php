@@ -40,29 +40,22 @@ class TokenController extends Controller
         ->where('off_time', '>=', $timeNow)
         ->first();
 
+        $time = OperationalTime::where('day', $dayOfWeek)
+        ->where('status', 'Online')
+        ->first();
+
         return view(
             'issue_token.index',
             ['services' => $this->services->getAllActiveServicesWithLimits(), 
             'settings' => Setting::first(),
             'operationalTime' => $operationalTime,
+            'time' => $time,
             ]
         );
     }
 
     public function onlineToken()
     {
-        // $tomorrow = Carbon::tomorrow();
-        // $dayOfWeekTomorrow = $tomorrow->format('l');
-
-        // $currentTime = Carbon::now();
-        // $timeNow = $currentTime->format('H:i:s');
-
-        // $operationalTime = OperationalTime::where('day', $dayOfWeekTomorrow)
-        // ->where('status', 'Online')
-        // ->where('on_time', '<=', $timeNow)
-        // ->where('off_time', '>=', $timeNow)
-        // ->first();
-
         $date = now();
         $dayOfWeek = $date->format('l');
         $timeNow = $date->format('H:i:s');
@@ -72,12 +65,17 @@ class TokenController extends Controller
         ->where('on_time', '<=', $timeNow)
         ->where('off_time', '>=', $timeNow)
         ->first();
+
+        $time = OperationalTime::where('day', $dayOfWeek)
+        ->where('status', 'Online')
+        ->first();
         
         return view(
             'online_token.index',
             ['services' => $this->services->getAllActiveServicesWithLimitsOnline(), 
             'settings' => Setting::first(),
             'operationalTime' => $operationalTime,
+            'time' => $time,
         ]);
     }
 

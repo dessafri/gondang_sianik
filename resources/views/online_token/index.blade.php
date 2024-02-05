@@ -19,9 +19,7 @@
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS =>'{
-            "data": {
-                    "token":"'.$_GET['q'].'"
-                }
+            "token":"'.$_GET['q'].'"
             }',
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
@@ -33,7 +31,6 @@
         curl_close($curl);
 
         $data = json_decode($response);
-
         if (isset($data->data->phone)) {
             $phone = $data->data->phone;
             $email = $data->data->id;
@@ -60,24 +57,9 @@
                         <?php if(!empty($operationalTime)) {?>
                             <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
                                 <span class="card-title" style="line-height:1;font-size:70px"> {{__('messages.issue_token.click one service to issue token')}}</span>
-                                <?php /* <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th rowspan="2"><h3>Sisa Limit Antrian</h3></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($limits as $limit)
-                                        <tr>
-                                            <td style="color: balck; font-weight: bold;">{{$limit->name}}</td>
-                                            <td style="color: red; font-weight: bold;">{{$limit->remaining_limit}}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table> */ ?>
                                 <br>
                                 <span style="font-weight: bold;font-size:25px;color: #a31035">
-                                    #Jam Buka Layanan Pukul : <?= $operationalTime['on_time'] ?> - <?= $operationalTime['off_time'] ?><br>
+                                    #Jam Buka Layanan Pukul : <?= $time['on_time'] ?> - <?= $time['off_time'] ?><br>
                                     #Harap datang sesuai tanggal dan jam operasional Kantor Dispendukcapil - Kab. Nganjuk
                                 </span>
                                 <div class="divider" style="margin:10px 0 10px 0;"></div>
@@ -93,6 +75,9 @@
                             </div>                        
                         <?php }else{ ?>
                             <center>
+                                <span style="font-weight: bold;font-size:20px;color: #a31035">
+                                    #Jam Buka Layanan Pukul : <?= $time['on_time'] ?> - <?= $time['off_time'] ?>
+                                </span><br>
                                 <span class="btn btn-large btn-queue waves-effect waves-light mb-1" style="background: #a31035">
                                     Maaf, waktu operasional layanan antrian telah berakhir. Silakan kembali lagi besok.
                                 </span>

@@ -31,6 +31,10 @@
                         <?php if(!empty($operationalTime)) {?>
                             <div class="card" style="background:#f9f9f9;box-shadow:none" id="service-btn-container">
                                 <span class="card-title" style="line-height:1;font-size:22px"> {{__('messages.issue_token.click one service to issue token')}}</span>
+                                <br>
+                                <span style="font-weight: bold;font-size:25px;color: #a31035">
+                                    #Jam Buka Layanan Pukul : <?= $time['on_time'] ?> - <?= $time['off_time'] ?>
+                                </span>
                                 <div class="divider" style="margin:10px 0 10px 0;"></div>
                                 <center>
                                 @foreach($services as $service)
@@ -43,6 +47,9 @@
                             </div>
                         <?php }else{ ?>
                             <center>
+                                <span style="font-weight: bold;font-size:20px;color: #a31035">
+                                    #Jam Buka Layanan Pukul : <?= $time['on_time'] ?> - <?= $time['off_time'] ?>
+                                </span><br>
                                 <span class="btn btn-large btn-queue waves-effect waves-light mb-1" style="background: #a31035">
                                     Maaf, waktu operasional layanan antrian telah berakhir. Silakan kembali lagi besok.
                                 </span>
