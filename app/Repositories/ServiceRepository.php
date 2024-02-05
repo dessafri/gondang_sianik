@@ -110,7 +110,7 @@ class ServiceRepository
 
     public function getAllActiveServicesWithLimitsOnline()
     {
-        $tomorrow = Carbon::tomorrow();
+        $tomorrow = Carbon::today();
     
         return DB::table('services')
         ->select(
