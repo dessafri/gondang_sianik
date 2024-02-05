@@ -76,8 +76,8 @@
                                     </tbody>
                                 </table> */ ?>
                                 <br>
-                                <span style="font-weight: bold;">
-                                    #Antrian Online hanya akan mengambil tanggal 1 hari kedepan<br>
+                                <span style="font-weight: bold;font-size:25px;color: #a31035">
+                                    #Jam Buka Layanan Pukul : <?= $operationalTime['on_time'] ?> - <?= $operationalTime['off_time'] ?><br>
                                     #Harap datang sesuai tanggal dan jam operasional Kantor Dispendukcapil - Kab. Nganjuk
                                 </span>
                                 <div class="divider" style="margin:10px 0 10px 0;"></div>

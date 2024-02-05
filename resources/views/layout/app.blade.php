@@ -52,9 +52,9 @@
                         @endif
                         <li class="dropdown-language"><a class="waves-effect waves-block waves-light translation-button" href="#" data-target="translation-dropdown"><span class="flag-icon flag-icon-{{\App::currentLocale()}}"></span></a></li>
                         <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light toggle-fullscreen" href="javascript:void(0);"><i class="material-icons">settings_overscan</i></a></li>
-                        @if( Auth::user()->can('view issue token') || Auth::user()->can('view display'))
+                        <?php /*@if( Auth::user()->can('view issue token') || Auth::user()->can('view display'))
                         <li class="navbar-list left"><a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);" data-target="extra-dropdown"><i class="material-icons">attachment</i></a></li>
-                        @endif
+                        @endif */?>
                         <li class="navbar-list left"><a href="{{route('profile')}}"><b>{{session()->get("settings")->name}} - {{session()->get("settings")->location}}</b></a></li>
 
                         <!-- <li><a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);" data-target="profile-dropdown"><span class="avatar-status "><img src="{{Auth::user()->image_url}}" alt="avatar"></span></a></li> -->
