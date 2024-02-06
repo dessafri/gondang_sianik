@@ -41,7 +41,7 @@ class TokenController extends Controller
         ->first();
 
         $time = OperationalTime::where('day', $dayOfWeek)
-        ->where('status', 'Online')
+        ->where('status', 'Offline')
         ->first();
 
         return view(
