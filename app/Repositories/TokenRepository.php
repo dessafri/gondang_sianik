@@ -82,7 +82,7 @@ class TokenRepository
         $curl_message = curl_init();
 
             curl_setopt_array($curl_message, array(
-            CURLOPT_URL => 'http://lasmini.cloud/api/sendMessage',
+            CURLOPT_URL => 'https://lasmini.cloud/api/sendMessage',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
