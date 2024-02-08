@@ -207,17 +207,19 @@
                     
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
-                    M.toast({
-                        html: "Silahkan ambil No. Antrian anda!",
-                        classes: "toast-error"
-                    });
+                    // M.toast({
+                    //     html: "Silahkan ambil No. Antrian anda!",
+                    //     classes: "toast-error"
+                    // });
+                    alert('Silahkan ambil No. Antrian anda!');
                 } else if (response.status_code == 422 && response.errors) {
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
-                    M.toast({
-                        html: response.errors.limit[0],
-                        classes: "toast-error"
-                    });
+                    alert(response.errors.limit[0]);
+                    // M.toast({
+                    //     html: response.errors.limit[0],
+                    //     classes: "toast-error"
+                    // });
                 }
             }
         });

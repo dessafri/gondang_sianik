@@ -99,7 +99,7 @@
                                 </p>
                                 <p>
                                     <label>
-                                        <input name="nik_konfirmasi" type="radio" id="nik_konfirmasi" checked value="1" data-error=".nik_konfirmasi" />
+                                        <input name="nik_konfirmasi" type="radio" id="nik_konfirmasi" value="1" data-error=".nik_konfirmasi" />
                                         <span>Ya</span>
                                     </label>
                                 </p>
@@ -135,6 +135,7 @@
         $('body').addClass('loaded');
         $('.modal').modal();
 
+        $('#nik_tab').hide();
         $('input[name="nik_konfirmasi"]').change(function () {
             if ($(this).val() === '1') {
                 $('#nik_tab').show();
@@ -204,11 +205,19 @@
             submitHandler: function(form) {
                 $('#modal_button').attr('disabled', 'disabled');
                 $('body').removeClass('loaded');
+                var phone = $('#phone').val();
+
+                // Periksa apakah nomor telepon dimulai dengan 0
+                if (phone.startsWith('0')) {
+                    // Jika dimulai dengan 0, ganti dengan 62
+                    phone = '62' + phone.substr(1);
+                }
+
                 let data = {
                     service_id: service.id,
                     name: $('#name').val(),
                     email: $('#email').val(),
-                    phone: $('#phone').val(),
+                    phone: phone,
                     nik: $('#nik').val(),
                     with_details: true
                 }

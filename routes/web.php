@@ -80,6 +80,7 @@ Route::middleware(['setLocale'])->group(function () {
             Route::get('reports/monthly-report', [ReportController::class, 'showMonthlyReport'])->name('monthly_report');
             Route::get('reports/export/', [ReportController::class, 'export']);
             Route::get('reports/queue-list-report', [ReportController::class, 'showQueueListReport'])->name('queue_list_report');
+            Route::get('reports/monitor-antrian', [ReportController::class, 'showMonitorAntrian'])->name('monitor_antrian');
             Route::get('reports/statitical-report', [ReportController::class, 'showSatiticalReport'])->name('statitical_report');
         });
         Route::post('settings/update-session-language', [SettingsController::class, 'changeLanguageOnSession'])->name('change_session_language');
@@ -100,7 +101,7 @@ Route::middleware(['setLocale'])->group(function () {
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     });
     // Route::group(['middleware' => ['permission:issue token']], function () {
-    Route::get('kiosk', [TokenController::class, 'issueToken'])->name('issue_token');
+    Route::get('kiosk-antrian', [TokenController::class, 'issueToken'])->name('issue_token');
     Route::get('kiosk-online', [TokenController::class, 'onlineToken'])->name('online_token');
     Route::post('queue', [TokenController::class, 'createToken'])->name('create-token');
     Route::post('queueonline', [TokenController::class, 'createTokenOnline'])->name('create-token-online');

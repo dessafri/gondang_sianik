@@ -6,11 +6,18 @@ use App\Models\Call;
 use App\Models\Queue;
 use App\Models\Service;
 use Illuminate\Support\Str;
+use App\Repositories\ServiceRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class TokenRepository
 {
+    public $services;
+    public function __construct(ServiceRepository $services)
+    {
+        $this->services = $services;
+    }
+
     public function createToken(Service $service, $data, $is_details)
     {
         $last_token = Queue::where('created_at', '>=', Carbon::now()->startOfDay())
@@ -33,7 +40,52 @@ class TokenRepository
             'nik' => ($is_details && $service->ask_nik == 1) ? $data['nik'] : null,
             'status_queue' => "Offline"
         ]);
+        
+        $services = $this->services->getServiceById($service->id);
+        
+        if (!empty($data['phone'])) {        
+            try {
+                $reply_message = 
+                "*_Bukti Reservasi Sistem Antrian Online_*
+                Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk
+                Atas Nama : ".$data['name']."
+                Layanan : ".$services['name']."
+                Antrian : ".$service->letter." - ".$token_number."
+                Tanggal : " . date('d F Y') . "
 
+                Silahkan datang pada tanggal yang tertera. Terima Kasih
+                *_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran , apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir_*.";
+
+                $post = [
+                    'userId' => $data['phone'],
+                    'message' => $reply_message
+                ];
+                
+                $curl_message = curl_init();
+
+                    curl_setopt_array($curl_message, array(
+                    CURLOPT_URL => 'https://lasmini.cloud/api/sendMessagePhone',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => json_encode($post),
+                    CURLOPT_HTTPHEADER => array(
+                        'Content-Type: application/json',
+                        'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
+                    ),
+                    ));
+
+                $response_message = curl_exec($curl_message);
+                curl_close($curl_message);               
+            } catch (\Exception $err) {
+                echo 'OK';
+                dd($err);
+            }
+        }
         return $queue;
     }
 
@@ -62,12 +114,14 @@ class TokenRepository
             'nik' => $data['nik'],
             'status_queue' => "Online"
         ]);
-
         
+        $services = $this->services->getServiceById($service->id);
+
         $reply_message = 
         "*_Bukti Reservasi Sistem Antrian Online_*
         Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk
         Atas Nama : ".$data['name']."
+        Layanan : ".$services['name']."
         Antrian : ".$service->letter." - ".$token_number."
         Tanggal : " . date('d F Y', strtotime($data['date'])) . "
 

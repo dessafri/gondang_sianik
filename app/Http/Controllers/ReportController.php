@@ -57,6 +57,12 @@ class ReportController extends Controller
         return view('reports.queue_list_report', ['reports' => $report, 'selected_starting_date' => $selected_starting_date, 'selected_ending_date' => $selected_ending_date,'timezone' => Setting::first()->timezone]);
     }
 
+    public function showMonitorAntrian(Request $request)
+    {
+        return view('reports.monitor_antrian', 
+        ['timezone' => Setting::first()->timezone]);
+    }
+
     public function showSatiticalReport()
     {
         $users = User::get();

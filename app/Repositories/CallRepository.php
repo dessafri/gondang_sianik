@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Consts\CallStatuses;
 use App\Jobs\SendSmsJob;
+use Illuminate\Support\Facades\DB;
 use App\Models\Call;
 use App\Models\Queue;
 use Carbon\Carbon;
@@ -133,7 +134,8 @@ class CallRepository
 
     public function getCallsForDisplay()
     {
-        return Call::where('created_at', '>=', Carbon::now()->startOfDay())->where('created_at', '<=', Carbon::now())->orderByDesc('id')->with('counter')->limit(5)->get()->toArray();
+        $data=Call::with('service')->where('created_at', '>=', Carbon::now()->startOfDay())->where('created_at', '<=', Carbon::now())->orderByDesc('id')->with('counter')->limit(5)->get()->toArray();
+        return $data;
     }
 
     public function getTokenForCallNext($service_id, $counter_id)

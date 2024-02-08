@@ -21,6 +21,10 @@ class Service extends Model
         return $this->hasMany(Queue::class);
     }
 
+    public function calls(){
+        return $this->hasMany(Call::class,'service_id');
+    }
+
     // public function getStatusPositionsAttribute(){
     //     if($this->status_message_positions){
     //         json_decode($this->status_message_positions, true);

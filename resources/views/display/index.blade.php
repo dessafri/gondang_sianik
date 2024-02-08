@@ -26,6 +26,7 @@
                     <div class="card-panel center-align" style="margin-bottom:0;height:40vh;display:flex;flex-direction:row;justify-content:center;align-items:center;font-size: 20px;">
                         <div>
                             <div class="bolder-color" style="font-size:20px; margin:0px">{{__('messages.display.token number')}}</div>
+                            <div class="bolder-color" style="font-size:15px; line-height:1.4">@{{tokens[0]?.service.name }}</div>
                             <span v-if="tokens[0]" style="font-size:70px;color:red;font-weight:bold;line-height:1.2">@{{tokens[0]?.token_letter}}-@{{tokens[0]?.token_number}}</span>
                             <span v-if="!tokens[0]" style="font-size:70px;color:red;font-weight:bold;line-height:1.2">{{__('messages.display.nil')}}</span>
                             <div v-if="tokens[0]?.call_status_id == {{CallStatuses::SERVED}}" style="font-size:20px; color:#009688">{{__('messages.display.served')}}</div>
@@ -86,6 +87,15 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                        <marquee behavior="scroll" direction="left" scrollamount="5">
+                            @foreach($services as $service)
+                                <span class="btn btn-large btn-queue waves-effect waves-light mb-1" style="background: #009688">
+                                    {{$service->name}}
+                                </span>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            @endforeach
+                        </marquee>
                     </div>
                 </div>
             </div>
@@ -102,7 +112,8 @@
 @section('b-js')
 <script>
     window.JLToken = {
-        get_tokens_for_display_url: "{{ asset($file) }}",
+        // get_tokens_for_display_url: "{{ asset($file) }}",
+        get_tokens_for_display_url: "{{ route('get-tokens-for-display') }}",
         get_initial_tokens: "{{ route('get-tokens-for-display') }}",
         date_for_display: "{{$date}}",
         voice_type: "{{$settings->language->display}}",
