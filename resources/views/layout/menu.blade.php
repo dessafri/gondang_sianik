@@ -27,12 +27,11 @@
     <li class="bold"><a class="waves-effect waves-cyan @yield('operational_time') " href="{{route('operational_time.index')}}"><i class="material-icons">access_time</i><span class="menu-title" data-i18n="Kanban">Jam Operasional</span></a>
     </li>
     @endcan
-    <!-- @can('view monitor_antrian')
+    @can('view monitor_antrian')
     <li class="bold">
-      <a class="@yield('monitor_antrian')" href="{{route('monitor_antrian')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Blog">monitor_antrian</span></a>
       <a class="waves-effect waves-cyan @yield('monitor_antrian') " href="{{route('monitor_antrian')}}"><i class="material-icons">visibility</i><span class="menu-title" data-i18n="Kanban">Monitor Antrian</span></a>
     </li>
-    @endcan -->
+    @endcan
     @can('view reports')
     <li class="bold @yield('report')"><a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)"><i class="material-icons">content_paste</i><span class="menu-title" data-i18n="Pages">{{__('messages.menu.reports')}}</span></a>
       <div class="collapsible-body">
@@ -41,12 +40,10 @@
           </li>
           <li class="@yield('queue_list_report')"><a class="@yield('queue_list_report')" href="{{route('queue_list_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Blog">{{__('messages.menu.queue list')}}</span></a>
           </li>
-          <!-- <li class="@yield('monitor_antrian')"><a class="@yield('monitor_antrian')" href="{{route('monitor_antrian')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Blog">monitor_antrian</span></a>
-          </li> -->
           <li class="@yield('monthly_report')"><a class="@yield('monthly_report')" href="{{route('monthly_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Search">{{__('messages.menu.monthly report')}}</span></a>
           </li>
-          <!-- <li class="@yield('statitical_report')"><a  class="@yield('statitical_report')" href="{{route('statitical_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Knowledge">Statitical</span></a>
-              </li> -->
+          <li class="@yield('statitical_report')"><a  class="@yield('statitical_report')" href="{{route('statitical_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Knowledge">Statitical</span></a>
+              </li>
     </li>
     </li>
   </ul>

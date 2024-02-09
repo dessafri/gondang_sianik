@@ -21,7 +21,7 @@
                             </video>
                         </div>
                     </div>
-                </div>             
+                </div>
                 <div class="col m8">
                     <div class="card-panel center-align" style="margin-bottom:0;height:40vh;display:flex;flex-direction:row;justify-content:center;align-items:center;font-size: 20px;">
                         <div>
@@ -45,7 +45,21 @@
                     <div class="card-panel center-align p-0" style="margin-bottom:0; height:30vh; font-size: 20px;" id="side-token-display">
                         <div class="row">
                             <div class="row d-flex justify-content-center">
-                                <div class="col m3">
+                                <?php /* <marquee style="white-space: nowrap;">
+                                    <div v-for="(token, index) in tokens" :key="index" class="col m2"><br><br>
+                                        <small v-if="token" class="bolder-color" style="font-size:20px;font-weight:bold;color:red">@{{token.service.name}}</small><br>
+                                        <span v-if="token" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">@{{token.token_letter}}-@{{token.token_number}}</span>
+                                        <span v-if="!token" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">{{__('messages.display.nil')}}</span><br>
+                                        <small v-if="token" class="bolder-color" :id="'counter' + index" style="font-size:25px; font-weight:bold;">@{{token.counter.name}}</small>
+                                        <small v-if="!token" class="bolder-color" :id="'counter' + index" style="font-size:25px; font-weight:bold;">{{__('messages.display.nil')}}</small><br>
+                                        <small v-if="token && token.call_status_id == {{CallStatuses::SERVED}}" style="font-size:20px; color:#009688; font-weight:bold;">{{__('messages.display.served')}}</small>
+                                        <small v-if="token && token.call_status_id == {{CallStatuses::NOSHOW}}" style="font-size:20px; font-weight:bold; color:red">{{__('messages.display.noshow')}}</small>
+                                        <small v-if="token && token.call_status_id == null" style="font-size:20px; color:orange; font-weight:bold;">{{__('messages.display.serving')}}</small>
+                                        <small v-if="!token" style="font-size:20px; font-weight:bold;">{{__('messages.display.nil')}}</small>
+                                    </div>
+                                </marquee>*/?>
+                                <div class="col m3"><br><br>
+                                    <small v-if="tokens[1]" class="bolder-color" style="font-size:20px;font-weight:bold;color:red">@{{tokens[1]?.service.name}}</small><br>
                                     <span v-if="tokens[1]" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">@{{tokens[1]?.token_letter}}-@{{tokens[1]?.token_number}}</span>
                                     <span v-if="!tokens[1]" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">{{__('messages.display.nil')}}</span><br>
                                     <small v-if="tokens[1]" class="bolder-color" id="counter1" style="font-size:25px; font-weight:bold;">@{{tokens[1]?.counter.name}}</small>
@@ -55,7 +69,8 @@
                                     <small v-if="tokens[1] && tokens[1]?.call_status_id == null" style="font-size:20px; color:orange; font-weight:bold;">{{__('messages.display.serving')}}</small>
                                     <small v-if="!tokens[1]" style="font-size:20px;">{{__('messages.display.nil')}}</small>
                                 </div>
-                                <div class="col m3">
+                                <div class="col m3"><br><br>
+                                    <small v-if="tokens[2]" class="bolder-color" style="font-size:20px;font-weight:bold;color:red">@{{tokens[2]?.service.name}}</small><br>
                                     <span v-if="tokens[2]" class="bolder-color" style="font-size:45px; font-weight:bold;line-height:1.2">@{{tokens[2]?.token_letter}}-@{{tokens[2]?.token_number}}</span>
                                     <span v-if="!tokens[2]" class="bolder-color" style="font-size:45px; font-weight:bold;line-height:1.2">{{__('messages.display.nil')}}</span><br>
                                     <small v-if="tokens[2]" class="bolder-color" id="counter2" style="font-size:25px;font-weight:bold;">@{{tokens[2]?.counter.name}}</small>
@@ -65,7 +80,8 @@
                                     <small v-if="tokens[2] && tokens[2]?.call_status_id == null" style="font-size:20px;color:orange;font-weight:bold;">{{__('messages.display.serving')}}</small>
                                     <small v-if="!tokens[2]" style="font-size:20px; font-weight:bold;">{{__('messages.display.nil')}}</small>
                                 </div>
-                                <div class="col m3">
+                                <div class="col m3"><br><br>
+                                    <small v-if="tokens[3]" class="bolder-color" style="font-size:20px;font-weight:bold;color:red">@{{tokens[3]?.service.name}}</small><br>
                                     <span v-if="tokens[3]" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">@{{tokens[3]?.token_letter}}-@{{tokens[3]?.token_number}}</span>
                                     <span v-if="!tokens[3]" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">{{__('messages.display.nil')}}</span><br>
                                     <small v-if="tokens[3]" class="bolder-color" id="counter3" style="font-size:25px; font-weight:bold;">@{{tokens[3]?.counter.name}}</small>
@@ -75,7 +91,8 @@
                                     <small v-if="tokens[3] && tokens[3]?.call_status_id == null" style="font-size:20px; color:orange; font-weight:bold;">{{__('messages.display.serving')}}</small>
                                     <small v-if="!tokens[3]" style="font-size:20px; font-weight:bold;">{{__('messages.display.nil')}}</small>
                                 </div>
-                                <div class="col m3">
+                                <div class="col m3"><br><br>
+                                    <small v-if="tokens[4]" class="bolder-color" style="font-size:20px;font-weight:bold;color:red">@{{tokens[4]?.service.name}}</small><br>
                                     <span v-if="tokens[4]" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">@{{tokens[4]?.token_letter}}-@{{tokens[4]?.token_number}}</span>
                                     <span v-if="!tokens[4]" class="bolder-color" style="font-size:45px;font-weight:bold;line-height:1.2">{{__('messages.display.nil')}}</span><br>
                                     <small v-if="tokens[4]" class="bolder-color" id="counter4" style="font-size:25px; font-weight:bold;">@{{tokens[4]?.counter.name}}</small>
@@ -87,15 +104,6 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
-                        <marquee behavior="scroll" direction="left" scrollamount="5">
-                            @foreach($services as $service)
-                                <span class="btn btn-large btn-queue waves-effect waves-light mb-1" style="background: #009688">
-                                    {{$service->name}}
-                                </span>
-                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            @endforeach
-                        </marquee>
                     </div>
                 </div>
             </div>

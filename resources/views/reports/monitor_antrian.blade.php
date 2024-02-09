@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title','Jam Operasional')
+@section('title','Monitor Antrian')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/data-tables/css/jquery.dataTables.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css')}}">
@@ -12,16 +12,14 @@
         <div class="container">
             <div class="row">
                 <div class="col s12 m12 l12">
-                    <h5 class="breadcrumbs-title col s5"><b>Jam Operasional</b></h5>
+                    <h5 class="breadcrumbs-title col s5"><b>Monitor Antrian</b></h5>
                     <ol class="breadcrumbs col s7 right-align">
-                        <a class="btn-floating waves-effect waves-light tooltipped" href="{{route('operational_time.create')}}" data-position="top" data-tooltip="Tambah Jam Operasional">
-                            <i class="material-icons">add</i>
-                        </a>
                     </ol>
                 </div>
             </div>
         </div>
     </div>
+    @if($monitors)
     <div class="col s12">
         <div class="container" style="width: 99%;">
             <div class="section-data-tables">
@@ -31,6 +29,30 @@
                             <div class="card-content">
                                 <div class="row">
                                     <div class="col s12">
+                                        <div class="table-responsive">
+                                            <table id="page-length-option" class="display dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10px">#</th>
+                                                        <th>{{__('messages.reports.service')}}</th>
+                                                        <th>Total Antrian Hari ini</th>
+                                                        <th>Sudah Dipanggil</th>
+                                                        <th>Belum Dipanggil</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($monitors as $key=>$monitor)
+                                                    <tr>
+                                                        <td>{{ $key+1 }}</td>
+                                                        <td>{{$monitor->service_name}}</td>
+                                                        <td>{{$monitor->total_antrian}}</td>
+                                                        <td>{{$monitor->terpanggil}}</td>
+                                                        <td>{{$monitor->belum_dipanggil}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -40,6 +62,7 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
 @endsection
 @section('js')

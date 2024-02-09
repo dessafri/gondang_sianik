@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field col m5 s5">
-                                    <input id="date" name="date" type="text" class="datepicker" value="0{{$selected_date}}" data-error=".date">
+                                    <input id="date" name="date" type="text" class="datepicker" value="{{$selected_date}}" data-error=".date">
                                     <label for="date">{{__('messages.reports.date')}}</label>
                                     <div class="date">
                                         @if ($errors->has('date'))

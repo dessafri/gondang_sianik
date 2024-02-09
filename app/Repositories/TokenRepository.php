@@ -46,9 +46,8 @@ class TokenRepository
         if (!empty($data['phone'])) {        
             try {
                 $reply_message = 
-                "*_Bukti Reservasi Sistem Antrian Online_*
+                "*_Bukti Reservasi Sistem Antrian Offline_*
                 Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk
-                Atas Nama : ".$data['name']."
                 Layanan : ".$services['name']."
                 Antrian : ".$service->letter." - ".$token_number."
                 Tanggal : " . date('d F Y') . "

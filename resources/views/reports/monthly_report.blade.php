@@ -101,7 +101,7 @@
                                 </div>
                             </div>
                             <div class="input-field col m3 s3">
-                                <input id="starting_date" name="starting_date" type="text" class="datepicker" data-error=".starting_date" value="0{{$selected['starting_date']}}">
+                                <input id="starting_date" name="starting_date" type="text" class="datepicker" data-error=".starting_date" value="{{$selected['starting_date']}}">
                                 <label for="starting_date">{{__('messages.reports.starting date')}}</label>
                                 <div class="starting_date">
                                     @if ($errors->has('starting_date'))
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="input-field col m3 s3">
-                                <input id="ending_date" name="ending_date" type="text" class="datepicker" value="0{{$selected['ending_date']}}" data-error=".ending_date">
+                                <input id="ending_date" name="ending_date" type="text" class="datepicker" value="{{$selected['ending_date']}}" data-error=".ending_date">
                                 <label for="ending_date">{{__('messages.reports.ending date')}}</label>
                                 <div class="ending_date">
                                     @if ($errors->has('ending_date'))

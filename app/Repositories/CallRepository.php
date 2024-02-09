@@ -138,6 +138,12 @@ class CallRepository
         return $data;
     }
 
+    public function getCallsForAntrian()
+    {
+        $data=Call::with('service')->where('created_at', '>=', Carbon::now()->startOfDay())->where('created_at', '<=', Carbon::now())->orderByDesc('id')->with('counter')->get()->toArray();
+        return $data;
+    }
+
     public function getTokenForCallNext($service_id, $counter_id)
     {
         $already_called = Call::where('created_at', '>=', Carbon::now()->startOfDay())

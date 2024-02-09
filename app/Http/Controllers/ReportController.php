@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Exports\QueueExport;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ReportController extends Controller
 {
@@ -57,10 +58,14 @@ class ReportController extends Controller
         return view('reports.queue_list_report', ['reports' => $report, 'selected_starting_date' => $selected_starting_date, 'selected_ending_date' => $selected_ending_date,'timezone' => Setting::first()->timezone]);
     }
 
-    public function showMonitorAntrian(Request $request)
+    public function showMonitorAntrian()
     {
+        $monitors = $this->reportRepository->getAntrianListReport();
         return view('reports.monitor_antrian', 
-        ['timezone' => Setting::first()->timezone]);
+        ['timezone' => Setting::first()->timezone,
+        'monitors' => $monitors
+        ]
+        );
     }
 
     public function showSatiticalReport()

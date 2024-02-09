@@ -33,6 +33,27 @@ class ReportRepository
         return $report;
     }
 
+    public function getAntrianListReport()
+    {
+        $today = Carbon::today();
+        $tomorrow = Carbon::tomorrow();
+        return DB::table('queues')
+            ->leftJoin('calls', 'calls.queue_id', '=', 'queues.id')
+            ->join('services', 'services.id', '=', 'queues.service_id')
+            ->leftJoin('counters', 'counters.id', '=', 'calls.counter_id')
+            ->leftJoin('users', 'users.id', '=', 'calls.user_id')
+            ->where('queues.created_at', '>=', $today)
+            ->where('queues.created_at', '<', $tomorrow)
+            ->select(
+                'services.name AS service_name',
+                DB::raw('SUM(CASE WHEN queues.called = 0 THEN 1 ELSE 0 END) AS belum_dipanggil'),
+                DB::raw('SUM(CASE WHEN queues.called = 1 THEN 1 ELSE 0 END) AS terpanggil'),
+                DB::raw('COUNT(queues.id) AS total_antrian')
+            )
+            ->groupBy('services.name')
+            ->get();
+    }
+
     public function getMonthlyReport($data)
     {
         $query = DB::table('calls')
