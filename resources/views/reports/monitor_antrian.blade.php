@@ -35,9 +35,11 @@
                                                     <tr>
                                                         <th width="10px">#</th>
                                                         <th>{{__('messages.reports.service')}}</th>
+                                                        <th>Diproses</th>
                                                         <th>Total Antrian Hari ini</th>
                                                         <th>Sudah Dipanggil</th>
                                                         <th>Belum Dipanggil</th>
+                                                        <th>Tidak Hadir</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -45,9 +47,11 @@
                                                     <tr>
                                                         <td>{{ $key+1 }}</td>
                                                         <td>{{$monitor->service_name}}</td>
+                                                        <td>{{$monitor->letter_called}} - {{$monitor->number_called}}</td>
                                                         <td>{{$monitor->total_antrian}}</td>
                                                         <td>{{$monitor->terpanggil}}</td>
                                                         <td>{{$monitor->belum_dipanggil}}</td>
+                                                        <td>{{$monitor->tidak_hadir}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
