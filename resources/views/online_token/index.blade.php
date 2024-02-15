@@ -79,7 +79,7 @@
                                     #Jam Buka Layanan Pukul : <?= $time['on_time'] ?> - <?= $time['off_time'] ?>
                                 </span><br>
                                 <span class="btn btn-large btn-queue waves-effect waves-light mb-1" style="background: #a31035">
-                                    Maaf, waktu operasional layanan antrian telah berakhir. Silakan kembali lagi besok.
+                                    Maaf, waktu operasional layanan antrian telah berakhir. Silakan kembali ketika jam buka.
                                 </span>
                             </center>
                         <?php } ?>
@@ -116,7 +116,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12" id="date_tab">
-                                <input id="date" name="date" type="text" value="0" readonly data-error=".date">
+                                <input id="date" name="date" type="text" value="" readonly data-error=".date">
                                 <label for="date">Tanggal</label>
                                 <div class="date"></div>
                             </div>
@@ -141,12 +141,8 @@
         $('body').addClass('loaded');
         $('.modal').modal();
 
-        var tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate());
-        // Mengonversi tanggal besok ke dalam format "YYYY-MM-DD 00:00:00"
-        var formattedTomorrow = tomorrow.toISOString().split('T')[0] + ' 00:00:00';
-        // Menetapkan nilai input tanggal dengan tanggal besok
-        $('#date').val(formattedTomorrow);
+        var currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        $('#date').val(currentTime);
 
     })
     var service;

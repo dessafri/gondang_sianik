@@ -185,6 +185,25 @@ class ServiceRepository
         ->get();
     }
     
+    public function getCallsForAntrian()
+    {
+        $today = Carbon::today();
+        $tomorrow = Carbon::tomorrow();
+        
+        return DB::table('services')
+        ->where('services.status_online', true)
+        ->Orwhere('services.status', '>=', true)
+        ->leftJoin('queues', 'services.id', '=', 'queues.service_id')
+        ->where('queues.created_at', '>=', $today)
+        ->where('queues.created_at', '<', $tomorrow)
+        ->select(
+            'services.*',
+            DB::raw('MAX(CASE WHEN queues.called = 1 THEN queues.letter ELSE NULL END) AS letter_called'),
+            DB::raw('MAX(CASE WHEN queues.called = 1 THEN queues.number ELSE NULL END) AS number_called'),
+        )
+        ->groupBy('services.id')
+        ->get()->toArray();
+    }
 
     public function getServiceById($id)
     {

@@ -51,7 +51,7 @@
                                     #Jam Buka Layanan Pukul : <?= $time['on_time'] ?> - <?= $time['off_time'] ?>
                                 </span><br>
                                 <span class="btn btn-large btn-queue waves-effect waves-light mb-1" style="background: #a31035">
-                                    Maaf, waktu operasional layanan antrian telah berakhir. Silakan kembali lagi besok.
+                                    Maaf, waktu operasional layanan antrian telah berakhir. Silakan kembali ketika jam buka.
                                 </span>
                             </center>
                         <?php } ?>
