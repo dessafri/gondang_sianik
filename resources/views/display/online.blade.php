@@ -37,19 +37,19 @@
                         <div class="row"><br>
                             <center><h3>Histori Pemanggilan</h3></center>
                             <div class="row d-flex justify-content-center">
-                                <div v-for="(token, index) in tokens.slice(1)" :key="index" class="col m6">
-                                    <br><br>
+                                <div v-for="(token, index) in tokens.slice(1)" :key="index" class="col m6"><br>
                                     <small v-if="token" class="bolder-color" style="font-size: 50px; font-weight: bold; color: red">@{{ token.service.name }}</small><br>
                                     <span v-if="token" class="bolder-color" style="font-size: 75px; font-weight: bold; line-height: 1.2">@{{ token.token_letter }}-@{{ token.token_number }}</span>
                                     <span v-else class="bolder-color" style="font-size: 75px; font-weight: bold; line-height: 1.2">{{ __('messages.display.nil') }}</span><br>
-                                    <small v-if="token" class="bolder-color" :id="'counter' + index" style="font-size: 5px; font-weight: bold;">@{{ token.counter.name }}</small>
+                                    <small v-if="token" class="bolder-color" :id="'counter' + index" style="font-size: 30px; font-weight: bold;">@{{ token.counter.name }}</small>
                                     <small v-else class="bolder-color" :id="'counter' + index" style="font-size: 25px; font-weight: bold;">{{ __('messages.display.nil') }}</small><br>
                                     <small v-if="token && token.call_status_id == {{ CallStatuses::SERVED }}" style="font-size: 20px; color: #009688; font-weight: bold;">{{ __('messages.display.served') }}</small>
                                     <small v-if="token && token.call_status_id == {{ CallStatuses::NOSHOW }}" style="font-size: 20px; font-weight: bold; color: red">{{ __('messages.display.noshow') }}</small>
                                     <small v-if="token && token.call_status_id == null" style="font-size: 20px; color: orange; font-weight: bold;">{{ __('messages.display.serving') }}</small>
                                     <small v-if="!token" style="font-size: 20px;">{{__('messages.display.nil')}}</small>
+                                    <br><br>
                                 </div>
-                            </div>
+                            </div><br>
                         </div>
                     </div>
                 </div>
