@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\SendSmsJob;
 use App\Models\Call;
 use App\Models\Counter;
+use App\Models\Queue;
 use App\Models\Service;
 use App\Models\Session as ModelsSession;
 use App\Models\Setting;
@@ -239,6 +240,46 @@ class CallController extends Controller
 
     public function getTokensForDisplay()
     {
-        return response()->json($this->callRepository->getCallsForDisplay());
+        // return response()->json($this->callRepository->getCallsForDisplay());
+        // return response()->json($this->callRepository->getCallsForDisplay2());
+        $tokens = $this->callRepository->getCallsForDisplay();
+        $data = json_encode($tokens);
+        return response($data);
+        
+        // dd($tokens);
+        // $data = [];
+
+        // $calls = $this->callRepository->getCallsForAntrian();
+        // $service = $this->serviceRepository->getAllActiveServices();
+        // foreach($service as $value){
+        //     $cll = Call::where('service_id', $value->id)->orderByDesc('id');
+        //     $last = $cll->latest()->first();
+        //     if (isset($last)){
+        //         $counter = Counter::where('id', $last->counter_id)->first();
+        //         $qw = Queue::where('id', $last->queue_id)->first();
+        //         $callstatus = $last->call_status_id;
+        //         $coubtername = $counter->name;
+        //         $qwname = $qw->name;
+        //     }else{
+        //         $callstatus = 'Not Found';
+        //         $coubtername = 'Not Found';
+        //         $qwname = 'Not Found';
+        //     }
+            
+        //     // array_push($data, $last);
+        //     $data[] = [
+        //         'service' => $value->name,
+        //         'calls' => $callstatus,
+        //         'counter' => $coubtername,
+        //         'queue' => $qwname
+        //     ];
+        // }
+        // // dd($data);
+        // return response()->json($data);
+    }
+
+    public function getTokensForDisplayOnline()
+    {
+        return response()->json($this->callRepository->getCallsForAntrian());
     }
 }

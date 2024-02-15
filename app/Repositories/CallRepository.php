@@ -7,6 +7,7 @@ use App\Jobs\SendSmsJob;
 use Illuminate\Support\Facades\DB;
 use App\Models\Call;
 use App\Models\Queue;
+use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -138,10 +139,53 @@ class CallRepository
         return $data;
     }
 
+    public function getCallsForDisplay2()
+    {
+        $services = Service::select('services.id', 'services.name', 'calls.call_status_id', 'calls.counter_id', 'calls.queue_id', 'counters.name as countername')
+                    ->where('services.status_online', true)
+                    ->Orwhere('services.status', '>=', true)
+                    ->join('calls', 'calls.service_id', '=', 'services.id')
+                    ->where('created_at', '>=', Carbon::now()->startOfDay())
+                    ->where('created_at', '<=', Carbon::now())
+                    ->join(DB::raw('(SELECT service_id, MAX(id) as max_id FROM calls GROUP BY service_id) AS m'), function ($join) {
+                        $join->on('m.service_id', '=', 'services.id');
+                    })
+                    ->join('counters', 'counters.id', '=', 'calls.counter_id')
+                    ->groupBy('services.id', 'services.name', 'calls.call_status_id', 'calls.counter_id', 'calls.queue_id', 'counters.name')
+                    ->get();
+        return $services;
+    }
+
     public function getCallsForAntrian()
     {
-        $data=Call::with('service')->where('created_at', '>=', Carbon::now()->startOfDay())->where('created_at', '<=', Carbon::now())->orderByDesc('id')->with('counter')->get()->toArray();
+        $data=Call::with('service','counter')
+        ->where('created_at', '>=', Carbon::now()->startOfDay())
+        ->where('created_at', '<=', Carbon::now())
+        ->orderByDesc('id')
+        ->limit(9)
+        ->get()
+        ->toArray();
         return $data;
+    }
+
+    public function getCallsForAntrian2()
+    {
+        $data = Service::leftJoin('calls', 'services.id', '=', 'calls.service_id')
+                    ->leftJoin('counters', 'counters.id', '=', 'calls.counter_id')
+                    ->select('*')
+                    ->where('calls.created_at', '>=', Carbon::today())
+                    ->where('calls.created_at', '<', Carbon::tomorrow())
+                    ->get();
+        return $data;
+    }
+
+    public function getCallsForToday()
+    {
+        $calls = Call::whereDate('created_at', '>=', now()->toDateString())
+                    ->whereDate('created_at', '<', now()->addDay()->toDateString())
+                    ->get();
+
+        return $calls;
     }
 
     public function getTokenForCallNext($service_id, $counter_id)
