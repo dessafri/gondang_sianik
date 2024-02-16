@@ -90,12 +90,12 @@ class TokenRepository
 
     public function createTokenOnline(Service $service, $data, $is_details)
     {
-        $date_add = date('Y-m-d' ,strtotime($data['date']. '+1 day'));
-        $last_token = Queue::where('created_at', '>=', $data['date'])
-        ->where('created_at', '<', $date_add)
-        ->where('service_id', $service->id)
-        ->orderBy('number', 'desc')
+        $last_token = Queue::where('created_at', '>=', Carbon::now()->startOfDay())
+        ->where('created_at', '<', Carbon::now()
+        ->endOfDay())->where('service_id', $service->id)
+        ->orderBy('created_at', 'desc')
         ->first();
+
         if ($last_token) $token_number = $last_token->number + 1;
         else $token_number = $service->start_number;
         $queue = Queue::create([

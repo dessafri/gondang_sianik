@@ -149,9 +149,7 @@ class TokenController extends Controller
     { 
         $requestDate = $request->date;
         $date_data = Carbon::parse($requestDate);
-
         $dayOfWeek = $date_data->format('l'); 
-        
         // Mengambil data jam operasional untuk hari ini dari tabel operational_time
         // $operationalTime = OperationalTime::where('day', $dayOfWeek)
         // ->where('status', 'Online')
@@ -167,7 +165,8 @@ class TokenController extends Controller
         //     return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian diluar jam operasional.']]]);
         // }
             // Validasi batas maksimum antrian
-            $totalQueueToday = Queue::whereDate('created_at', $request->date)
+            $date_inputan = date('Y-m-d', strtotime($request->date));
+            $totalQueueToday = Queue::whereDate('created_at', $date_inputan)
             ->where('service_id', $request->service_id)
             ->count(); // Menghitung total antrian pada tanggal saat ini
             $queueLimit = DB::table('services')->where('id', $request->service_id)->value('online_limit');
@@ -175,13 +174,12 @@ class TokenController extends Controller
                 return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian sudah Mencapai Limit. Silahkan datang untuk Antri Offline']]]);
             }else{
                 $phoneNumber = $request->phone;
-                $created_at = $request->date;
                 
                 if (empty($phoneNumber)) {
                     return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Nomor telepon tidak terdeteksi. Silahkan chat ulang Whatsapp LASMINI']]]);
                 }
 
-                $existingQueue = Queue::whereDate('created_at', $created_at)
+                $existingQueue = Queue::whereDate('created_at', $date_inputan)
                                     ->where('phone', $phoneNumber)
                                     ->exists();
                 if ($existingQueue) {
