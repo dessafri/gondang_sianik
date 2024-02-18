@@ -5,8 +5,10 @@ namespace App\Repositories;
 use App\Consts\CallStatuses;
 use App\Models\Call;
 use App\Models\Queue;
+use App\Models\Session;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ReportRepository
 {
@@ -20,7 +22,22 @@ class ReportRepository
         $report = $query->get();
         return $report;
     }
+    
+    public function getSeesionList()
+    {
+        return DB::table('sessions')
+        ->join('services', 'sessions.service_id', '=', 'services.id')
+        ->where('counter_id', '!=', NULL)
+        ->get();
+    }
 
+    public function deleteSessionsWithCounterNotNull()
+    {
+        return DB::table('sessions')
+            ->whereNotNull('counter_id')
+            ->delete();
+    }
+    
     public function getQueueListReport($starting_date, $ending_date)
     {
         $report = DB::table('queues')->Leftjoin('calls', 'calls.queue_id', '=', 'queues.id')

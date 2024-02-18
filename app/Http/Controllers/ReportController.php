@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Exports\QueueExport;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -66,6 +67,46 @@ class ReportController extends Controller
         'monitors' => $monitors
         ]
         );
+    }
+
+    public function showResetSession()
+    {
+        $sessions = $this->reportRepository->getSeesionList();
+        return view('reports.reset_session', 
+        ['timezone' => Setting::first()->timezone,
+        'sessions' => $sessions
+        ]
+        );
+    }
+
+    public function deleteSessions(Request $request)
+    {        
+        try {
+            $this->reportRepository->deleteSessionsWithCounterNotNull();
+        } catch (\Exception $e) {
+            $request->session()->flash('error', 'Something Went Wrong');
+            return redirect()->route('reports.reset_session');
+        }
+        $request->session()->flash('success', 'Succesfully deleted the record');
+        return redirect()->route('reports.reset_session');
+    }
+
+    public function destroy(reportRepository $reportRepository, Request $request)
+    {
+
+        DB::beginTransaction();
+        try {
+            DB::table('sessions')
+            ->whereNotNull('counter_id')
+            ->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('error', 'Something Went Wrong');
+            return redirect()->route('reports.reset_session');
+        }
+        DB::commit();
+        $request->session()->flash('success', 'Succesfully deleted the record');
+        return redirect()->route('reports.reset_session');
     }
 
     public function showSatiticalReport()

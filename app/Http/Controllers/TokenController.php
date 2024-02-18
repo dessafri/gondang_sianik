@@ -89,21 +89,27 @@ class TokenController extends Controller
         ->where('status', 'Offline')
         ->first();
 
-        // if (!$operationalTime) {
-        //     // Tidak ada jam operasional yang ditemukan untuk hari ini
-        //     return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian tidak tersedia hari ini.']]]);
-        // }
-        // if ($timeNow <= $operationalTime->on_time || $timeNow >= $operationalTime->off_time) {
-        //     return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian diluar jam operasional.']]]);
-        // }
             // Memeriksa batas antrian seperti yang sudah Anda lakukan sebelumnya
             $totalQueueToday = Queue::whereDate('created_at', $date->toDateString())
             ->where('service_id', $request->service_id)
+            ->where('status_queue', 'Offline')
             ->count(); // Menghitung total antrian pada tanggal saat ini
             $queueLimit = DB::table('services')->where('id', $request->service_id)->value('offline_limit');
             if ($totalQueueToday >= $queueLimit) {
                 return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian sudah Mencapai Limit.']]]);
-            }else{
+            }
+
+            $phoneNumber = $request->phone;
+            if (!empty($phoneNumber)) {                
+                $existingQueue = Queue::whereDate('created_at', $date->toDateString())
+                ->where('phone', $phoneNumber)
+                ->where('status_queue', 'Offline')
+                ->exists();
+                if ($existingQueue) {
+                return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
+                }
+            }
+            
                 DB::beginTransaction();
                 try {
                     $service = Service::findOrFail($request->service_id);
@@ -142,7 +148,7 @@ class TokenController extends Controller
                 DB::commit();
                 $queue = $queue->load('service');
                 return response()->json(['status_code' => 200, 'queue' => $queue, 'customer_waiting' => $customer_waiting, 'settings' => $settings]);
-            }
+            
     }
 
     public function createTokenOnline(Request $request, Service $service)
@@ -150,24 +156,12 @@ class TokenController extends Controller
         $requestDate = $request->date;
         $date_data = Carbon::parse($requestDate);
         $dayOfWeek = $date_data->format('l'); 
-        // Mengambil data jam operasional untuk hari ini dari tabel operational_time
-        // $operationalTime = OperationalTime::where('day', $dayOfWeek)
-        // ->where('status', 'Online')
-        // ->first();
-        // if (!$operationalTime) {
-        //     // Tidak ada jam operasional yang ditemukan untuk hari ini
-        //     return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian tidak tersedia hari ini.']]]);
-        // }
-        
-        // $date = now();
-        // $timeNow = $date->format('H:i:s');
-        // if ($timeNow <= $operationalTime->on_time || $timeNow >= $operationalTime->off_time) {
-        //     return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian diluar jam operasional.']]]);
-        // }
+
             // Validasi batas maksimum antrian
             $date_inputan = date('Y-m-d', strtotime($request->date));
             $totalQueueToday = Queue::whereDate('created_at', $date_inputan)
             ->where('service_id', $request->service_id)
+            ->where('status_queue', 'Online')
             ->count(); // Menghitung total antrian pada tanggal saat ini
             $queueLimit = DB::table('services')->where('id', $request->service_id)->value('online_limit');
             if ($totalQueueToday >= $queueLimit) {

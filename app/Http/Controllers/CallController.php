@@ -13,6 +13,7 @@ use App\Repositories\CallRepository;
 use App\Repositories\CounterRepository;
 use App\Repositories\ServiceRepository;
 use App\Repositories\TokenRepository;
+use App\Repositories\ReportRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,18 +22,20 @@ class CallController extends Controller
 {
     protected $counterRepository, $serviceRepository, $tokenRepository, $callRepository;
 
-    public function __construct(CounterRepository $counterRepository, ServiceRepository $serviceRepository, TokenRepository $tokenRepository, CallRepository $callRepository)
+    public function __construct(CounterRepository $counterRepository, ServiceRepository $serviceRepository, TokenRepository $tokenRepository, CallRepository $callRepository,ReportRepository $reportRepository)
     {
         $this->counterRepository = $counterRepository;
         $this->serviceRepository = $serviceRepository;
         $this->tokenRepository = $tokenRepository;
         $this->callRepository = $callRepository;
+        $this->reportRepository = $reportRepository;
     }
 
     public function showCallPage(Request $request)
     {
         return view('call.call',
         ['counters' => $this->counterRepository->getAllActiveCounters(),
+        'monitors' => $this->reportRepository->getAntrianListReport(),
         'services' => $this->serviceRepository->getAllActiveServices(),
         'date' => Carbon::now()->toDateString(),
         'show_menu' => true,

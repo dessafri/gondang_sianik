@@ -5,7 +5,7 @@
 return [
     'common' => [
         'update' => 'Memperbarui',
-        'submit' => 'Kirim',
+        'submit' => 'Setuju',
         'go back' => 'Kembali',
         'edit' => 'Sunting',
         'delete' => 'Menghapus',

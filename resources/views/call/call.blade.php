@@ -10,6 +10,16 @@
 </div>
 <div id="main" style="width:99%">
     <div class="wrapper no-print" id="call-page">
+        <p align="left" style="font-size: 10px;">
+        Belum Dipanggil
+        <ul style="font-size: 10px;">
+            @foreach($monitors as $key=>$monitor)
+            <li>
+                {{$monitor->service_name}} : {{$monitor->belum_dipanggil}}
+            </li>
+            @endforeach
+        </ul>
+        </p>
         <section id="content" class="content-wrapper no-print" v-cloak>
             <div class="container" style="background:#f9f9f9 !important;">
                 <div id="card-reveal" class="section" style="padding:0px !important;">

@@ -5,7 +5,7 @@
 return [
     'common' => [
         'update' => 'Update',
-        'submit' => 'Submit',
+        'submit' => 'Setuju',
         'go back' => 'Go Back',
         'edit' => 'Edit',
         'delete' => 'Delete',

@@ -20,13 +20,20 @@ class TokenRepository
 
     public function createToken(Service $service, $data, $is_details)
     {
-        $last_token = Queue::where('created_at', '>=', Carbon::now()->startOfDay())
-        ->where('created_at', '<', Carbon::now()
-        ->endOfDay())->where('service_id', $service->id)
+        $last_token = Queue::whereDate('created_at', Carbon::now())
+        ->where('service_id', $service->id)
         ->orderBy('created_at', 'desc')
         ->first();
-        if ($last_token) $token_number = $last_token->number + 1;
-        else $token_number = $service->start_number;
+        if ($last_token) {
+            if ($last_token->created_at->isToday()) {
+                $token_number = $last_token->number + 1;
+            } else {
+                $token_number = $service->start_number;
+            }
+        } else {
+            $token_number = $service->start_number;
+        }
+        
         $queue = Queue::create([
             'service_id' => $service->id,
             'number' => $token_number,
@@ -90,14 +97,20 @@ class TokenRepository
 
     public function createTokenOnline(Service $service, $data, $is_details)
     {
-        $last_token = Queue::where('created_at', '>=', Carbon::now()->startOfDay())
-        ->where('created_at', '<', Carbon::now()
-        ->endOfDay())->where('service_id', $service->id)
+        $last_token = Queue::whereDate('created_at', Carbon::now())
+        ->where('service_id', $service->id)
         ->orderBy('created_at', 'desc')
         ->first();
+        if ($last_token) {
+            if ($last_token->created_at->isToday()) {
+                $token_number = $last_token->number + 1;
+            } else {
+                $token_number = $service->start_number;
+            }
+        } else {
+            $token_number = $service->start_number;
+        }
 
-        if ($last_token) $token_number = $last_token->number + 1;
-        else $token_number = $service->start_number;
         $queue = Queue::create([
             'service_id' => $service->id,
             'number' => $token_number,
