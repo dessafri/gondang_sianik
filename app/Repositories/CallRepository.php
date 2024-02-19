@@ -153,7 +153,22 @@ class CallRepository
                     ->join('counters', 'counters.id', '=', 'calls.counter_id')
                     ->groupBy('services.id', 'services.name', 'calls.call_status_id', 'calls.counter_id', 'calls.queue_id', 'counters.name')
                     ->get();
-        return $services;
+
+                    $data = [];
+                    foreach ($services as $value) {
+                        $callStatus = $value->call_status_id;
+                        $counterName = $value->countername;
+                        $queueName = $value->queue_id;
+                    
+                        $data[] = [
+                            'service' => $value->name,
+                            'calls' => $callStatus,
+                            'counter' => $counterName,
+                            'queue' => $queueName
+                        ];
+                    }
+                    // dd(json_encode($data));
+                    return $data;
     }
 
     public function getCallsForAntrian()
@@ -167,17 +182,6 @@ class CallRepository
         ->toArray();
         return $data;
     }
-
-    // public function getCallsForAntrian2()
-    // {
-    //     $data = Service::leftJoin('calls', 'services.id', '=', 'calls.service_id')
-    //                 ->leftJoin('counters', 'counters.id', '=', 'calls.counter_id')
-    //                 ->select('*')
-    //                 ->where('calls.created_at', '>=', Carbon::today())
-    //                 ->where('calls.created_at', '<', Carbon::tomorrow())
-    //                 ->get();
-    //     return $data;
-    // }
 
     public function getCallsForToday()
     {

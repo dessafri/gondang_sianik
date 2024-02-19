@@ -6,6 +6,7 @@ use App\Models\CallStatus;
 use App\Models\Counter;
 use App\Models\Service;
 use App\Models\Setting;
+use App\Models\Session;
 use App\Models\User;
 use App\Repositories\ReportRepository;
 use Carbon\Carbon;
@@ -80,33 +81,18 @@ class ReportController extends Controller
     }
 
     public function deleteSessions(Request $request)
-    {        
-        try {
-            $this->reportRepository->deleteSessionsWithCounterNotNull();
-        } catch (\Exception $e) {
-            $request->session()->flash('error', 'Something Went Wrong');
-            return redirect()->route('reports.reset_session');
-        }
-        $request->session()->flash('success', 'Succesfully deleted the record');
-        return redirect()->route('reports.reset_session');
-    }
-
-    public function destroy(reportRepository $reportRepository, Request $request)
     {
-
-        DB::beginTransaction();
         try {
             DB::table('sessions')
-            ->whereNotNull('counter_id')
-            ->delete();
+                ->where('counter_id', $request->counter_id)
+                ->update(['counter_id' => null, 'service_id' => null]);
+            
         } catch (\Exception $e) {
-            DB::rollback();
-            $request->session()->flash('error', 'Something Went Wrong');
-            return redirect()->route('reports.reset_session');
+            $request->session()->flash('error', 'Sometings Wrong');
         }
-        DB::commit();
-        $request->session()->flash('success', 'Succesfully deleted the record');
-        return redirect()->route('reports.reset_session');
+        
+        $request->session()->flash('success', 'Successfully deleted the record');
+        return redirect()->route('sessions_list');
     }
 
     public function showSatiticalReport()

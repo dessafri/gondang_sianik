@@ -103,6 +103,7 @@ class TokenController extends Controller
             if (!empty($phoneNumber)) {                
                 $existingQueue = Queue::whereDate('created_at', $date->toDateString())
                 ->where('phone', $phoneNumber)
+                ->where('service_id', $request->service_id)
                 ->where('status_queue', 'Offline')
                 ->exists();
                 if ($existingQueue) {
@@ -175,6 +176,7 @@ class TokenController extends Controller
 
                 $existingQueue = Queue::whereDate('created_at', $date_inputan)
                                     ->where('phone', $phoneNumber)
+                                    ->where('service_id', $request->service_id)
                                     ->exists();
                 if ($existingQueue) {
                     return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);

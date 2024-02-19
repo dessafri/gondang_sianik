@@ -30,13 +30,6 @@ class ReportRepository
         ->where('counter_id', '!=', NULL)
         ->get();
     }
-
-    public function deleteSessionsWithCounterNotNull()
-    {
-        return DB::table('sessions')
-            ->whereNotNull('counter_id')
-            ->delete();
-    }
     
     public function getQueueListReport($starting_date, $ending_date)
     {

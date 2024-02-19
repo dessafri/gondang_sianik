@@ -37,7 +37,7 @@
                                                         <th>Layanan</th>
                                                         <th>Loket</th>
                                                         <th>Aktifitas Terakhir</th>
-                                                    <th>{{__('messages.user_page.action')}}</th>
+                                                        <th>Tindakan</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -48,7 +48,7 @@
                                                         <td>{{$session->counter_id}}</td>
                                                         <td>{{$session->last_activity}}</td>
                                                         <td>
-                                                            <a class="btn-floating btn-action waves-effect waves-light red tooltipped" href="{{route('reports.reset_session',[$session->id])}}" data-position=top data-tooltip="{{__('messages.common.delete')}}"><i class="material-icons">delete</i></a>
+                                                            <a href="{{ route('reports.reset_session', ['counter_id' => $session->counter_id]) }}" class="btn btn-success">Reset Session</a>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -81,6 +81,7 @@
             [10, 25, 50, "All"]
         ]
     });
+
     $(document).ready(function() {
         $('body').addClass('loaded');
     });

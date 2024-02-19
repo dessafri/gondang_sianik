@@ -42,6 +42,8 @@
           </li>
           <li class="@yield('monthly_report')"><a class="@yield('monthly_report')" href="{{route('monthly_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Search">{{__('messages.menu.monthly report')}}</span></a>
           </li>
+          <li class="@yield('sessions_list')"><a class="@yield('sessions_list')" href="{{route('sessions_list')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Search">Session Data</span></a>
+          </li>
           <!-- <li class="@yield('statitical_report')"><a  class="@yield('statitical_report')" href="{{route('statitical_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Knowledge">Statitical</span></a>
               </li> -->
     </li>

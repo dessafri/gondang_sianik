@@ -20,17 +20,22 @@ class TokenRepository
 
     public function createToken(Service $service, $data, $is_details)
     {
-        $last_token = Queue::whereDate('created_at', Carbon::now())
-        ->where('service_id', $service->id)
-        ->orderBy('created_at', 'desc')
-        ->first();
+        $currentTime = Carbon::now()->format('Y-m-d');
+        $endOfDay = Carbon::now()->endOfDay()->format('Y-m-d H:i:s');
+        
+        $last_token = Queue::where('created_at', '>=', $currentTime)
+            ->where('created_at', '<', $endOfDay)
+            ->where('service_id', $service->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+            
         if ($last_token) {
             if ($last_token->created_at->isToday()) {
                 $token_number = $last_token->number + 1;
             } else {
                 $token_number = $service->start_number;
             }
-        } else {
+        }else{
             $token_number = $service->start_number;
         }
         
@@ -97,17 +102,22 @@ class TokenRepository
 
     public function createTokenOnline(Service $service, $data, $is_details)
     {
-        $last_token = Queue::whereDate('created_at', Carbon::now())
-        ->where('service_id', $service->id)
-        ->orderBy('created_at', 'desc')
-        ->first();
+        $currentTime = Carbon::now()->format('Y-m-d');
+        $endOfDay = Carbon::now()->endOfDay()->format('Y-m-d H:i:s');
+        
+        $last_token = Queue::where('created_at', '>=', $currentTime)
+            ->where('created_at', '<', $endOfDay)
+            ->where('service_id', $service->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+            
         if ($last_token) {
             if ($last_token->created_at->isToday()) {
                 $token_number = $last_token->number + 1;
             } else {
                 $token_number = $service->start_number;
             }
-        } else {
+        }else{
             $token_number = $service->start_number;
         }
 
