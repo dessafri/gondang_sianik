@@ -58,15 +58,13 @@ class ReportRepository
                 'services.name AS service_name',
                 DB::raw('SUM(CASE WHEN queues.called = 0 THEN 1 ELSE 0 END) AS belum_dipanggil'),
                 DB::raw('SUM(CASE WHEN queues.called = 1 THEN 1 ELSE 0 END) AS terpanggil'),
-                DB::raw('SUM(CASE WHEN queues.called = 2 THEN 1 ELSE 0 END) AS tidak_hadir'),
+                DB::raw('SUM(CASE WHEN calls.call_status_id = 2 THEN 1 ELSE 0 END) AS tidak_hadir'),
                 DB::raw('COUNT(queues.id) AS total_antrian'),
                 DB::raw('MAX(CASE WHEN queues.called = 1 THEN queues.letter ELSE NULL END) AS letter_called'),
                 DB::raw('MAX(CASE WHEN queues.called = 1 THEN queues.number ELSE NULL END) AS number_called')
             )
             ->groupBy('services.name')
-        ->get();
-
-       
+        ->get();       
     }
 
     public function getMonthlyReport($data)

@@ -27,10 +27,11 @@ class TokenRepository
             ->where('created_at', '<', $endOfDay)
             ->where('service_id', $service->id)
             ->orderBy('created_at', 'desc')
+            ->lockForUpdate()
             ->first();
             
         if ($last_token) {
-            if ($last_token->created_at->isToday()) {
+            if ($last_token->created_at->toDateString() === $currentTime) {
                 $token_number = $last_token->number + 1;
             } else {
                 $token_number = $service->start_number;
@@ -109,10 +110,11 @@ class TokenRepository
             ->where('created_at', '<', $endOfDay)
             ->where('service_id', $service->id)
             ->orderBy('created_at', 'desc')
+            ->lockForUpdate()
             ->first();
             
         if ($last_token) {
-            if ($last_token->created_at->isToday()) {
+            if ($last_token->created_at->toDateString() === $currentTime) {
                 $token_number = $last_token->number + 1;
             } else {
                 $token_number = $service->start_number;
