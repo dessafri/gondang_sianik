@@ -38,6 +38,8 @@
         <ul class="collapsible collapsible-sub" data-collapsible="accordion">
           <li class="@yield('user_report')"><a class="@yield('user_report')" href="{{route('user_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Contact">{{__('messages.menu.user report')}}</span></a>
           </li>
+          <li class="@yield('user_report_total')"><a class="@yield('user_report_total')" href="{{route('user_report_total')}}"><i class="material-icons">radio_button_unchecked</i><span>Total Antrian Pengguna</span></a>
+          </li>
           <li class="@yield('queue_list_report')"><a class="@yield('queue_list_report')" href="{{route('queue_list_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Blog">{{__('messages.menu.queue list')}}</span></a>
           </li>
           <li class="@yield('monthly_report')"><a class="@yield('monthly_report')" href="{{route('monthly_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Search">{{__('messages.menu.monthly report')}}</span></a>

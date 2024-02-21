@@ -56,15 +56,26 @@ class ReportRepository
             ->where('queues.created_at', '<', $tomorrow)
             ->select(
                 'services.name AS service_name',
-                DB::raw('SUM(CASE WHEN queues.called = 0 THEN 1 ELSE 0 END) AS belum_dipanggil'),
-                DB::raw('SUM(CASE WHEN queues.called = 1 THEN 1 ELSE 0 END) AS terpanggil'),
-                DB::raw('SUM(CASE WHEN calls.call_status_id = 2 THEN 1 ELSE 0 END) AS tidak_hadir'),
+                DB::raw('SUM(queues.called = 0) AS belum_dipanggil'),
+                DB::raw('SUM(queues.called = 1) AS terpanggil'),
+                DB::raw('SUM(calls.call_status_id = 2 ) AS tidak_hadir'),
+                DB::raw('SUM(calls.call_status_id = 1 ) AS dilayani'),
                 DB::raw('COUNT(queues.id) AS total_antrian'),
                 DB::raw('MAX(CASE WHEN queues.called = 1 THEN queues.letter ELSE NULL END) AS letter_called'),
                 DB::raw('MAX(CASE WHEN queues.called = 1 THEN queues.number ELSE NULL END) AS number_called')
             )
             ->groupBy('services.name')
-        ->get();       
+        ->get();
+    }
+
+    public function getAntrianUserListReport($date)
+    {
+        return DB::table('calls')
+        ->select('users.id', 'users.name AS user_name', DB::raw('COUNT(calls.id) AS total_antrian'))
+        ->join('users', 'users.id', '=', 'calls.user_id')
+        ->whereDate('calls.created_at', $date)
+        ->groupBy('users.id', 'users.name')
+        ->get();
     }
 
     public function getMonthlyReport($data)

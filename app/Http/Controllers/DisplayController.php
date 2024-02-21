@@ -19,6 +19,7 @@ class DisplayController extends Controller
         $this->callRepository = $callRepository;
         $this->reportRepository = $reportRepository;
     }
+
     public function showDisplayUrl()
     {
         return view('display.index', 
@@ -30,9 +31,29 @@ class DisplayController extends Controller
         'file'=>'storage/app/public/tokens_for_display.json']);
     }
 
+    public function showDisplayServicesUrl()
+    {
+        return view('display.services', 
+        ['services' => $this->services->getAllActiveServicesWithLimits(), 
+        'calls' => $this->callRepository->getCallsForAntrian(), 
+        'date' => Carbon::now()->toDateString(), 
+        'settings' => Setting::first(),
+        'file'=>'storage/app/public/tokens_for_display.json']);
+    }
+
     public function showDisplayOnlineUrl()
     {
         return view('display.online', 
+        ['services' => $this->services->getAllActiveServicesWithLimits(),
+        'calls' => $this->services->getCallsForAntrian(),
+        'date' => Carbon::now()->toDateString(), 
+        'settings' => Setting::first(),
+        'file'=>'storage/app/public/tokens_for_display-online.json']);
+    }
+
+    public function showDisplayOnlineServiceUrl()
+    {
+        return view('display.online-service', 
         ['services' => $this->services->getAllActiveServicesWithLimits(),
         'calls' => $this->services->getCallsForAntrian(),
         'date' => Carbon::now()->toDateString(), 

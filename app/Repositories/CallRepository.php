@@ -139,6 +139,12 @@ class CallRepository
         return $data;
     }
 
+    public function getCallsForDisplayServices()
+    {
+        $data=Call::with('service')->where('created_at', '>=', Carbon::now()->startOfDay())->where('created_at', '<=', Carbon::now())->orderByDesc('id')->with('counter')->get()->toArray();
+        return $data;
+    }
+
     public function getCallsForDisplay2()
     {
         $services = Service::select('services.id', 'services.name', 'calls.call_status_id', 'calls.counter_id', 'calls.queue_id', 'counters.name as countername')

@@ -1,5 +1,6 @@
 @extends('layout.app')
 @section('title','Monitor Antrian')
+@section('monitor_antrian','active')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/data-tables/css/jquery.dataTables.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css')}}">
@@ -39,6 +40,7 @@
                                                         <th>Total Antrian Hari ini</th>
                                                         <th>Sudah Dipanggil</th>
                                                         <th>Belum Dipanggil</th>
+                                                        <th>Dilayani</th>
                                                         <th>Tidak Hadir</th>
                                                     </tr>
                                                 </thead>
@@ -51,6 +53,7 @@
                                                         <td>{{$monitor->total_antrian}}</td>
                                                         <td>{{$monitor->terpanggil}}</td>
                                                         <td>{{$monitor->belum_dipanggil}}</td>
+                                                        <td>{{$monitor->dilayani}}</td>
                                                         <td>{{$monitor->tidak_hadir}}</td>
                                                     </tr>
                                                     @endforeach

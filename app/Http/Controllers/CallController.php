@@ -246,6 +246,11 @@ class CallController extends Controller
         return response()->json($this->callRepository->getCallsForDisplay());
     }
 
+    public function getTokensForDisplayServices()
+    {
+        return response()->json($this->callRepository->getCallsForDisplayServices());
+    }
+
     public function getTokensForDisplayOnline()
     {
         return response()->json($this->callRepository->getCallsForAntrian());

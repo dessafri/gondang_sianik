@@ -1,5 +1,6 @@
 @extends('layout.app')
 @section('title','Jam Operasional')
+@section('operational_time','active')
 @section('content')
 <div id="main" style="width:99%;">
     <div id="breadcrumbs-wrapper">

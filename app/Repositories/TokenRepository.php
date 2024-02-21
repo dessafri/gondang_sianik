@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use App\Repositories\ServiceRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TokenRepository
 {
@@ -20,24 +22,33 @@ class TokenRepository
 
     public function createToken(Service $service, $data, $is_details)
     {
-        $currentTime = Carbon::now()->format('Y-m-d');
-        $endOfDay = Carbon::now()->endOfDay()->format('Y-m-d H:i:s');
-        
-        $last_token = Queue::where('created_at', '>=', $currentTime)
-            ->where('created_at', '<', $endOfDay)
-            ->where('service_id', $service->id)
-            ->orderBy('created_at', 'desc')
-            ->lockForUpdate()
-            ->first();
+        DB::beginTransaction();
+
+        try {
+            $currentTime = now()->toDateString();
+            $endOfDay = now()->endOfDay(); 
             
-        if ($last_token) {
-            if ($last_token->created_at->toDateString() === $currentTime) {
-                $token_number = $last_token->number + 1;
+            $last_token = Queue::where('created_at', '>=', $currentTime)
+                ->where('created_at', '<', $endOfDay)
+                ->where('service_id', $service->id)
+                ->orderBy('created_at', 'desc')
+                ->sharedLock()
+                ->first();
+                
+            if ($last_token) {
+                if ($last_token->created_at->toDateString() === $currentTime) {
+                    $token_number = $last_token->number + 1;
+                } else {
+                    $token_number = $service->start_number;
+                }
             } else {
                 $token_number = $service->start_number;
             }
-        }else{
-            $token_number = $service->start_number;
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error occurred: ' . $e->getMessage());
         }
         
         $queue = Queue::create([
@@ -103,24 +114,33 @@ class TokenRepository
 
     public function createTokenOnline(Service $service, $data, $is_details)
     {
-        $currentTime = Carbon::now()->format('Y-m-d');
-        $endOfDay = Carbon::now()->endOfDay()->format('Y-m-d H:i:s');
-        
-        $last_token = Queue::where('created_at', '>=', $currentTime)
-            ->where('created_at', '<', $endOfDay)
-            ->where('service_id', $service->id)
-            ->orderBy('created_at', 'desc')
-            ->lockForUpdate()
-            ->first();
+        DB::beginTransaction();
+
+        try {
+            $currentTime = now()->toDateString();
+            $endOfDay = now()->endOfDay(); 
             
-        if ($last_token) {
-            if ($last_token->created_at->toDateString() === $currentTime) {
-                $token_number = $last_token->number + 1;
+            $last_token = Queue::where('created_at', '>=', $currentTime)
+                ->where('created_at', '<', $endOfDay)
+                ->where('service_id', $service->id)
+                ->orderBy('created_at', 'desc')
+                ->sharedLock()
+                ->first();
+                
+            if ($last_token) {
+                if ($last_token->created_at->toDateString() === $currentTime) {
+                    $token_number = $last_token->number + 1;
+                } else {
+                    $token_number = $service->start_number;
+                }
             } else {
                 $token_number = $service->start_number;
             }
-        }else{
-            $token_number = $service->start_number;
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error occurred: ' . $e->getMessage());
         }
 
         $queue = Queue::create([

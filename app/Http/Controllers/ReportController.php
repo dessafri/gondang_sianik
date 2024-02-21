@@ -36,6 +36,17 @@ class ReportController extends Controller
         return view('reports.user_report', ['users' => User::get(), 'reports' => $report, 'selected_user_id' => $selected_user_id, 'selected_date' => $selected_date]);
     }
 
+    public function showUserList(Request $request)
+    {
+        $report = null;
+        $selected_date = null;
+        if ($request->date) {
+            $selected_date = $request->date;
+            $report = $this->reportRepository->getAntrianUserListReport($request->date);
+        }
+        return view('reports.users_list_report', ['reports' => $report, 'selected_date' => $selected_date]);
+    }
+
     public function export(Request $request)
     {
         $startingDate = $request->input('starting_date');

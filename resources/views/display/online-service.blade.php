@@ -6,7 +6,27 @@
 
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
+    <style>
+        ul#menu {
+            padding: 0;
+        }
 
+        ul#menu li {
+            display: inline;
+        }
+
+        ul#menu li a {
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px 4px 0 0;
+        }
+
+        ul#menu li a:hover {
+            background-color: red;
+        }
+    </style>
 </div>
 <div id="main" class="no-print" style="padding: 15px 15px 0px;">
 
@@ -34,22 +54,36 @@
             <div id="callarea" class="row" style="line-height: 1; display: flex; flex-direction: row-reverse">
                 <div class="col m12">
                     <div class="card-panel center-align p-0" style="margin-bottom: 0; height: auto; font-size: 20px;" id="side-token-display">
-                        <div class="row"><br>
-                            <center><h3>Rekam Pemanggilan</h3></center>
-                            <div class="row d-flex justify-content-center">
-                                <div v-for="(token, index) in tokens.slice(1)" :key="index" class="col m6"><br>
-                                    <small v-if="token" class="bolder-color" style="font-size: 50px; font-weight: bold; color: red">@{{ token.service.name }}</small><br>
-                                    <span v-if="token" class="bolder-color" style="font-size: 75px; font-weight: bold; line-height: 1.2">@{{ token.token_letter }}-@{{ token.token_number }}</span>
-                                    <span v-else class="bolder-color" style="font-size: 75px; font-weight: bold; line-height: 1.2">{{ __('messages.display.nil') }}</span><br>
-                                    <small v-if="token" class="bolder-color" :id="'counter' + index" style="font-size: 30px; font-weight: bold;">@{{ token.counter.name }}</small>
-                                    <small v-else class="bolder-color" :id="'counter' + index" style="font-size: 25px; font-weight: bold;">{{ __('messages.display.nil') }}</small><br>
-                                    <small v-if="token && token.call_status_id == {{ CallStatuses::SERVED }}" style="font-size: 20px; color: #009688; font-weight: bold;">{{ __('messages.display.served') }}</small>
-                                    <small v-if="token && token.call_status_id == {{ CallStatuses::NOSHOW }}" style="font-size: 20px; font-weight: bold; color: red">{{ __('messages.display.noshow') }}</small>
-                                    <small v-if="token && token.call_status_id == null" style="font-size: 20px; color: orange; font-weight: bold;">{{ __('messages.display.serving') }}</small>
-                                    <small v-if="!token" style="font-size: 20px;">{{__('messages.display.nil')}}</small>
-                                    <br><br>
-                                </div>
-                            </div><br>
+                        <center><h3>Rekam Pemanggilan</h3></center>
+                        <div class="justify-content-center">
+                            <table>
+                                @foreach($services as $service)
+                                    @php
+                                    $serviceName = $service->name;
+                                    @endphp
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <small class="bolder-color" style="font-size:45px;font-weight:bold;color:red">{{ $serviceName }}</small><br>
+                                                        <template v-for="(token, index) in tokens" :key="index">
+                                                            <template v-if="token.service.name === '{{ $serviceName }}'">
+                                                                    <span class="bolder-color" style="font-size:40px;font-weight:bold;line-height:1.2">@{{ token.token_letter }}-@{{ token.token_number }}</span> - 
+                                                                    <small class="bolder-color" :id="'counter' + index" style="font-size:35px;font-weight:bold;">@{{ token.counter.name }}</small>
+                                                                    <small v-if="token && token.call_status_id == {{ CallStatuses::SERVED }}" style="font-size:30px;color:#009688;font-weight:bold;">{{ __('messages.display.served') }}</small>
+                                                                    <small v-if="token && token.call_status_id == {{ CallStatuses::NOSHOW }}" style="font-size:30px;font-weight:bold;color:red">{{ __('messages.display.noshow') }}</small>
+                                                                    <small v-if="token && token.call_status_id == null" style="font-size:30px;color:orange;font-weight:bold;">{{ __('messages.display.serving') }} </small>
+                                                                    <span style="font-size:30px;color:black;font-weight:bold;">  ||  </span>
+                                                            </template>
+                                                        </template>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -67,8 +101,8 @@
 @section('b-js')
 <script>
     window.JLToken = {
-        get_tokens_for_display_url: "{{ route('get-tokens-for-display-online') }}",
-        get_initial_tokens: "{{ route('get-tokens-for-display-online') }}",
+        get_tokens_for_display_url: "{{ route('get-tokens-for-display-service') }}",
+        get_initial_tokens: "{{ route('get-tokens-for-display-service') }}",
         date_for_display: "{{$date}}",
         voice_type: "{{$settings->language->display}}",
         voice_content_one: "{{$settings->language->token_translation}}",
