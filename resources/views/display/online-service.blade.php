@@ -57,33 +57,35 @@
                         <center><h3>Rekam Pemanggilan</h3></center>
                         <div class="justify-content-center">
                             <table>
-                                @foreach($services as $service)
-                                    @php
-                                    $serviceName = $service->name;
-                                    @endphp
-                                    <tr>
-                                        <td>
-                                            <table>
-                                                <tr>
-                                                    <td>
-                                                        <small class="bolder-color" style="font-size:45px;font-weight:bold;color:red">{{ $serviceName }}</small><br>
-                                                        <template v-for="(token, index) in tokens" :key="index">
-                                                            <template v-if="token.service.name === '{{ $serviceName }}'">
-                                                                    <span class="bolder-color" style="font-size:40px;font-weight:bold;line-height:1.2">@{{ token.token_letter }}-@{{ token.token_number }}</span> - 
-                                                                    <small class="bolder-color" :id="'counter' + index" style="font-size:35px;font-weight:bold;">@{{ token.counter.name }}</small>
-                                                                    <small v-if="token && token.call_status_id == {{ CallStatuses::SERVED }}" style="font-size:30px;color:#009688;font-weight:bold;">{{ __('messages.display.served') }}</small>
-                                                                    <small v-if="token && token.call_status_id == {{ CallStatuses::NOSHOW }}" style="font-size:30px;font-weight:bold;color:red">{{ __('messages.display.noshow') }}</small>
-                                                                    <small v-if="token && token.call_status_id == null" style="font-size:30px;color:orange;font-weight:bold;">{{ __('messages.display.serving') }} </small>
-                                                                    <span style="font-size:30px;color:black;font-weight:bold;">  ||  </span>
-                                                            </template>
-                                                        </template>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </table>
+    @foreach($services as $service)
+        @php
+            $serviceName = $service->name;
+        @endphp
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <small class="bolder-color" style="font-size:45px;font-weight:bold;color:red">{{ $serviceName }}</small><br>
+                            <template v-for="(token, index) in tokens" :key="index">
+                                <template v-if="token.service.name === '{{ $serviceName }}'">
+                                    <div>
+                                        <span class="bolder-color" style="font-size:40px;font-weight:bold;line-height:1.2">@{{ token.token_letter }}-@{{ token.token_number }} - </span>
+                                        <small class="bolder-color" :id="'counter' + index" style="font-size:35px;font-weight:bold;">@{{ token.counter.name }} - </small>
+                                        <small v-if="token && token.call_status_id == {{ CallStatuses::SERVED }}" style="font-size:30px;color:#009688;font-weight:bold;">[{{ __('messages.display.served') }}]</small>
+                                        <small v-if="token && token.call_status_id == {{ CallStatuses::NOSHOW }}" style="font-size:30px;font-weight:bold;color:red">[{{ __('messages.display.noshow') }}]</small>
+                                        <small v-if="token && token.call_status_id == null" style="font-size:30px;color:orange;font-weight:bold;">[{{ __('messages.display.serving') }}]</small>
+                                    </div>
+                                </template>
+                            </template>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    @endforeach
+</table>
+
                         </div>
                     </div>
                 </div>

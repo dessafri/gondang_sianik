@@ -23,8 +23,6 @@ class TokenRepository
     public function createToken(Service $service, $data, $is_details)
     {
         DB::beginTransaction();
-
-        try {
             $currentTime = now()->toDateString();
             $endOfDay = now()->endOfDay(); 
             
@@ -33,27 +31,16 @@ class TokenRepository
                 ->where('service_id', $service->id)
                 ->sharedLock()
                 ->count();
-                
             if ($last_token_count) {
-                $last_token = Queue::where('created_at', '>=', $currentTime)
-                    ->where('created_at', '<', $endOfDay)
-                    ->where('service_id', $service->id)
-                    ->orderBy('created_at', 'desc')
-                    ->sharedLock()
-                    ->first();
-    
-                if ($last_token) {
-                    $token_number = $last_token->number + 1;
-                } else {
-                    $token_number = $service->start_number;
-                }
+                    $token_number = $last_token_count + 1;
             } else {
                 $token_number = $service->start_number;
             }
-    
-            DB::commit();
-
-            $queue = Queue::create([
+            
+        DB::commit();
+        try {
+                
+                $queue = Queue::create([
                 'service_id' => $service->id,
                 'number' => $token_number,
                 'called' => false,
@@ -122,35 +109,22 @@ class TokenRepository
     public function createTokenOnline(Service $service, $data, $is_details)
     {
         DB::beginTransaction();
-
-        try {
-            $currentTime = now()->toDateString();
+        $currentTime = now()->toDateString();
         $endOfDay = now()->endOfDay(); 
-        
+            
         $last_token_count = Queue::where('created_at', '>=', $currentTime)
             ->where('created_at', '<', $endOfDay)
             ->where('service_id', $service->id)
             ->sharedLock()
             ->count();
-            
         if ($last_token_count) {
-            $last_token = Queue::where('created_at', '>=', $currentTime)
-                ->where('created_at', '<', $endOfDay)
-                ->where('service_id', $service->id)
-                ->orderBy('created_at', 'desc')
-                ->sharedLock()
-                ->first();
-
-            if ($last_token) {
-                $token_number = $last_token->number + 1;
-            } else {
-                $token_number = $service->start_number;
-            }
+                $token_number = $last_token_count + 1;
         } else {
             $token_number = $service->start_number;
         }
-
+        
         DB::commit();
+        try {
             $queue = Queue::create([
                 'service_id' => $service->id,
                 'number' => $token_number,
