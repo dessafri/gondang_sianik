@@ -14,6 +14,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlockedNumberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +83,9 @@ Route::middleware(['setLocale'])->group(function () {
             Route::get('reports/queue-list-report', [ReportController::class, 'showQueueListReport'])->name('queue_list_report');
             Route::get('reports/monitor-antrian', [ReportController::class, 'showMonitorAntrian'])->name('monitor_antrian');
             Route::get('reports/statitical-report', [ReportController::class, 'showSatiticalReport'])->name('statitical_report');
+            Route::get('reports/sessions-list', [ReportController::class, 'showResetSession'])->name('sessions_list');
+            Route::get('reports/reset-session/', [ReportController::class, 'deleteSessions'])->name('reports.reset_session');
+            Route::get('reports/user-report-total', [ReportController::class, 'showUserList'])->name('user_report_total');
         });
         Route::post('settings/update-session-language', [SettingsController::class, 'changeLanguageOnSession'])->name('change_session_language');
         //settings
@@ -109,6 +113,15 @@ Route::middleware(['setLocale'])->group(function () {
     // });
     // Route::group(['middleware' => ['permission:view display']], function () {
     Route::get('display', [DisplayController::class, 'showDisplayUrl'])->name('display');
+    Route::get('display-layanan', [DisplayController::class, 'showDisplayServicesUrl'])->name('display-layanan');
+    Route::get('display-online', [DisplayController::class, 'showDisplayOnlineUrl'])->name('display-online');
+    Route::get('display-online-layanan', [DisplayController::class, 'showDisplayOnlineServiceUrl'])->name('display-online-layanan');
     Route::get('get-tokens-for-display', [CallController::class, 'getTokensForDisplay'])->name('get-tokens-for-display');
+    Route::get('get-tokens-for-display-service', [CallController::class, 'getTokensForDisplayServices'])->name('get-tokens-for-display-service');
+    Route::get('get-tokens-for-display-online', [CallController::class, 'getTokensForDisplayOnline'])->name('get-tokens-for-display-online');
+
+    Route::group(['middleware' => ['permission:view blocked_number']], function () {
+        Route::resource('blocked_number', BlockedNumberController::class)->names('blocked_number');
+    });
     // });
 });

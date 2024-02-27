@@ -45,6 +45,7 @@ class ServiceRepository
                 FROM queues
                 WHERE created_at >= CURDATE() 
                 AND created_at < CURDATE() + INTERVAL 1 DAY
+                AND status_queue = "Offline"
                 GROUP BY service_id) AS queued'), 'services.id', '=', 'queued.service_id')
             ->where('services.status', '=', 1)
             ->get();
@@ -64,6 +65,7 @@ class ServiceRepository
                 FROM queues
                 WHERE created_at >= CURDATE() 
                 AND created_at < CURDATE() + INTERVAL 1 DAY
+                AND status_queue = "Online"
                 GROUP BY service_id) AS queued'), 'services.id', '=', 'queued.service_id')
             ->where('services.status_online', '=', 1)
             ->get();
