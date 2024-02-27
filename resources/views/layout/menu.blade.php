@@ -27,6 +27,10 @@
     <li class="bold"><a class="waves-effect waves-cyan @yield('operational_time') " href="{{route('operational_time.index')}}"><i class="material-icons">access_time</i><span class="menu-title" data-i18n="Kanban">Jam Operasional</span></a>
     </li>
     @endcan
+    @can('view blocked_number')
+    <li class="bold"><a class="waves-effect waves-cyan @yield('blocked_number') " href="{{route('blocked_number.index')}}"><i class="material-icons">block</i><span class="menu-title" data-i18n="Kanban">Pemblokiran Nomor</span></a>
+    </li>
+    @endcan
     @can('view monitor_antrian')
     <li class="bold">
       <a class="waves-effect waves-cyan @yield('monitor_antrian') " href="{{route('monitor_antrian')}}"><i class="material-icons">visibility</i><span class="menu-title" data-i18n="Kanban">Monitor Antrian</span></a>

@@ -75,6 +75,7 @@
     $('#page-length-option').DataTable({
         "responsive": true,
         "autoHeight": false,
+        "searching": true,
         "scrollX": true,
         "lengthMenu": [
             [10, 25, 50, -1],

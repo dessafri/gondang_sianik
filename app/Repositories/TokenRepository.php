@@ -63,7 +63,7 @@ class TokenRepository
                     Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk
                     Layanan : ".$services['name']."
                     Antrian : ".$service->letter." - ".$token_number."
-                    Tanggal : " . date('d F Y') . "
+                    Tanggal : " . date('d F Y H:i:s') . "
     
                     Silahkan datang pada tanggal yang tertera. Terima Kasih
                     *_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran , apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir_*.";
@@ -149,7 +149,7 @@ class TokenRepository
             Atas Nama : ".$data['name']."
             Layanan : ".$services['name']."
             Antrian : ".$service->letter." - ".$token_number."
-            Tanggal : " . date('d F Y', strtotime($data['date'])) . "
+            Tanggal : " . date('d F Y H:i:s', strtotime($data['date'])) . "
     
             Silahkan datang pada tanggal yang tertera. Terima Kasih
             *_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran , apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir_*.";

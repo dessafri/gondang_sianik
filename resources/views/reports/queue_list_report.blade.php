@@ -78,6 +78,7 @@
                                                         <th>{{__('messages.reports.token number')}}</th>
                                                         <th>Nama</th>
                                                         <th>NIK</th>
+                                                        <th>Telp</th>
                                                         <th>Status</th>
                                                         <th>{{__('messages.reports.called')}}</th>
                                                         <th>{{__('messages.reports.user')}}</th>
@@ -93,6 +94,7 @@
                                                         <td>{{$report->token_letter}}-{{$report->token_number}}</td>
                                                         <td>{{$report->name}}</td>
                                                         <td>{{$report->nik}}</td>
+                                                        <td>{{$report->phone}}</td>
                                                         <td>{{$report->status_queue}}</td>
                                                         <td>{{$report->called ==1 ? 'Yes' : 'No'}}</td>
                                                         <td>{{$report->user_name ? $report->user_name : 'Nil' }}</td>
@@ -190,7 +192,7 @@
 
     $('#page-length-option').DataTable({
         "responsive": true,
-        "searching": false,
+        "searching": true,
         "autoHeight": false,
         "scrollX": true,
         "lengthMenu": [

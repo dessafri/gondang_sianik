@@ -143,6 +143,18 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="input-field col s3">
+                                            <select name="combined_limit" id="combined_limit" data-error=".combined_limit" onchange="enableRequired()">
+                                                <option value="0" selected>No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <label>Limit Gabungan</label>
+                                            <div class="combined_limit">
+                                                @if ($errors->has('combined_limit'))
+                                                <span class="text-danger errbk">{{ $errors->first('combined_limit') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
 
                                         @if($settings->sms_enabled)
                                         <div class="input-field col s6">
@@ -160,7 +172,7 @@
                                         @endif
                                     </div>
                                     <div class="row form_align">
-                                        <div class="input-field col s6">
+                                        <div class="input-field col s4">
                                             <label for="online_limit">Limit Online</label>
                                             <input id="online_limit" name="online_limit" type="number" value="{{old('online_limit')}}" data-error=".online_limit">
                                             <div class="online_limit">
@@ -169,12 +181,21 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="input-field col s6">
+                                        <div class="input-field col s4">
                                             <label for="offline_limit">Limit Offline</label>
                                             <input id="offline_limit" name="offline_limit" type="number" value="{{old('offline_limit')}}" data-error=".offline_limit">
                                             <div class="offline_limit">
                                                 @if ($errors->has('offline_limit'))
                                                 <span class="text-danger errbk">{{ $errors->first('offline_limit') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <label for="limit">Limit</label>
+                                            <input id="limit" name="limit" type="number" value="{{old('limit')}}" data-error=".limit">
+                                            <div class="limit">
+                                                @if ($errors->has('limit'))
+                                                <span class="text-danger errbk">{{ $errors->first('limit') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -496,6 +517,16 @@
             $('#sms,#phone_required').val(0);
             $('#phone_required,#sms').prop('disabled', true);
             $('#sms_tab').hide();
+        }
+        if ($('#combined_limit').val() == 1) {
+            $('#limit').prop('readonly', false);
+            $('#online_limit').prop('readonly', true);
+            $('#offline_limit').prop('readonly', true);
+        } else {
+            $('#limit').val(0);
+            $('#limit').prop('readonly', true);
+            $('#online_limit').prop('readonly', false);
+            $('#offline_limit').prop('readonly', false);
         }
         $('select').formSelect();
     }

@@ -252,6 +252,7 @@
     $('#page-length-option').DataTable({
         "autoHeight": true,
         "scrollX": true,
+        "searching": true,
         "showAllColumns": true,
         "columnDefs": [{
             "width": "2%",

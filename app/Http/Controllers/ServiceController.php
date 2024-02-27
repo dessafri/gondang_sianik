@@ -84,6 +84,8 @@ class ServiceController extends Controller
             'offline_limit' => 'nullable',
             'online_limit' => 'nullable',
             'ask_nik' => 'required',
+            'combined_limit' => 'required',
+            'limit' => 'nullable',
         ]);
         DB::beginTransaction();
         try {
@@ -158,6 +160,8 @@ class ServiceController extends Controller
             'offline_limit' => 'nullable',
             'online_limit' => 'nullable',
             'ask_nik' => 'required',
+            'combined_limit' => 'required',
+            'limit' => 'nullable',
         ]);
         DB::beginTransaction();
         try {

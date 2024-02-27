@@ -18,7 +18,7 @@ class ReportRepository
             ->join('counters', 'calls.counter_id', '=', 'counters.id')
             ->where('calls.called_date', '=', $date);
         if (isset($user_id)) $query = $query->where('calls.user_id', '=', $user_id);
-        $query = $query->select('calls.id', 'calls.token_number', 'calls.token_letter', 'counters.name as counter_name', 'services.name as service_name');
+        $query = $query->select('calls.id', 'calls.token_number', 'calls.token_letter', 'counters.name as counter_name', 'services.name as service_name', 'calls.call_status_id');
         $report = $query->get();
         return $report;
     }
@@ -38,7 +38,7 @@ class ReportRepository
             ->Leftjoin('counters', 'counters.id', '=', 'calls.counter_id')
             ->Leftjoin('users', 'users.id', '=', 'calls.user_id')
             ->where('queues.created_at', '>=', Carbon::parse($starting_date)->startOfDay())->where('queues.created_at', '<', Carbon::parse($ending_date)->endOfDay())
-            ->select('services.name as service_name', 'queues.status_queue', 'queues.name', 'queues.nik', 'queues.created_at as date', 'queues.number as token_number', 'queues.letter as token_letter', 'queues.called', 'users.name as user_name', 'counters.name as counter_name')
+            ->select('services.name as service_name', 'queues.status_queue', 'queues.name', 'queues.nik', 'queues.phone', 'queues.created_at as date', 'queues.number as token_number', 'queues.letter as token_letter', 'queues.called', 'users.name as user_name', 'counters.name as counter_name')
             ->get();
         return $report;
     }
@@ -71,7 +71,10 @@ class ReportRepository
     public function getAntrianUserListReport($date)
     {
         return DB::table('calls')
-        ->select('users.id', 'users.name AS user_name', DB::raw('COUNT(calls.id) AS total_antrian'))
+        ->select('users.id', 'users.name AS user_name', 
+        DB::raw('COUNT(calls.id) AS total_antrian'),
+        DB::raw('SUM(calls.call_status_id = 1) AS antrian_hadir'),
+        DB::raw('SUM(calls.call_status_id = 2) AS tidak_hadir'),)
         ->join('users', 'users.id', '=', 'calls.user_id')
         ->whereDate('calls.created_at', $date)
         ->groupBy('users.id', 'users.name')

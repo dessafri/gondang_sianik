@@ -82,6 +82,7 @@
                                                             <th>{{__('messages.reports.service')}}</th>
                                                             <th>{{__('messages.reports.token number')}}</th>
                                                             <th>{{__('messages.reports.counter')}}</th>
+                                                            <th>{{__('messages.counter_page.status')}}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -91,7 +92,15 @@
                                                             <td>{{$report->service_name}}</td>
                                                             <td>{{$report->token_letter}}-{{$report->token_number}}</td>
                                                             <td>{{$report->counter_name}}</td>
-
+                                                            <td>
+                                                                @if($report->call_status_id == 1)
+                                                                    DIlayani
+                                                                @elseif($report->call_status_id == 2)
+                                                                    Tidak Hadir
+                                                                @else
+                                                                    Status Lainnya
+                                                                @endif
+                                                            </td>
                                                         </tr>
                                                         @endforeach
 
@@ -159,6 +168,7 @@
     $('#page-length-option').DataTable({
         "responsive": true,
         "autoHeight": false,
+        "searching": true,
         "scrollX": true,
         "lengthMenu": [
             [10, 25, 50, -1],

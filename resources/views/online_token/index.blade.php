@@ -176,46 +176,18 @@
                     tempElement.innerHTML = content;
                     document.body.appendChild(tempElement);
 
-                    // Mendapatkan lebar dan tinggi dari elemen
-                    const width = 300; // Menyesuaikan lebar gambar
-                    const height = 300; // Menyesuaikan tinggi gambar
+                    // Menghapus elemen temporer setelah digunakan
+                    document.body.removeChild(tempElement);
 
-                    // Membuat gambar dari elemen
-                    html2canvas(tempElement, { width: width, height: height }).then(function (canvas) {
-                        // Mengonversi ke format gambar PNG
-                        const imageData = canvas.toDataURL('image/png');
+                    window.location.reload();
 
-                        // Membuat elemen untuk tautan unduhan
-                        const link = document.createElement('a');
-                        link.download = 'Nomor Antrian.png';
-                        link.href = imageData;
-
-                        // Menambahkan elemen ke dalam dokumen dan mengkliknya secara otomatis
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-
-                        // Menghapus elemen temporer setelah digunakan
-                        document.body.removeChild(tempElement);
-
-                        window.location.reload();
-                    });
-                    
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
-                    // M.toast({
-                    //     html: "Silahkan ambil No. Antrian anda!",
-                    //     classes: "toast-error"
-                    // });
-                    alert('Silahkan ambil No. Antrian anda!');
+                    alert('Pendaftaran berhasil!');
                 } else if (response.status_code == 422 && response.errors) {
                     $('body').addClass('loaded');
                     $('#modal1').modal('close');
                     alert(response.errors.limit[0]);
-                    // M.toast({
-                    //     html: response.errors.limit[0],
-                    //     classes: "toast-error"
-                    // });
                 }
             }
         });
@@ -233,11 +205,25 @@
                     required: function(element) {
                         return service.nik_required == "1";
                     },
+                    digits: true,
+                    minlength: 16,
+                    maxlength: 16,
                 },
                 name: {
                     required: function(element) {
                         return service.name_required == "1";
                     },
+                    minlength: 4,
+                },
+            },
+            messages: {
+                nik: {
+                    digits: "NIK harus berupa angka",
+                    minlength: "NIK harus terdiri dari 16 digit",
+                    maxlength: "NIK harus terdiri dari 16 digit",
+                },
+                name: {
+                    minlength: "Nama harus terdiri dari minimal 4 huruf",
                 },
             },
             errorElement: 'div',

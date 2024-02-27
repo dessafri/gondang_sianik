@@ -207,9 +207,7 @@
                 $('body').removeClass('loaded');
                 var phone = $('#phone').val();
 
-                // Periksa apakah nomor telepon dimulai dengan 0
                 if (phone.startsWith('0')) {
-                    // Jika dimulai dengan 0, ganti dengan 62
                     phone = '62' + phone.substr(1);
                 }
 
@@ -239,6 +237,8 @@
                     $('#email').val(null);
                     $('#name').val(null);
                     $('#nik').val(null);
+                    const createdDate = new Date(response.queue.created_at);
+                    const formattedDate = createdDate.toLocaleString();
                     let html = `
                         <div style="text-align: center;">
                             <p style="font-size: 15px; font-weight: bold; margin-left:-15px; margin-top:-20px;">` + response.settings.name + ` ` + response.settings.location + `
@@ -251,7 +251,7 @@
                             <p style="font-size: 15px; margin-top:-12px;">Antrian Menunggu : ` + response.customer_waiting + `  
                             <br>
                             </p>
-                            <p style="font-size: 18px; margin-top: -16px;margin-bottom: 27px;">` + response.queue.formated_date + `</p>
+                            <p style="font-size: 18px; margin-top: -16px;margin-bottom: 27px;">${formattedDate}</p>
                             <br>
                             <p style="font-size: 25px; margin-top: -16px;margin-bottom: 27px;"> </p>
                             ${response.queue.nik ? `<p style="font-size: 20px; margin-top:-12px;">NIK : ` + response.queue.nik + ` </p>` : ''}

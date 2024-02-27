@@ -67,6 +67,8 @@
                                                             <th width="10px">#</th>
                                                             <th>Nama User</th>
                                                             <th>Total Antrian</th>
+                                                            <th>Total Antrian Hadir</th>
+                                                            <th>Total Antrian Tidak Hadir</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -75,6 +77,8 @@
                                                             <td>{{ $key+1}}</td>
                                                             <td>{{$report->user_name}}</td>
                                                             <td>{{$report->total_antrian}}</td>
+                                                            <td>{{$report->antrian_hadir}}</td>
+                                                            <td>{{$report->tidak_hadir}}</td>
 
                                                         </tr>
                                                         @endforeach
@@ -134,6 +138,7 @@
     $('#page-length-option').DataTable({
         "responsive": true,
         "autoHeight": false,
+        "searching": true,
         "scrollX": true,
         "lengthMenu": [
             [10, 25, 50, -1],
