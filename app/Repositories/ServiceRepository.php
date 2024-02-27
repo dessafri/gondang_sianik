@@ -33,42 +33,156 @@ class ServiceRepository
 
     public function getAllActiveServicesWithLimits()
     {
+        $today = Carbon::today();
+
         return DB::table('services')
-            ->select('services.*')
-            ->selectRaw('
-                CASE
-                    WHEN services.combined_limit = 1 THEN services.limit - IFNULL(queued.count, 0)
-                    WHEN services.combined_limit = 0 THEN services.offline_limit - IFNULL(queued.count, 0)
-                END AS remaining_limit
-            ')
-            ->leftJoin(DB::raw('(SELECT service_id, COUNT(id) AS count
-                FROM queues
-                WHERE created_at >= CURDATE() 
-                AND created_at < CURDATE() + INTERVAL 1 DAY
-                AND status_queue = "Offline"
-                GROUP BY service_id) AS queued'), 'services.id', '=', 'queued.service_id')
-            ->where('services.status', '=', 1)
-            ->get();
+        ->select(
+            'services.id',
+            'services.name',
+            'services.letter',
+            'services.start_number',
+            'services.status',
+            'services.sms_enabled',
+            'services.optin_message_enabled',
+            'services.call_message_enabled',
+            'services.noshow_message_enabled',
+            'services.completed_message_enabled',
+            'services.status_message_enabled',
+            'services.optin_message_format',
+            'services.call_message_format',
+            'services.noshow_message_format',
+            'services.completed_message_format',
+            'services.status_message_format',
+            'services.status_message_positions',
+            'services.ask_name',
+            'services.name_required',
+            'services.ask_email',
+            'services.email_required',
+            'services.ask_phone',
+            'services.phone_required',
+            'services.created_at',
+            'services.updated_at',
+            'services.offline_limit',
+            'services.online_limit',
+            'services.status_online',
+            'services.ask_nik',
+            DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit')
+        )
+        ->leftJoin('queues', function ($join) use ($today) {
+            $join->on('services.id', '=', 'queues.service_id')
+                ->whereDate('queues.created_at', '=', $today)
+                ->where('queues.status_queue', '=', 'Offline');
+        })
+        ->where('services.status', 1)
+        ->groupBy(
+            'services.id',
+            'services.name',
+            'services.letter',
+            'services.start_number',
+            'services.status',
+            'services.sms_enabled',
+            'services.optin_message_enabled',
+            'services.call_message_enabled',
+            'services.noshow_message_enabled',
+            'services.completed_message_enabled',
+            'services.status_message_enabled',
+            'services.optin_message_format',
+            'services.call_message_format',
+            'services.noshow_message_format',
+            'services.completed_message_format',
+            'services.status_message_format',
+            'services.status_message_positions',
+            'services.ask_name',
+            'services.name_required',
+            'services.ask_email',
+            'services.email_required',
+            'services.ask_phone',
+            'services.phone_required',
+            'services.created_at',
+            'services.updated_at',
+            'services.offline_limit',
+            'services.online_limit',
+            'services.status_online',
+            'services.ask_nik'
+        )
+        ->get();
     }
 
     public function getAllActiveServicesWithLimitsOnline()
     {
+        $tomorrow = Carbon::today();
+
         return DB::table('services')
-            ->select('services.*')
-            ->selectRaw('
-                CASE
-                    WHEN services.combined_limit = 1 THEN services.limit - IFNULL(queued.count, 0)
-                    WHEN services.combined_limit = 0 THEN services.online_limit - IFNULL(queued.count, 0)
-                END AS remaining_limit
-            ')
-            ->leftJoin(DB::raw('(SELECT service_id, COUNT(id) AS count
-                FROM queues
-                WHERE created_at >= CURDATE() 
-                AND created_at < CURDATE() + INTERVAL 1 DAY
-                AND status_queue = "Online"
-                GROUP BY service_id) AS queued'), 'services.id', '=', 'queued.service_id')
-            ->where('services.status_online', '=', 1)
-            ->get();
+        ->select(
+            'services.id',
+            'services.name',
+            'services.letter',
+            'services.start_number',
+            'services.status',
+            'services.sms_enabled',
+            'services.optin_message_enabled',
+            'services.call_message_enabled',
+            'services.noshow_message_enabled',
+            'services.completed_message_enabled',
+            'services.status_message_enabled',
+            'services.optin_message_format',
+            'services.call_message_format',
+            'services.noshow_message_format',
+            'services.completed_message_format',
+            'services.status_message_format',
+            'services.status_message_positions',
+            'services.ask_name',
+            'services.name_required',
+            'services.ask_email',
+            'services.email_required',
+            'services.ask_phone',
+            'services.phone_required',
+            'services.created_at',
+            'services.updated_at',
+            'services.offline_limit',
+            'services.online_limit',
+            'services.status_online',
+            'services.ask_nik',
+            DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit')
+        )
+        ->leftJoin('queues', function ($join) use ($tomorrow) {
+            $join->on('services.id', '=', 'queues.service_id')
+                ->whereDate('queues.created_at', '=', $tomorrow)
+                ->where('queues.status_queue', '=', 'Online');
+        })
+        ->where('services.status_online', 1)
+        ->groupBy(
+            'services.id',
+            'services.name',
+            'services.letter',
+            'services.start_number',
+            'services.status',
+            'services.sms_enabled',
+            'services.optin_message_enabled',
+            'services.call_message_enabled',
+            'services.noshow_message_enabled',
+            'services.completed_message_enabled',
+            'services.status_message_enabled',
+            'services.optin_message_format',
+            'services.call_message_format',
+            'services.noshow_message_format',
+            'services.completed_message_format',
+            'services.status_message_format',
+            'services.status_message_positions',
+            'services.ask_name',
+            'services.name_required',
+            'services.ask_email',
+            'services.email_required',
+            'services.ask_phone',
+            'services.phone_required',
+            'services.created_at',
+            'services.updated_at',
+            'services.offline_limit',
+            'services.online_limit',
+            'services.status_online',
+            'services.ask_nik'
+        )
+        ->get();
     }
     
     public function getCallsForAntrian()
