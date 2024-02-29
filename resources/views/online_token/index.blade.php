@@ -44,7 +44,7 @@
     <div id="loader"></div>
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
-
+    
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 <div id="main" class="noprint" style="padding: 15px 15px 0px;">
@@ -65,12 +65,12 @@
                                 <div class="divider" style="margin:10px 0 10px 0;"></div>
                                 
                                 <center>
-                                @foreach($services as $service)
+                                <?php foreach($services as $service): ?>
                                 <span class="btn btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688; height: 100px; font-size: 50px; align:center; display: flex; justify-content: center; align-items: center;" onclick="queueDept({{ json_encode($service) }})">
-                                    {{$service->name}}
-                                    <span class="btn btn-danger btn-xs" readonly style="background: #a31035">{{$service->remaining_limit}}</span>
+                                    <?=$service['name']?>
+                                    <span class="btn btn-danger btn-xs" readonly style="background: #a31035"><?=$service['remaining_limit']?></span>
                                 </span>
-                                @endforeach
+                                <?php endforeach?>
                                 </center>
                             </div>                        
                         <?php }else{ ?>

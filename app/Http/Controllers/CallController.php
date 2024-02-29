@@ -36,6 +36,7 @@ class CallController extends Controller
         return view('call.call',
         ['counters' => $this->counterRepository->getAllActiveCounters(),
         'monitors' => $this->reportRepository->getAntrianListReport(),
+        'monitors_user' => $this->reportRepository->getAntrianUserReport(),
         'services' => $this->serviceRepository->getAllActiveServices(),
         'date' => Carbon::now()->toDateString(),
         'show_menu' => true,

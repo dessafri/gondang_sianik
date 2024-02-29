@@ -50,6 +50,8 @@
           </li>
           <li class="@yield('sessions_list')"><a class="@yield('sessions_list')" href="{{route('sessions_list')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Search">Session Data</span></a>
           </li>
+          <li class="@yield('report_number')"><a class="@yield('report_number')" href="{{route('report_number')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Search">Laporan Nomor Antrian</span></a>
+          </li>
           <!-- <li class="@yield('statitical_report')"><a  class="@yield('statitical_report')" href="{{route('statitical_report')}}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Knowledge">Statitical</span></a>
               </li> -->
     </li>

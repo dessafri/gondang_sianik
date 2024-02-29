@@ -143,4 +143,15 @@ class ReportController extends Controller
 
         return view('reports.monthly_report', ['token_count' => $count, 'users' => $users, 'services' => $services, 'counters' => $counters, 'statuses' => $statuses, 'reports' => $reports, 'timezone' => Setting::first()->timezone, 'selected' => ['starting_date' => $starting_date, 'ending_date' => $ending_date, 'counter' => $counter, 'service' => $service, 'user' => $user, 'status' => $status]]);
     }
+
+    public function showReportNumber(Request $request)
+    {
+        $report = null;
+        $date = null;
+        if ($request->date) {
+            $date = $request->date;
+            $report = $this->reportRepository->getReportNumbers($request->date);
+        }
+        return view('reports.report_number', ['report_numbers' => $report, 'date' => $date,'timezone' => Setting::first()->timezone]);
+    }
 }

@@ -6,6 +6,7 @@ use App\Models\Service;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class ServiceRepository
 {
@@ -36,153 +37,119 @@ class ServiceRepository
         $today = Carbon::today();
 
         return DB::table('services')
-        ->select(
-            'services.id',
-            'services.name',
-            'services.letter',
-            'services.start_number',
-            'services.status',
-            'services.sms_enabled',
-            'services.optin_message_enabled',
-            'services.call_message_enabled',
-            'services.noshow_message_enabled',
-            'services.completed_message_enabled',
-            'services.status_message_enabled',
-            'services.optin_message_format',
-            'services.call_message_format',
-            'services.noshow_message_format',
-            'services.completed_message_format',
-            'services.status_message_format',
-            'services.status_message_positions',
-            'services.ask_name',
-            'services.name_required',
-            'services.ask_email',
-            'services.email_required',
-            'services.ask_phone',
-            'services.phone_required',
-            'services.created_at',
-            'services.updated_at',
-            'services.offline_limit',
-            'services.online_limit',
-            'services.status_online',
-            'services.ask_nik',
-            DB::raw('services.offline_limit - COUNT(queues.id) as remaining_limit')
-        )
-        ->leftJoin('queues', function ($join) use ($today) {
-            $join->on('services.id', '=', 'queues.service_id')
-                ->whereDate('queues.created_at', '=', $today)
-                ->where('queues.status_queue', '=', 'Offline');
-        })
-        ->where('services.status', 1)
-        ->groupBy(
-            'services.id',
-            'services.name',
-            'services.letter',
-            'services.start_number',
-            'services.status',
-            'services.sms_enabled',
-            'services.optin_message_enabled',
-            'services.call_message_enabled',
-            'services.noshow_message_enabled',
-            'services.completed_message_enabled',
-            'services.status_message_enabled',
-            'services.optin_message_format',
-            'services.call_message_format',
-            'services.noshow_message_format',
-            'services.completed_message_format',
-            'services.status_message_format',
-            'services.status_message_positions',
-            'services.ask_name',
-            'services.name_required',
-            'services.ask_email',
-            'services.email_required',
-            'services.ask_phone',
-            'services.phone_required',
-            'services.created_at',
-            'services.updated_at',
-            'services.offline_limit',
-            'services.online_limit',
-            'services.status_online',
-            'services.ask_nik'
-        )
-        ->get();
+            ->select('services.*')
+            ->where('services.status', '=', 1)
+            ->get()
+            ->map(function ($service) use ($today) {
+                if ($service->combined_limit == 1) {
+                    $queues = DB::table('queues')
+                        ->whereDate('queues.created_at', '=', $today)
+                        ->where('service_id', '=', $service->id)
+                        ->count();
+                    $limit = $service->limit - $queues;
+                } else {
+                    $queues = DB::table('queues')
+                        ->whereDate('queues.created_at', '=', $today)
+                        ->where('status_queue', 'Offline')
+                        ->where('service_id', '=', $service->id)
+                        ->count();
+                    $limit = $service->offline_limit - $queues;
+                }
+
+                return [
+                    'id' => $service->id,
+                    'name' => $service->name,
+                    'letter' => $service->letter,
+                    'start_number' => $service->start_number,
+                    'status' => $service->status,
+                    'sms_enabled' => $service->sms_enabled,
+                    'optin_message_enabled' => $service->optin_message_enabled,
+                    'call_message_enabled' => $service->call_message_enabled,
+                    'noshow_message_enabled' => $service->noshow_message_enabled,
+                    'completed_message_enabled' => $service->completed_message_enabled,
+                    'status_message_enabled' => $service->status_message_enabled,
+                    'optin_message_format' => $service->optin_message_format,
+                    'call_message_format' => $service->call_message_format,
+                    'noshow_message_format' => $service->noshow_message_format,
+                    'completed_message_format' => $service->completed_message_format,
+                    'status_message_format' => $service->status_message_format,
+                    'status_message_positions' => $service->status_message_positions,
+                    'ask_name' => $service->ask_name,
+                    'name_required' => $service->name_required,
+                    'ask_email' => $service->ask_email,
+                    'email_required' => $service->email_required,
+                    'ask_phone' => $service->ask_phone,
+                    'phone_required' => $service->phone_required,
+                    'created_at' => $service->created_at,
+                    'updated_at' => $service->updated_at,
+                    'offline_limit' => $service->offline_limit,
+                    'online_limit' => $service->online_limit,
+                    'status_online' => $service->status_online,
+                    'ask_nik' => $service->ask_nik,
+                    'combined_limit' => $service->combined_limit,
+                    'remaining_limit' => $limit,
+                ];
+            });
     }
 
     public function getAllActiveServicesWithLimitsOnline()
     {
-        $tomorrow = Carbon::today();
+        $today = Carbon::today();
 
         return DB::table('services')
-        ->select(
-            'services.id',
-            'services.name',
-            'services.letter',
-            'services.start_number',
-            'services.status',
-            'services.sms_enabled',
-            'services.optin_message_enabled',
-            'services.call_message_enabled',
-            'services.noshow_message_enabled',
-            'services.completed_message_enabled',
-            'services.status_message_enabled',
-            'services.optin_message_format',
-            'services.call_message_format',
-            'services.noshow_message_format',
-            'services.completed_message_format',
-            'services.status_message_format',
-            'services.status_message_positions',
-            'services.ask_name',
-            'services.name_required',
-            'services.ask_email',
-            'services.email_required',
-            'services.ask_phone',
-            'services.phone_required',
-            'services.created_at',
-            'services.updated_at',
-            'services.offline_limit',
-            'services.online_limit',
-            'services.status_online',
-            'services.ask_nik',
-            DB::raw('services.online_limit - COUNT(queues.id) as remaining_limit')
-        )
-        ->leftJoin('queues', function ($join) use ($tomorrow) {
-            $join->on('services.id', '=', 'queues.service_id')
-                ->whereDate('queues.created_at', '=', $tomorrow)
-                ->where('queues.status_queue', '=', 'Online');
-        })
-        ->where('services.status_online', 1)
-        ->groupBy(
-            'services.id',
-            'services.name',
-            'services.letter',
-            'services.start_number',
-            'services.status',
-            'services.sms_enabled',
-            'services.optin_message_enabled',
-            'services.call_message_enabled',
-            'services.noshow_message_enabled',
-            'services.completed_message_enabled',
-            'services.status_message_enabled',
-            'services.optin_message_format',
-            'services.call_message_format',
-            'services.noshow_message_format',
-            'services.completed_message_format',
-            'services.status_message_format',
-            'services.status_message_positions',
-            'services.ask_name',
-            'services.name_required',
-            'services.ask_email',
-            'services.email_required',
-            'services.ask_phone',
-            'services.phone_required',
-            'services.created_at',
-            'services.updated_at',
-            'services.offline_limit',
-            'services.online_limit',
-            'services.status_online',
-            'services.ask_nik'
-        )
-        ->get();
+            ->select('services.*')
+            ->where('services.status_online', '=', 1)
+            ->get()
+            ->map(function ($service) use ($today) {
+                if ($service->combined_limit == 1) {
+                    $queues = DB::table('queues')
+                        ->whereDate('queues.created_at', '=', $today)
+                        ->where('service_id', '=', $service->id)
+                        ->count();
+                    $limit = $service->limit - $queues;
+                } else {
+                    $queues = DB::table('queues')
+                        ->whereDate('queues.created_at', '=', $today)
+                        ->where('status_queue', 'Online')
+                        ->where('service_id', '=', $service->id)
+                        ->count();
+                    $limit = $service->online_limit - $queues;
+                }
+
+                return [
+                    'id' => $service->id,
+                    'name' => $service->name,
+                    'letter' => $service->letter,
+                    'start_number' => $service->start_number,
+                    'status' => $service->status,
+                    'sms_enabled' => $service->sms_enabled,
+                    'optin_message_enabled' => $service->optin_message_enabled,
+                    'call_message_enabled' => $service->call_message_enabled,
+                    'noshow_message_enabled' => $service->noshow_message_enabled,
+                    'completed_message_enabled' => $service->completed_message_enabled,
+                    'status_message_enabled' => $service->status_message_enabled,
+                    'optin_message_format' => $service->optin_message_format,
+                    'call_message_format' => $service->call_message_format,
+                    'noshow_message_format' => $service->noshow_message_format,
+                    'completed_message_format' => $service->completed_message_format,
+                    'status_message_format' => $service->status_message_format,
+                    'status_message_positions' => $service->status_message_positions,
+                    'ask_name' => $service->ask_name,
+                    'name_required' => $service->name_required,
+                    'ask_email' => $service->ask_email,
+                    'email_required' => $service->email_required,
+                    'ask_phone' => $service->ask_phone,
+                    'phone_required' => $service->phone_required,
+                    'created_at' => $service->created_at,
+                    'updated_at' => $service->updated_at,
+                    'offline_limit' => $service->offline_limit,
+                    'online_limit' => $service->online_limit,
+                    'status_online' => $service->status_online,
+                    'ask_nik' => $service->ask_nik,
+                    'combined_limit' => $service->combined_limit,
+                    'remaining_limit' => $limit,
+                ];
+            });
     }
     
     public function getCallsForAntrian()

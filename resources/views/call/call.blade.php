@@ -19,14 +19,34 @@
                                 <div class="card" style=" margin:0px !important; box-shadow: none; background:#f9f9f9 !important;">
                                     <div class="card-content" v-if="selected_counter && selected_service">
                                         <p align="left" style="font-size: 10px;">
-                                        Belum Dipanggil
-                                        <ul style="font-size: 10px;">
-                                            @foreach($monitors as $key=>$monitor)
-                                            <li>
-                                                {{$monitor->service_name}} : {{$monitor->belum_dipanggil}}
-                                            </li>
-                                            @endforeach
-                                        </ul>
+                                            Belum Dipanggil
+                                            <ul style="font-size: 10px;">
+                                                @foreach($monitors as $key=>$monitor)
+                                                <li>
+                                                    {{$monitor->service_name}} : {{$monitor->belum_dipanggil}}
+                                                </li>
+                                                @endforeach
+                                            </ul>
+                                        </p>
+                                        <p align="left" style="font-size: 10px;">
+                                            Dilayani
+                                            <ul style="font-size: 10px;">
+                                                @foreach($monitors_user as $key=>$monitor_user)
+                                                <li>
+                                                    {{$monitor_user->service_name}} : {{$monitor_user->dilayani}}
+                                                </li>
+                                                @endforeach
+                                            </ul>
+                                        </p>
+                                        <p align="left" style="font-size: 10px;">
+                                            Tidak Hadir
+                                            <ul style="font-size: 10px;">
+                                                @foreach($monitors_user as $key=>$monitor_user)
+                                                <li>
+                                                    {{$monitor_user->service_name}} : {{$monitor_user->tidak_hadir}}
+                                                </li>
+                                                @endforeach
+                                            </ul>
                                         </p>
                                         <div class="col  m12 s12" style="min-height: 500px;">
                                             <div class="row" style="min-width: 800px;">

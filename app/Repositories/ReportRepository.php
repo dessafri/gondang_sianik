@@ -9,6 +9,7 @@ use App\Models\Session;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ReportRepository
 {
@@ -66,6 +67,26 @@ class ReportRepository
             )
             ->groupBy('services.name')
         ->get();
+    }
+
+    public function getAntrianUserReport()
+    {
+        $id_login = Auth::id();
+        $today = Carbon::today();
+        $tomorrow = Carbon::tomorrow();
+    
+        return DB::table('calls')
+            ->join('services', 'services.id', '=', 'calls.service_id')
+            ->where('calls.created_at', '>=', $today)
+            ->where('calls.created_at', '<', $tomorrow)
+            ->where('calls.user_id', $id_login)
+            ->select(
+                'services.name AS service_name',
+                DB::raw('SUM(calls.call_status_id = 2 ) AS tidak_hadir'),
+                DB::raw('SUM(calls.call_status_id = 1 ) AS dilayani')
+            )
+            ->groupBy('services.name')
+            ->get();
     }
 
     public function getAntrianUserListReport($date)
@@ -131,5 +152,16 @@ class ReportRepository
             ->whereNull('call_status_id')->count();
         $counts = ['queue' => $queue, 'served' => $served, 'noshow' => $noshow, 'serving' => $serving];
         return $counts;
+    }
+    
+    public function getReportNumbers($date)
+    {
+        return DB::table('queues')
+        ->select('phone', DB::raw('COUNT(*) as total'))
+        ->whereDate('created_at', $date)
+        ->whereNotNull('phone')
+        ->groupBy('phone')
+        ->havingRaw('COUNT(*) > 2')
+        ->get();
     }
 }

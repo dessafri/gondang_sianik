@@ -1,5 +1,7 @@
 @extends('layout.app')
 @section('title','Session Data')
+@section('report','active')
+@section('sessions_list','active')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/data-tables/css/jquery.dataTables.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css')}}">

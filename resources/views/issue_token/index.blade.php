@@ -37,12 +37,12 @@
                                 </span>
                                 <div class="divider" style="margin:10px 0 10px 0;"></div>
                                 <center>
-                                @foreach($services as $service)
+                                <?php foreach($services as $service): ?>
                                 <span class="btn btn-large btn-queue waves-effect waves-light mb-1" id="service_id_24" style="background: #009688" onclick="queueDept({{ json_encode($service) }})">
-                                    {{$service->name}}
-                                    <span class="btn btn-danger btn-xs" readonly style="background: #a31035">{{$service->remaining_limit}}</span>
+                                    <?=$service['name']?>
+                                    <span class="btn btn-danger btn-xs" readonly style="background: #a31035"><?=$service['remaining_limit']?></span>
                                 </span>
-                                @endforeach
+                                <?php endforeach ?>
                                 </center>
                             </div>
                         <?php }else{ ?>

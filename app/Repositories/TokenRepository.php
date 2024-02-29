@@ -22,7 +22,8 @@ class TokenRepository
 
     public function createToken(Service $service, $data, $is_details)
     {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
             $currentTime = now()->toDateString();
             $endOfDay = now()->endOfDay(); 
             
@@ -31,16 +32,10 @@ class TokenRepository
                 ->where('service_id', $service->id)
                 ->sharedLock()
                 ->count();
-            if ($last_token_count) {
-                    $token_number = $last_token_count + 1;
-            } else {
-                $token_number = $service->start_number;
-            }
             
-        DB::commit();
-        try {
-                
-                $queue = Queue::create([
+            $token_number = ($last_token_count) ? $last_token_count + 1 : $service->start_number;
+            
+            $queue = Queue::create([
                 'service_id' => $service->id,
                 'number' => $token_number,
                 'called' => false,
@@ -53,78 +48,72 @@ class TokenRepository
                 'nik' => ($is_details && $service->ask_nik == 1) ? $data['nik'] : null,
                 'status_queue' => "Offline"
             ]);
-            
             $services = $this->services->getServiceById($service->id);
-            
             if (!empty($data['phone'])) {        
-                try {
-                    $reply_message = 
-                    "*_Bukti Reservasi Sistem Antrian Offline_*
-                    Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk
-                    Layanan : ".$services['name']."
-                    Antrian : ".$service->letter." - ".$token_number."
-                    Tanggal : " . date('d F Y H:i:s') . "
-    
-                    Silahkan datang pada tanggal yang tertera. Terima Kasih
-                    *_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran , apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir_*.";
-    
-                    $post = [
-                        'userId' => $data['phone'],
-                        'message' => $reply_message
-                    ];
-                    
-                    $curl_message = curl_init();
-    
-                        curl_setopt_array($curl_message, array(
-                        CURLOPT_URL => 'https://lasmini.cloud/api/sendMessagePhone',
-                        CURLOPT_RETURNTRANSFER => true,
-                        CURLOPT_ENCODING => '',
-                        CURLOPT_MAXREDIRS => 10,
-                        CURLOPT_TIMEOUT => 0,
-                        CURLOPT_FOLLOWLOCATION => true,
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                        CURLOPT_CUSTOMREQUEST => 'POST',
-                        CURLOPT_POSTFIELDS => json_encode($post),
-                        CURLOPT_HTTPHEADER => array(
-                            'Content-Type: application/json',
-                            'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
-                        ),
-                        ));
-    
-                    $response_message = curl_exec($curl_message);
-                    curl_close($curl_message);               
-                } catch (\Exception $err) {
-                    echo 'OK';
-                    dd($err);
-                }
+                $reply_message = "Bukti Reservasi Sistem Antrian Offline\n"
+                    . "Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk\n"
+                    . "Layanan : ".$services['name']."\n"
+                    . "Antrian : ".$service->letter." - ".$token_number."\n"
+                    . "Tanggal : " . date('d F Y H:i:s') . "\n\n"
+                    . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n"
+                    . "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran, apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir._*";
+        
+                $post = [
+                    'userId' => $data['phone'],
+                    'message' => $reply_message
+                ];
+                
+                $curl_message = curl_init();
+                curl_setopt_array($curl_message, array(
+                    CURLOPT_URL => 'https://lasmini.cloud/api/sendMessagePhone',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => json_encode($post),
+                    CURLOPT_HTTPHEADER => array(
+                        'Content-Type: application/json',
+                        'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
+                    ),
+                ));
+        
+                $response_message = curl_exec($curl_message);
+                curl_close($curl_message);               
             }
 
+            DB::commit();
             return $queue;
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error occurred: ' . $e->getMessage());
-        }        
+            return response()->json(['status_code' => 500, 'message' => 'Internal Server Error']);
+        }
     }
 
     public function createTokenOnline(Service $service, $data, $is_details)
     {
-        DB::beginTransaction();
-        $currentTime = now()->toDateString();
-        $endOfDay = now()->endOfDay(); 
-            
-        $last_token_count = Queue::where('created_at', '>=', $currentTime)
-            ->where('created_at', '<', $endOfDay)
-            ->where('service_id', $service->id)
-            ->sharedLock()
-            ->count();
-        if ($last_token_count) {
-                $token_number = $last_token_count + 1;
-        } else {
-            $token_number = $service->start_number;
-        }
-        
-        DB::commit();
         try {
+            DB::beginTransaction();
+            $currentTime = now()->toDateString();
+            $endOfDay = now()->endOfDay(); 
+                
+            $last_token_count = Queue::where('created_at', '>=', $currentTime)
+                ->where('created_at', '<', $endOfDay)
+                ->where('service_id', $service->id)
+                ->sharedLock()
+                ->count();
+                
+            if ($last_token_count) {
+                $token_number = $last_token_count + 1;
+            } else {
+                $token_number = $service->start_number;
+            }
+            
+            DB::commit();
+
             $queue = Queue::create([
                 'service_id' => $service->id,
                 'number' => $token_number,
@@ -140,28 +129,26 @@ class TokenRepository
                 'nik' => $data['nik'],
                 'status_queue' => "Online"
             ]);
-            
+
             $services = $this->services->getServiceById($service->id);
     
-            $reply_message = 
-            "*_Bukti Reservasi Sistem Antrian Online_*
-            Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk
-            Atas Nama : ".$data['name']."
-            Layanan : ".$services['name']."
-            Antrian : ".$service->letter." - ".$token_number."
-            Tanggal : " . date('d F Y H:i:s', strtotime($data['date'])) . "
-    
-            Silahkan datang pada tanggal yang tertera. Terima Kasih
-            *_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran , apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir_*.";
-    
+            $reply_message = "Bukti Reservasi Sistem Antrian Online\n"
+                    . "Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk\n"
+                    . "Atas Nama : ".$data['name']."\n"
+                    . "Layanan : ".$services['name']."\n"
+                    . "Antrian : ".$service->letter." - ".$token_number."\n"
+                    . "Tanggal : " . date('d F Y H:i:s', strtotime($data['date'])) . "\n\n"
+                    . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n"
+                    . "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran, apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir._*";
+
             $post = [
                 'userId' => $data['email'],
                 'message' => $reply_message
             ];
-            
+
             $curl_message = curl_init();
-    
-                curl_setopt_array($curl_message, array(
+
+            curl_setopt_array($curl_message, array(
                 CURLOPT_URL => 'https://lasmini.cloud/api/sendMessage',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
@@ -175,8 +162,8 @@ class TokenRepository
                     'Content-Type: application/json',
                     'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
                 ),
-                ));
-    
+            ));
+
             $response_message = curl_exec($curl_message);
             curl_close($curl_message);
             
@@ -184,6 +171,7 @@ class TokenRepository
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error occurred: ' . $e->getMessage());
+            return response()->json(['status_code' => 500, 'message' => 'Internal Server Error']);
         }
     }
 
