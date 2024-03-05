@@ -141,7 +141,7 @@
                 <div class="col m12">
                     <div class="card-panel center-align p-0" style="margin-bottom:0; height:30vh; font-size: 20px;" id="side-token-display">
                         <div class="justify-content-center" >
-                            <!-- <marquee behavior="" direction=""> -->
+                            <marquee behavior="" direction="">
                             <table>
                                 <tr>
                                 @foreach($services as $service)
@@ -152,13 +152,24 @@
                                     <td>
                                         <center>
                                             <small class="bolder-color" style="font-size:20px;font-weight:bold;color:red">{{ $serviceName }}</small><br>
-                                                <div v-for="(token, index) in tokens" :key="index" >
-                                                    <template v-if="token.service.id === {{ $serviceId }}">
-                                                        <span class="bolder-color" style="font-size:20px;font-weight:bold;line-height:1.2">@{{ token.token_letter }}-@{{ token.token_number }}</span> -
-                                                        <small class="bolder-color" :id="'counter' + index" style="font-size:15px;font-weight:bold;">@{{ token.counter.name }}</small><br>
-                                                        <small v-if="token && token.call_status_id === {{ CallStatuses::SERVED }}" style="font-size:10px;color:#009688;font-weight:bold;">{{ __('messages.display.served') }}</small>
-                                                        <small v-if="token && token.call_status_id === {{ CallStatuses::NOSHOW }}" style="font-size:10px;font-weight:bold;color:red">{{ __('messages.display.noshow') }}</small>
-                                                        <small v-if="token && token.call_status_id === null" style="font-size:10px;color:orange;font-weight:bold;">{{ __('messages.display.serving') }}</small>
+                                                <div v-for="(service, index) in dataservices">
+                                                    <template v-if="service.id == {{ $serviceId }}">
+                                                        <div v-for="(data, index) in service.data">
+                                                            <span class="bolder-color"
+                                                                style="font-size:20px;font-weight:bold;line-height:1.2">@{{ data.token_letter }}-@{{ data.token_number }}</span>
+                                                            -
+                                                            <small class="bolder-color" :id="'counter' + index"
+                                                                style="font-size:15px;font-weight:bold;">@{{ data.counter.name }}</small><br>
+                                                            <small
+                                                                v-if="token && token.call_status_id === {{ CallStatuses::SERVED }}"
+                                                                style="font-size:10px;color:#009688;font-weight:bold;">{{ __('messages.display.served') }}</small>
+                                                            <small
+                                                                v-if="token && token.call_status_id === {{ CallStatuses::NOSHOW }}"
+                                                                style="font-size:10px;font-weight:bold;color:red">{{ __('messages.display.noshow') }}</small>
+                                                            <small v-if="token && token.call_status_id === null"
+                                                                style="font-size:10px;color:orange;font-weight:bold;">{{ __('messages.display.serving') }}</small>
+                                                        </div>
+
                                                     </template>
                                                 </div>
                                         </center>
@@ -169,7 +180,7 @@
                                 @endforeach
                                 </tr>
                             </table>
-                            <!-- </marquee> -->
+                            </marquee>
                         </div>
                     </div>
                 </div>

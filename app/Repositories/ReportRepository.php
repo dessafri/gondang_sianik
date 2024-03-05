@@ -116,7 +116,7 @@ class ReportRepository
         if (isset($data->counter_id)) $query =  $query->where('calls.counter_id', '=', $data->counter_id);
         if (isset($data->user_id)) $query =  $query->where('calls.user_id', '=', $data->user_id);
         if (isset($data->call_status)) $query =  $query->where('calls.call_status_id', '=', $data->call_status);
-        $query = $query->select('users.name as user_name', 'queues.letter as token_letter', 'queues.number as token_number', 'services.name as service_name', 'counters.name as counter_name', 'queues.created_at as date', 'calls.started_at as called_at', 'calls.ended_at as served_at', 'calls.waiting_time as waiting_time', 'calls.served_time as served_time', 'calls.turn_around_time as total_time', 'call_statuses.name as status');
+        $query = $query->select('users.name as user_name', 'queues.letter as token_letter', 'queues.number as token_number', 'queues.phone as queue_phone', 'queues.name as queue_name', 'queues.nik as queue_nik', 'queues.status_queue', 'services.name as service_name', 'counters.name as counter_name', 'queues.created_at as date', 'calls.started_at as called_at', 'calls.ended_at as served_at', 'calls.waiting_time as waiting_time', 'calls.served_time as served_time', 'calls.turn_around_time as total_time', 'call_statuses.name as status');
         $report = $query->orderBy('queues.created_at')->get();
         return $report;
     }
@@ -154,11 +154,13 @@ class ReportRepository
         return $counts;
     }
     
-    public function getReportNumbers($date)
+    public function getReportNumbers($data)
     {
         return DB::table('queues')
         ->select('phone', DB::raw('COUNT(*) as total'))
-        ->whereDate('created_at', $date)
+        ->where('queues.created_at', '>=', Carbon::parse($data->starting_date)->startOfDay())
+        ->where('queues.created_at', '<', Carbon::parse($data->ending_date)->endOfDay())
+        ->where('queues.service_id', '=', $data->service_id)
         ->whereNotNull('phone')
         ->groupBy('phone')
         ->havingRaw('COUNT(*) > 2')

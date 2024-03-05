@@ -147,11 +147,16 @@ class ReportController extends Controller
     public function showReportNumber(Request $request)
     {
         $report = null;
-        $date = null;
-        if ($request->date) {
-            $date = $request->date;
-            $report = $this->reportRepository->getReportNumbers($request->date);
+        $starting_date = null;
+        $ending_date = null;
+        $services = Service::get();
+        $service = null;
+        if ($request->starting_date && $request->ending_date) {
+            $starting_date = $request->starting_date;
+            $ending_date = $request->ending_date;
+            if (isset($request->service_id)) $service = $request->service_id;
+            $report = $this->reportRepository->getReportNumbers($request);
         }
-        return view('reports.report_number', ['report_numbers' => $report, 'date' => $date,'timezone' => Setting::first()->timezone]);
+        return view('reports.report_number', ['report_numbers' => $report, 'services' => $services,'timezone' => Setting::first()->timezone, 'selected' => ['starting_date' => $starting_date, 'ending_date' => $ending_date, 'service' => $service]]);
     }
 }

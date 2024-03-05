@@ -20042,6 +20042,7 @@ if (document.getElementById("display-page")) {
       return {
         time_out: null,
         tokens: [],
+        dataservices: [],
         today: (_window$JLToken$date_ = (_window = window) === null || _window === void 0 ? void 0 : _window.JLToken.date_for_display) !== null && _window$JLToken$date_ !== void 0 ? _window$JLToken$date_ : null,
         queue: [],
         isProcessing: false,
@@ -20069,7 +20070,17 @@ if (document.getElementById("display-page")) {
               _this.previous_data = _this.response_data;
               _this.time_out = setTimeout(function () {
                 _this.processQueue();
-
+                    const groupedData = res.data.reduce((acc, obj) => {
+                        const key = obj.service_id;
+                        if (!acc[key]) {
+                            acc[key] = { id: key, data: [] };
+                        }
+                        acc[key].data.push(obj);
+                        acc[key].data = acc[key].data.slice(0, 3);
+                        return acc;
+                    }, {});
+                    const groupedValues = Object.values(groupedData);
+                    _this.dataservices=groupedValues
                 _this.getTokens();
               }, 1000);
             } else {
@@ -20087,7 +20098,17 @@ if (document.getElementById("display-page")) {
             _this.tokens = res.data;
 
             _this.disableLoader();
-
+            const groupedData = res.data.reduce((acc, obj) => {
+                const key = obj.service_id;
+                if (!acc[key]) {
+                    acc[key] = { id: key, data: [] };
+                }
+                acc[key].data.push(obj);
+                acc[key].data = acc[key].data.slice(0, 3);
+                return acc;
+            }, {});
+            const groupedValues = Object.values(groupedData);
+            _this.dataservices=groupedValues
             _this.previous_data = res.data.map(function (res) {
               delete res.counter_time;
               return res;

@@ -34,7 +34,7 @@ class DisplayController extends Controller
     public function showDisplayServicesUrl()
     {
         return view('display.services', 
-        ['services' => $this->services->getAllActiveServicesWithLimits(), 
+        ['services' => $this->services->getAllActiveServices(), 
         'calls' => $this->callRepository->getCallsForAntrian(), 
         'date' => Carbon::now()->toDateString(), 
         'settings' => Setting::first(),

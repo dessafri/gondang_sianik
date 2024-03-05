@@ -56,17 +56,25 @@
                                                             <input type="hidden" name="transfer_queue" id="transfer_queue" value="1989">
                                                             <input type="hidden" name="last_call" id="last_call" value="queue" v-cloak>
                                                             @{{token.letter?token.letter : token.token_letter }}-@{{token.number? token.number : token.token_number}}
-                                                            <span style="font-size: 15px; text-align:left;" class="truncate">
-                                                                @if(isset($token['queue']['nik']))
-                                                                    NIK : {{ $token['queue']['nik'] }}
-                                                                @endif
-                                                                @if(isset($token['queue']['name']))
-                                                                    Nama : {{ $token['queue']['name'] }}<br>
-                                                                @endif
-                                                                @if(isset($token['queue']['phone']))
-                                                                    Telepon : {{ $token['queue']['phone'] }}<br>
-                                                                @endif
-                                                            </span>
+                                                            <p align="left" style="font-size: 12px;">
+                                                                <ul style="font-size: 12px;">
+                                                                    <li>
+                                                                        <template v-if="token.queue_nik">
+                                                                            NIK : @{{ token.queue_nik }}
+                                                                        </template>
+                                                                    </li>
+                                                                    <li>
+                                                                        <template v-if="token.queue_name">
+                                                                            Nama : @{{ token.queue_name }}
+                                                                        </template>
+                                                                    </li>
+                                                                    <li>
+                                                                        <template v-if="token.queue_phone">
+                                                                            Telepon : @{{ token.queue_phone }}
+                                                                        </template>
+                                                                    </li>
+                                                                </ul>
+                                                            </p>
                                                         </a>
                                                     </span>
                                                 </div>

@@ -27,12 +27,34 @@
                 <div class="card-content">
                     <form action="{{route('report_number')}}" id="report_number_form" autocomplete="off">
                         <div class="row">
-                            <div class="input-field col m5 s4">
-                                <input id="date" name="date" type="text" class="datepicker" data-error=".date" value="{{$date}}">
-                                <label for="date">{{__('messages.reports.starting date')}}</label>
-                                <div class="date">
-                                    @if ($errors->has('date'))
-                                    <span class="text-danger errbk">{{ $errors->first('date') }}</span>
+                            <div class="input-field col m3 s3">
+                                <input id="starting_date" name="starting_date" type="text" class="datepicker" data-error=".starting_date" value="{{$selected['starting_date']}}">
+                                <label for="starting_date">{{__('messages.reports.starting date')}}</label>
+                                <div class="starting_date">
+                                    @if ($errors->has('starting_date'))
+                                    <span class="text-danger errbk">{{ $errors->first('starting_date') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="input-field col m3 s3">
+                                <input id="ending_date" name="ending_date" type="text" class="datepicker" value="{{$selected['ending_date']}}" data-error=".ending_date">
+                                <label for="ending_date">{{__('messages.reports.ending date')}}</label>
+                                <div class="ending_date">
+                                    @if ($errors->has('ending_date'))
+                                    <span class="text-danger errbk">{{ $errors->first('ending_date') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="input-field col s4">
+                                <select name="service_id" id="service_id" data-error=".service_id">
+                                    @foreach($services as $service)
+                                    <option value="{{$service->id}}" {{ $service->id == $selected['service'] ?'selected':''}}>{{$service->name}}</option>
+                                    @endforeach
+                                </select>
+                                <label>{{__('messages.reports.select service')}}</label>
+                                <div class="service_id">
+                                    @if ($errors->has('service_id'))
+                                    <span class="text-danger errbk">{{ $errors->first('service_id') }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -94,6 +116,7 @@
 <script src="{{asset('app-assets/vendors/data-tables/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('app-assets/vendors/data-tables/js/dataTables.select.min.js')}}"></script>
+<script src="{{asset('app-assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script>
     $(document).ready(function() {
         $('.datepicker').datepicker({
@@ -106,13 +129,15 @@
         var yyyy = today.getFullYear();
         var currentDate = yyyy + '-' + mm + '-' + dd;
 
-        $('#date').val(currentDate);
+        $('#starting_date').val(currentDate);
+        $('#ending_date').val(currentDate);
 
         $('body').addClass('loaded');
 
-        var date = $('#date').val();
+        var starting_date = $('#starting_date').val();
+        var ending_date = $('#ending_date').val();
 
-        if (date == "") {
+        if (starting_date == "" || ending_date == "") {
             $('#gobtn').attr('disabled', 'disabled');
         } else {
             $('#gobtn').removeAttr('disabled');
@@ -120,10 +145,11 @@
 
     });
 
-    $('#date').change(function(event) {
-        let date = $('#date').val();
+    $('#starting_date,#ending_date').change(function(event) {
+        let starting_date = $('#starting_date').val();
+        let ending_date = $('#ending_date').val();
 
-        if (date == "") {
+        if (starting_date == "" || ending_date == "") {
             $('#gobtn').attr('disabled', 'disabled');
         } else {
             $('#gobtn').removeAttr('disabled');
@@ -132,7 +158,13 @@
 
     $('#report_number_form').validate({
         rules: {
-            date: {
+            starting_date: {
+                required: true,
+            },
+            ending_date: {
+                required: true,
+            },
+            service_id: {
                 required: true,
             },
         },

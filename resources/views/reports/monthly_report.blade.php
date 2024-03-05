@@ -170,6 +170,10 @@
                                                         <th>{{__('messages.reports.user')}}</th>
                                                         <th>{{__('messages.reports.token number')}}</th>
                                                         <th>{{__('messages.reports.service')}}</th>
+                                                        <th>Nama Antrian</th>
+                                                        <th>NIK</th>
+                                                        <th>Telp</th>
+                                                        <th>Status</th>
                                                         <th>{{__('messages.reports.counter')}}</th>
                                                         <th>{{__('messages.reports.date')}}</th>
                                                         <th>{{__('messages.reports.called at')}}</th>
@@ -187,6 +191,10 @@
                                                         <td>{{$report->user_name ? $report->user_name : 'Nil'}}</td>
                                                         <td>{{$report->token_letter}}-{{$report->token_number}}</td>
                                                         <td>{{$report->service_name}}</td>
+                                                        <td>{{$report->queue_nik}}</td>
+                                                        <td>{{$report->queue_name}}</td>
+                                                        <td>{{$report->queue_phone}}</td>
+                                                        <td>{{$report->status_queue}}</td>
                                                         <td>{{$report->counter_name ? $report->counter_name : 'Nil'}}</td>
                                                         <td>{{$report->date ? \Carbon\Carbon::parse($report->date)->timezone($timezone)->format('d F Y h:i A') : 'Nil'}}</td>
                                                         <td>{{$report->called_at ? \Carbon\Carbon::parse($report->called_at)->timezone($timezone)->format('h:i A') :'Nil'}}</td>
@@ -225,14 +233,12 @@
             format: 'yyyy-mm-dd'
         });
 
-        // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
         var yyyy = today.getFullYear();
         var currentDate = yyyy + '-' + mm + '-' + dd;
 
-        // Mengisi input starting_date dengan tanggal hari ini
         $('#starting_date').val(currentDate);
         $('#ending_date').val(currentDate);
 
