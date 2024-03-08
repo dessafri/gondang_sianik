@@ -48,6 +48,9 @@ class TokenRepository
                 'nik' => ($is_details && $service->ask_nik == 1) ? $data['nik'] : null,
                 'status_queue' => "Offline"
             ]);
+            $queueId = $queue->id;
+            $this->insertQueuesToReport($queueId);
+
             $services = $this->services->getServiceById($service->id);
             if (!empty($data['phone'])) {        
                 $reply_message = "Bukti Reservasi Sistem Antrian Offline\n"
@@ -129,6 +132,8 @@ class TokenRepository
                 'nik' => $data['nik'],
                 'status_queue' => "Online"
             ]);
+            $queueId = $queue->id;
+            $this->insertQueuesToReport($queueId);
 
             $services = $this->services->getServiceById($service->id);
     
@@ -215,5 +220,27 @@ class TokenRepository
         $data['tokens_for_call'] = $tokens_for_call;
         $data['called_tokens'] = $called_tokens;
         Storage::put('public/tokens_for_callpage.json', json_encode($data));
+    }
+
+    public function insertQueuesToReport($queueId)
+    {
+        $queues = Queue::find($queueId);
+    
+        DB::table('queues_report')->insert([
+            'id' => $queues->id,
+            'service_id' => $queues->service_id,
+            'number' => $queues->number,
+            'called' => $queues->called,
+            'letter' => $queues->letter,
+            'reference_no' => $queues->reference_no,
+            'phone' => $queues->phone,
+            'email' => $queues->email,
+            'name' => $queues->name,
+            'position' => $queues->position,
+            'created_at' => $queues->created_at,
+            'updated_at' => $queues->updated_at,
+            'nik' => $queues->nik,
+            'status_queue' => $queues->status_queue,
+        ]);
     }
 }

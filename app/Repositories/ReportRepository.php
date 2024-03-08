@@ -15,11 +15,11 @@ class ReportRepository
 {
     public function getUserReport($user_id, $date)
     {
-        $query = DB::table('calls')->join('services', 'calls.service_id', '=', 'services.id')
-            ->join('counters', 'calls.counter_id', '=', 'counters.id')
-            ->where('calls.called_date', '=', $date);
-        if (isset($user_id)) $query = $query->where('calls.user_id', '=', $user_id);
-        $query = $query->select('calls.id', 'calls.token_number', 'calls.token_letter', 'counters.name as counter_name', 'services.name as service_name', 'calls.call_status_id');
+        $query = DB::table('calls_report')->join('services', 'calls_report.service_id', '=', 'services.id')
+            ->join('counters', 'calls_report.counter_id', '=', 'counters.id')
+            ->where('calls_report.called_date', '=', $date);
+        if (isset($user_id)) $query = $query->where('calls_report.user_id', '=', $user_id);
+        $query = $query->select('calls_report.id', 'calls_report.token_number', 'calls_report.token_letter', 'counters.name as counter_name', 'services.name as service_name', 'calls_report.call_status_id');
         $report = $query->get();
         return $report;
     }
@@ -34,12 +34,12 @@ class ReportRepository
     
     public function getQueueListReport($starting_date, $ending_date)
     {
-        $report = DB::table('queues')->Leftjoin('calls', 'calls.queue_id', '=', 'queues.id')
-            ->join('services', 'services.id', '=', 'queues.service_id')
-            ->Leftjoin('counters', 'counters.id', '=', 'calls.counter_id')
-            ->Leftjoin('users', 'users.id', '=', 'calls.user_id')
-            ->where('queues.created_at', '>=', Carbon::parse($starting_date)->startOfDay())->where('queues.created_at', '<', Carbon::parse($ending_date)->endOfDay())
-            ->select('services.name as service_name', 'queues.status_queue', 'queues.name', 'queues.nik', 'queues.phone', 'queues.created_at as date', 'queues.number as token_number', 'queues.letter as token_letter', 'queues.called', 'users.name as user_name', 'counters.name as counter_name')
+        $report = DB::table('queues_report')->Leftjoin('calls_report', 'calls_report.queue_id', '=', 'queues_report.id')
+            ->join('services', 'services.id', '=', 'queues_report.service_id')
+            ->Leftjoin('counters', 'counters.id', '=', 'calls_report.counter_id')
+            ->Leftjoin('users', 'users.id', '=', 'calls_report.user_id')
+            ->where('queues_report.created_at', '>=', Carbon::parse($starting_date)->startOfDay())->where('queues_report.created_at', '<', Carbon::parse($ending_date)->endOfDay())
+            ->select('services.name as service_name', 'queues_report.status_queue', 'queues_report.name', 'queues_report.nik', 'queues_report.phone', 'queues_report.created_at as date', 'queues_report.number as token_number', 'queues_report.letter as token_letter', 'queues_report.called', 'users.name as user_name', 'counters.name as counter_name')
             ->get();
         return $report;
     }
@@ -91,33 +91,33 @@ class ReportRepository
 
     public function getAntrianUserListReport($date)
     {
-        return DB::table('calls')
+        return DB::table('calls_report')
         ->select('users.id', 'users.name AS user_name', 
-        DB::raw('COUNT(calls.id) AS total_antrian'),
-        DB::raw('SUM(calls.call_status_id = 1) AS antrian_hadir'),
-        DB::raw('SUM(calls.call_status_id = 2) AS tidak_hadir'),)
-        ->join('users', 'users.id', '=', 'calls.user_id')
-        ->whereDate('calls.created_at', $date)
+        DB::raw('COUNT(calls_report.id) AS total_antrian'),
+        DB::raw('SUM(calls_report.call_status_id = 1) AS antrian_hadir'),
+        DB::raw('SUM(calls_report.call_status_id = 2) AS tidak_hadir'),)
+        ->join('users', 'users.id', '=', 'calls_report.user_id')
+        ->whereDate('calls_report.created_at', $date)
         ->groupBy('users.id', 'users.name')
         ->get();
     }
 
     public function getMonthlyReport($data)
     {
-        $query = DB::table('calls')
-            ->join('counters', 'counters.id', '=', 'calls.counter_id')
-            ->join('users', 'users.id', '=', 'calls.user_id')
-            ->Leftjoin('call_statuses', 'calls.call_status_id', '=', 'call_statuses.id')
-            ->Rightjoin('queues', 'calls.queue_id', '=', 'queues.id')
-            ->join('services', 'services.id', '=', 'queues.service_id')
-            ->where('queues.created_at', '>=', Carbon::parse($data->starting_date)->startOfDay())
-            ->where('queues.created_at', '<', Carbon::parse($data->ending_date)->endOfDay());
-        if (isset($data->service_id)) $query =  $query->where('queues.service_id', '=', $data->service_id);
-        if (isset($data->counter_id)) $query =  $query->where('calls.counter_id', '=', $data->counter_id);
-        if (isset($data->user_id)) $query =  $query->where('calls.user_id', '=', $data->user_id);
-        if (isset($data->call_status)) $query =  $query->where('calls.call_status_id', '=', $data->call_status);
-        $query = $query->select('users.name as user_name', 'queues.letter as token_letter', 'queues.number as token_number', 'queues.phone as queue_phone', 'queues.name as queue_name', 'queues.nik as queue_nik', 'queues.status_queue', 'services.name as service_name', 'counters.name as counter_name', 'queues.created_at as date', 'calls.started_at as called_at', 'calls.ended_at as served_at', 'calls.waiting_time as waiting_time', 'calls.served_time as served_time', 'calls.turn_around_time as total_time', 'call_statuses.name as status');
-        $report = $query->orderBy('queues.created_at')->get();
+        $query = DB::table('calls_report')
+            ->join('counters', 'counters.id', '=', 'calls_report.counter_id')
+            ->join('users', 'users.id', '=', 'calls_report.user_id')
+            ->Leftjoin('call_statuses', 'calls_report.call_status_id', '=', 'call_statuses.id')
+            ->Rightjoin('queues_report', 'calls_report.queue_id', '=', 'queues_report.id')
+            ->join('services', 'services.id', '=', 'queues_report.service_id')
+            ->where('queues_report.created_at', '>=', Carbon::parse($data->starting_date)->startOfDay())
+            ->where('queues_report.created_at', '<', Carbon::parse($data->ending_date)->endOfDay());
+        if (isset($data->service_id)) $query =  $query->where('queues_report.service_id', '=', $data->service_id);
+        if (isset($data->counter_id)) $query =  $query->where('calls_report.counter_id', '=', $data->counter_id);
+        if (isset($data->user_id)) $query =  $query->where('calls_report.user_id', '=', $data->user_id);
+        if (isset($data->call_status)) $query =  $query->where('calls_report.call_status_id', '=', $data->call_status);
+        $query = $query->select('users.name as user_name', 'queues_report.letter as token_letter', 'queues_report.number as token_number', 'queues_report.phone as queue_phone', 'queues_report.name as queue_name', 'queues_report.nik as queue_nik', 'queues_report.status_queue', 'services.name as service_name', 'counters.name as counter_name', 'queues_report.created_at as date', 'calls_report.started_at as called_at', 'calls_report.ended_at as served_at', 'calls_report.waiting_time as waiting_time', 'calls_report.served_time as served_time', 'calls_report.turn_around_time as total_time', 'call_statuses.name as status');
+        $report = $query->orderBy('queues_report.created_at')->get();
         return $report;
     }
 
@@ -156,11 +156,11 @@ class ReportRepository
     
     public function getReportNumbers($data)
     {
-        return DB::table('queues')
+        return DB::table('queues_report')
         ->select('phone', DB::raw('COUNT(*) as total'))
-        ->where('queues.created_at', '>=', Carbon::parse($data->starting_date)->startOfDay())
-        ->where('queues.created_at', '<', Carbon::parse($data->ending_date)->endOfDay())
-        ->where('queues.service_id', '=', $data->service_id)
+        ->where('queues_report.created_at', '>=', Carbon::parse($data->starting_date)->startOfDay())
+        ->where('queues_report.created_at', '<', Carbon::parse($data->ending_date)->endOfDay())
+        ->where('queues_report.service_id', '=', $data->service_id)
         ->whereNotNull('phone')
         ->groupBy('phone')
         ->havingRaw('COUNT(*) > 2')

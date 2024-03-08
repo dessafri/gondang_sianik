@@ -30,6 +30,8 @@ use App\Http\Controllers\BlockedNumberController;
 
 //login
 Route::get('/', [AuthController::class, 'home'])->name('home');
+Route::get('insert-call', [AuthController::class, 'insertCallsToReport'])->name('insertCallsToReport');
+Route::get('insert-queue', [AuthController::class, 'insertQueuesToReport'])->name('insertQueuesToReport');
 Route::get('login', [AuthController::class, 'index'])->name('login')->middleware('guest:web');
 Route::post('login-post', [AuthController::class, 'authenticate'])->name('post_login');
 Route::middleware(['setLocale'])->group(function () {
@@ -86,6 +88,8 @@ Route::middleware(['setLocale'])->group(function () {
             Route::get('reports/sessions-list', [ReportController::class, 'showResetSession'])->name('sessions_list');
             Route::get('reports/reset-session/', [ReportController::class, 'deleteSessions'])->name('reports.reset_session');
             Route::get('reports/user-report-total', [ReportController::class, 'showUserList'])->name('user_report_total');
+            Route::get('reports/report-number', [ReportController::class, 'showReportNumber'])->name('report_number');
+
         });
         Route::post('settings/update-session-language', [SettingsController::class, 'changeLanguageOnSession'])->name('change_session_language');
         //settings

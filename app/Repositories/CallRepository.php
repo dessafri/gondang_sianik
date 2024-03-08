@@ -46,9 +46,14 @@ class CallRepository
                     'started_at' => Carbon::now(),
                     'waiting_time' => $queue->created_at->diff(Carbon::now())->format('%H:%I:%S')
                 ]);
+                $callId = $call->id;
+                $this->insertCallsToReport($callId);
+
                 $queue->position = 0;
                 $queue->called = true;
                 $queue->save();
+
+                $this->UpdateCallsStatus($queue['id']);
 
                 $this->decrementPostion($queue->service_id, $called_position);
 
@@ -78,9 +83,14 @@ class CallRepository
                 'started_at' => Carbon::now(),
                 'waiting_time' => $queue->created_at->diff(Carbon::now())->format('%H:%I:%S')
             ]);
+            $callId = $call->id;
+            $this->insertCallsToReport($callId);
+
             $queue->called = true;
             $queue->position = 0;
             $queue->save();
+
+            $this->UpdateCallsStatus($queue['id']);
 
             $this->decrementPostion($queue->service_id, $called_position);
 
@@ -95,6 +105,17 @@ class CallRepository
         $call->turn_around_time = Carbon::parse($call->waiting_time)->add(Carbon::parse($call->started_at)->diff(Carbon::now()))->toTimeString();
         $call->call_status_id = CallStatuses::SERVED;
         $call->save();
+
+        DB::table('calls_report')
+        ->where('id', $call['id'])
+        ->update([
+            'call_status_id' => 1,
+            'ended_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'served_time' => Carbon::parse($call->started_at)->diff(Carbon::now())->format('%H:%I:%S'),
+            'turn_around_time' => Carbon::parse($call->waiting_time)->add(Carbon::parse($call->started_at)->diff(Carbon::now()))->toTimeString(),
+        ]);
+
         return $call;
     }
 
@@ -103,6 +124,15 @@ class CallRepository
         $call->ended_at = Carbon::now()->format('Y-m-d H:i:s');
         $call->call_status_id = CallStatuses::NOSHOW;
         $call->save();
+
+        DB::table('calls_report')
+        ->where('id', $call['id'])
+        ->update([
+            'call_status_id' => 2,
+            'updated_at' => Carbon::now(),
+            'ended_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+
         return $call;
     }
 
@@ -121,6 +151,14 @@ class CallRepository
             'started_at' => $copy->started_at,
             'waiting_time' => $copy->waiting_time,
         ]);
+        $newCallId = $new_call->id;
+
+        DB::table('calls_report')
+        ->where('id', $call['id'])
+        ->delete();
+
+        $this->insertCallsToReport($newCallId);
+
         return $new_call;
     }
 
@@ -237,5 +275,40 @@ class CallRepository
             ->where('position', $position)
             ->first();
         if ($queue) SendSmsJob::dispatch($queue, $queue->service->status_message_format, $settings, 'status_message');
+    }
+
+    public function insertCallsToReport($callId)
+    {
+        $call = Call::find($callId);
+    
+        DB::table('calls_report')->insert([
+            'id' => $call->id,
+            'queue_id' => $call->queue_id,
+            'service_id' => $call->service_id,
+            'counter_id' => $call->counter_id,
+            'user_id' => $call->user_id,
+            'token_letter' => $call->token_letter,
+            'token_number' => $call->token_number,
+            'called_date' => $call->called_date,
+            'started_at' => $call->started_at,
+            'ended_at' => $call->ended_at,
+            'waiting_time' => $call->waiting_time,
+            'served_time' => $call->served_time,
+            'turn_around_time' => $call->turn_around_time,
+            'created_at' => $call->created_at,
+            'updated_at' => $call->updated_at,
+            'call_status_id' => $call->call_status_id,
+        ]);
+    }
+
+    public function UpdateCallsStatus($queueId)
+    {
+        DB::table('queues_report')
+        ->where('id', $queueId)
+        ->update([
+            'called' => true,
+            'position' => 0,
+            'updated_at' => Carbon::now(),
+        ]);
     }
 }

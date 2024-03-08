@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\App;
+use App\Models\Queue;
+use App\Models\Call;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class AuthController extends Controller
@@ -100,5 +103,106 @@ class AuthController extends Controller
         }
         
         return $settings;
+    }
+
+    public function insertQueuesToReport()
+    {
+        $queues = Queue::get();
+    
+        foreach ($queues as $queue) {
+            $existingRecord = DB::table('queues_report')
+                ->where('id', $queue->id)
+                ->exists();
+    
+            if (!$existingRecord) {
+                DB::table('queues_report')->insert([
+                    'id' => $queue->id,
+                    'service_id' => $queue->service_id,
+                    'number' => $queue->number,
+                    'called' => $queue->called,
+                    'letter' => $queue->letter,
+                    'reference_no' => $queue->reference_no,
+                    'phone' => $queue->phone,
+                    'email' => $queue->email,
+                    'name' => $queue->name,
+                    'position' => $queue->position,
+                    'created_at' => $queue->created_at,
+                    'updated_at' => $queue->updated_at,
+                    'nik' => $queue->nik,
+                    'status_queue' => $queue->status_queue,
+                ]);
+            }else{
+                DB::table('queues_report')
+                ->where('id', $queue->id)
+                ->update([
+                    'id' => $queue->id,
+                    'service_id' => $queue->service_id,
+                    'number' => $queue->number,
+                    'called' => $queue->called,
+                    'letter' => $queue->letter,
+                    'reference_no' => $queue->reference_no,
+                    'phone' => $queue->phone,
+                    'email' => $queue->email,
+                    'name' => $queue->name,
+                    'position' => $queue->position,
+                    'created_at' => $queue->created_at,
+                    'updated_at' => $queue->updated_at,
+                    'nik' => $queue->nik,
+                    'status_queue' => $queue->status_queue,
+                ]);
+            }
+        }
+    }
+    
+    public function insertCallsToReport()
+    {
+        $calls = Call::get();
+
+        foreach ($calls as $call) {
+            $existingRecord = DB::table('calls_report')
+                ->where('id', $call->id)
+                ->exists();
+
+            if (!$existingRecord) {
+                DB::table('calls_report')->insert([
+                    'id' => $call->id,
+                    'queue_id' => $call->queue_id,
+                    'service_id' => $call->service_id,
+                    'counter_id' => $call->counter_id,
+                    'user_id' => $call->user_id,
+                    'token_letter' => $call->token_letter,
+                    'token_number' => $call->token_number,
+                    'called_date' => $call->called_date,
+                    'started_at' => $call->started_at,
+                    'ended_at' => $call->ended_at,
+                    'waiting_time' => $call->waiting_time,
+                    'served_time' => $call->served_time,
+                    'turn_around_time' => $call->turn_around_time,
+                    'created_at' => $call->created_at,
+                    'updated_at' => $call->updated_at,
+                    'call_status_id' => $call->call_status_id,
+                ]);
+            }else{                
+                DB::table('calls_report')
+                ->where('id', $call->id)
+                ->update([
+                    'queue_id' => $call->queue_id,
+                    'service_id' => $call->service_id,
+                    'counter_id' => $call->counter_id,
+                    'user_id' => $call->user_id,
+                    'token_letter' => $call->token_letter,
+                    'token_number' => $call->token_number,
+                    'called_date' => $call->called_date,
+                    'started_at' => $call->started_at,
+                    'ended_at' => $call->ended_at,
+                    'waiting_time' => $call->waiting_time,
+                    'served_time' => $call->served_time,
+                    'turn_around_time' => $call->turn_around_time,
+                    'created_at' => $call->created_at,
+                    'updated_at' => $call->updated_at,
+                    'call_status_id' => $call->call_status_id,
+                ]);
+            }
+        }
     }
 }
