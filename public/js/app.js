@@ -20076,7 +20076,7 @@ if (document.getElementById("display-page")) {
                             acc[key] = { id: key, data: [] };
                         }
                         acc[key].data.push(obj);
-                        acc[key].data = acc[key].data.slice(0, 3);
+                        acc[key].data = acc[key].data.slice(0, 1);
                         return acc;
                     }, {});
                     const groupedValues = Object.values(groupedData);
@@ -20104,7 +20104,7 @@ if (document.getElementById("display-page")) {
                     acc[key] = { id: key, data: [] };
                 }
                 acc[key].data.push(obj);
-                acc[key].data = acc[key].data.slice(0, 3);
+                acc[key].data = acc[key].data.slice(0, 1);
                 return acc;
             }, {});
             const groupedValues = Object.values(groupedData);

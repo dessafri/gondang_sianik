@@ -74,6 +74,13 @@
 @endsection
 @section('b-js')
 <script>
+    function playSound() {
+        var audio = document.getElementById("called_sound");
+        audio.play();
+    }
+</script>
+
+<script>
     window.JLToken = {
         // get_tokens_for_display_url: "{{ asset($file) }}",
         get_tokens_for_display_url: "{{ route('get-tokens-for-display') }}",

@@ -151,23 +151,26 @@
                                     @endphp
                                     <td>
                                         <center>
-                                            <small class="bolder-color" style="font-size:20px;font-weight:bold;color:red">{{ $serviceName }}</small><br>
+                                            <small class="bolder-color" style="font-size:35px;font-weight:bold;color:red">{{ $serviceName }}</small><br>
                                                 <div v-for="(service, index) in dataservices">
                                                     <template v-if="service.id == {{ $serviceId }}">
                                                         <div v-for="(data, index) in service.data">
+                                                            <br>
                                                             <span class="bolder-color"
-                                                                style="font-size:20px;font-weight:bold;line-height:1.2">@{{ data.token_letter }}-@{{ data.token_number }}</span>
-                                                            -
+                                                                style="font-size:30px;font-weight:bold;line-height:1.2">@{{ data.token_letter }}-@{{ data.token_number }}</span>
+                                                            <br>
                                                             <small class="bolder-color" :id="'counter' + index"
-                                                                style="font-size:15px;font-weight:bold;">@{{ data.counter.name }}</small><br>
+                                                                style="font-size:30px;font-weight:bold;">@{{ data.counter.name }}</small>
+                                                            <br>
                                                             <small
-                                                                v-if="token && token.call_status_id === {{ CallStatuses::SERVED }}"
-                                                                style="font-size:10px;color:#009688;font-weight:bold;">{{ __('messages.display.served') }}</small>
+                                                                v-if="data && data.call_status_id === {{ CallStatuses::SERVED }}"
+                                                                style="font-size:25px;color:#009688;font-weight:bold;">{{ __('messages.display.served') }}</small>
                                                             <small
-                                                                v-if="token && token.call_status_id === {{ CallStatuses::NOSHOW }}"
-                                                                style="font-size:10px;font-weight:bold;color:red">{{ __('messages.display.noshow') }}</small>
-                                                            <small v-if="token && token.call_status_id === null"
-                                                                style="font-size:10px;color:orange;font-weight:bold;">{{ __('messages.display.serving') }}</small>
+                                                                v-if="data && data.call_status_id === {{ CallStatuses::NOSHOW }}"
+                                                                style="font-size:25px;font-weight:bold;color:red">{{ __('messages.display.noshow') }}</small>
+                                                            <small 
+                                                                v-if="data && data.call_status_id === null"
+                                                                style="font-size:25px;color:orange;font-weight:bold;">{{ __('messages.display.serving') }}</small>
                                                         </div>
 
                                                     </template>
@@ -196,6 +199,12 @@
 </div>
 @endsection
 @section('b-js')
+<script>
+    function playSound() {
+        var audio = document.getElementById("called_sound");
+        audio.play();
+    }
+</script>
 <script>
     window.JLToken = {
         // get_tokens_for_display_url: "{{ asset($file) }}",

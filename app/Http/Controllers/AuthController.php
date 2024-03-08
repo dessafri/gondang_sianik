@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\App;
 use App\Models\Queue;
 use App\Models\Call;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -152,6 +153,8 @@ class AuthController extends Controller
                 ]);
             }
         }
+        $today = Carbon::now()->toDateString();
+        $deleted = Queue::whereDate('created_at', $today)->delete();
     }
     
     public function insertCallsToReport()
@@ -204,5 +207,7 @@ class AuthController extends Controller
                 ]);
             }
         }
+        $today = Carbon::now()->toDateString();
+        $deleted = Call::whereDate('created_at', $today)->delete();
     }
 }

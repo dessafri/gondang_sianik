@@ -32,6 +32,7 @@
   <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/loader/normalize.css')}}">
   <link rel="stylesheet" type="text/css" href="{{ asset('public/css/app.css') }}">
   <script src="{{asset('app-assets/js/voice.js?key=7p0LNXN2')}}"></script>
+  <!-- <script src="https://code.responsivevoice.org/responsivevoice.js?key=7p0LNXN2"></script> -->
 
   <!-- vue js -->
   @yield('css')
@@ -63,6 +64,7 @@
               <img style="max-height:50px" src="{{$settings->logo_url}}" alt="avatar">
             </li>
             @endif
+            <li class="navbar-list left"><a class="waves-effect waves-block waves-light " onclick="playSound()"><i class="material-icons">volume_up</i></a></li>
             <!-- <li class="navbar-list left"><a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);" data-target="extra-dropdown"><i class="material-icons">attachment</i></a></li> -->
             <li class="navbar-list left"><a><b>{{$settings->name}} - {{$settings->location}}</b></a></li>
             @if(\Request::route()->getName() == 'show_call_page')<li class="dropdown-language"><a class="waves-effect waves-block waves-light translation-button" href="#" data-target="translation-dropdown"><span class="flag-icon flag-icon-{{\App::currentLocale()}}"></span></a></li>@endif
@@ -215,6 +217,7 @@
   <script src="{{ asset('public/js/app.js') }}"></script>
   <script src="{{asset('app-assets/js/plugins.js')}}"></script>
   <script src="{{asset('app-assets/js/voice.js?key=7p0LNXN2')}}"></script>
+  <!-- <script src="https://code.responsivevoice.org/responsivevoice.js?key=7p0LNXN2"></script> -->
   <script src="{{asset('app-assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 
   <!-- BEGIN VENDOR JS-->
