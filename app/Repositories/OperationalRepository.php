@@ -21,6 +21,8 @@ class OperationalRepository
         $operational_time = OperationalTime::create([
             'on_time' => $data['on_time'],
             'off_time' => $data['off_time'],
+            'break_time_start' => $data['break_time_start'],
+            'break_time_finish' => $data['break_time_finish'],
             'day' => $data['day'],
             'status' => $data['status']
         ]);
@@ -30,6 +32,8 @@ class OperationalRepository
     {
         $operational_time->on_time = $data['on_time'];
         $operational_time->off_time = $data['off_time'];
+        $operational_time->break_time_start = $data['break_time_start'];
+        $operational_time->break_time_finish = $data['break_time_finish'];
         $operational_time->day = $data['day'];
         $operational_time->status = $data['status'];
         $operational_time->save();

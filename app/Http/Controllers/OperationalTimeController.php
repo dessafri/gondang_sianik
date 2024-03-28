@@ -60,6 +60,8 @@ class OperationalTimeController extends Controller
         $request->validate([
             'on_time' => 'required',
             'off_time' => 'required',
+            'break_time_start' => 'required',
+            'break_time_finish' => 'required',
             'day' => 'required',
             'status' => 'required'
         ]);
@@ -114,6 +116,8 @@ class OperationalTimeController extends Controller
         $request->validate([
             'on_time' => 'required',
             'off_time' => 'required',
+            'break_time_start' => 'required',
+            'break_time_finish' => 'required',
             'day' => 'required',
             'status' => 'required'
         ]);

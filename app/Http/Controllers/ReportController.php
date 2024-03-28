@@ -81,6 +81,13 @@ class ReportController extends Controller
         );
     }
 
+    public function getAntrianList(Request $request)
+    {
+        $antrianList = $this->reportRepository->getAntrianListReport();
+
+        return response()->json(['antrian_list' => $antrianList], 200);
+    }
+
     public function showResetSession()
     {
         $sessions = $this->reportRepository->getSeesionList();

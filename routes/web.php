@@ -9,6 +9,7 @@ use App\Http\Controllers\CallController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
@@ -34,6 +35,7 @@ Route::get('insert-call', [AuthController::class, 'insertCallsToReport'])->name(
 Route::get('insert-queue', [AuthController::class, 'insertQueuesToReport'])->name('insertQueuesToReport');
 Route::get('login', [AuthController::class, 'index'])->name('login')->middleware('guest:web');
 Route::post('login-post', [AuthController::class, 'authenticate'])->name('post_login');
+
 Route::middleware(['setLocale'])->group(function () {
     Route::middleware(['auth'])->group(function () {
         //user
@@ -89,7 +91,7 @@ Route::middleware(['setLocale'])->group(function () {
             Route::get('reports/reset-session/', [ReportController::class, 'deleteSessions'])->name('reports.reset_session');
             Route::get('reports/user-report-total', [ReportController::class, 'showUserList'])->name('user_report_total');
             Route::get('reports/report-number', [ReportController::class, 'showReportNumber'])->name('report_number');
-
+            Route::get('reports/antrian-list', [ReportController::class, 'getAntrianList'])->name('antrian-list');
         });
         Route::post('settings/update-session-language', [SettingsController::class, 'changeLanguageOnSession'])->name('change_session_language');
         //settings
@@ -127,5 +129,7 @@ Route::middleware(['setLocale'])->group(function () {
     Route::group(['middleware' => ['permission:view blocked_number']], function () {
         Route::resource('blocked_number', BlockedNumberController::class)->names('blocked_number');
     });
+    //API
+    Route::get('api/antrian-list', [ApiController::class, 'getAntrianList'])->name('antrian-list');
     // });
 });

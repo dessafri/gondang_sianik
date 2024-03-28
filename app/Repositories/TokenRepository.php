@@ -30,7 +30,6 @@ class TokenRepository
             $last_token_count = Queue::where('created_at', '>=', $currentTime)
                 ->where('created_at', '<', $endOfDay)
                 ->where('service_id', $service->id)
-                ->sharedLock()
                 ->count();
             
             $token_number = ($last_token_count) ? $last_token_count + 1 : $service->start_number;
@@ -106,7 +105,6 @@ class TokenRepository
             $last_token_count = Queue::where('created_at', '>=', $currentTime)
                 ->where('created_at', '<', $endOfDay)
                 ->where('service_id', $service->id)
-                ->sharedLock()
                 ->count();
                 
             if ($last_token_count) {

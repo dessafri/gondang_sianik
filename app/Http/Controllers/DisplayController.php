@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Repositories\ReportRepository;
 use App\Repositories\ServiceRepository;
 use App\Repositories\CallRepository;
+use App\Models\OperationalTime;
 
 class DisplayController extends Controller
 {
@@ -22,22 +23,38 @@ class DisplayController extends Controller
 
     public function showDisplayUrl()
     {
+        $date = now();
+        $dayOfWeek = $date->format('l');
+
+        $time = OperationalTime::where('day', $dayOfWeek)
+        ->where('status', 'Offline')
+        ->first();
+
         return view('display.index', 
         ['services' => $this->services->getAllActiveServicesWithLimits(), 
         'calls' => $this->callRepository->getCallsForAntrian(), 
         'date' => Carbon::now()->toDateString(), 
         'settings' => Setting::first(),
+        'time' => $time,
         'datatokens'=> $this->callRepository->getCallsForDisplay2(),
         'file'=>'storage/app/public/tokens_for_display.json']);
     }
 
     public function showDisplayServicesUrl()
     {
+        $date = now();
+        $dayOfWeek = $date->format('l');
+
+        $time = OperationalTime::where('day', $dayOfWeek)
+        ->where('status', 'Offline')
+        ->first();
+
         return view('display.services', 
         ['services' => $this->services->getAllActiveServices(), 
         'calls' => $this->callRepository->getCallsForAntrian(), 
         'date' => Carbon::now()->toDateString(), 
         'settings' => Setting::first(),
+        'time' => $time,
         'file'=>'storage/app/public/tokens_for_display.json']);
     }
 

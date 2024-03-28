@@ -36,8 +36,10 @@
                                             <thead>
                                                 <tr>
                                                     <th width="10px">#</th>
-                                                    <th>On Time</th>
-                                                    <th>Off Time</th>
+                                                    <th>Jam Buka</th>
+                                                    <th>Jam Tutup</th>
+                                                    <th>Jam Mulai Istirahat</th>
+                                                    <th>Jam Selesai Istirahat</th>
                                                     <th>Day</th>
                                                     <th>Status</th>
                                                     <th>{{__('messages.user_page.action')}}</th>
@@ -49,6 +51,8 @@
                                                     <td>{{$key+1}}</td>
                                                     <td>{{ $operationalTime->on_time }}</td>
                                                     <td>{{ $operationalTime->off_time }}</td>
+                                                    <td>{{ $operationalTime->break_time_start }}</td>
+                                                    <td>{{ $operationalTime->break_time_finish }}</td>
                                                     <td>
                                                         @if($operationalTime->day == 'Monday') Senin @endif
                                                         @if($operationalTime->day == 'Tuesday') Selasa @endif

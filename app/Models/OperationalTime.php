@@ -13,6 +13,8 @@ class OperationalTime extends Model
     protected $fillable = [
         'on_time',
         'off_time',
+        'break_time_start',
+        'break_time_finish',
         'day',
         'status'
     ];

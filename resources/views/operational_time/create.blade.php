@@ -47,6 +47,27 @@
                                     </div>
                                     <div class="row form_align">
                                         <div class="input-field col s6">
+                                            <label for="break_time_start">Jam Mulai Istirahat</label>
+                                            <input id="break_time_start" name="break_time_start" type="time" value="{{old('break_time_start')}}" data-error=".break_time_start">
+                                            <div class="break_time_start">
+                                                @if ($errors->has('break_time_start'))
+                                                <span class="text-danger errbk">{{ $errors->first('break_time_start') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="input-field col s6">
+                                            <label for="break_time_finish">Jam Selesai Istirahat</label>
+                                            <input id="break_time_finish" name="break_time_finish" type="time" value="{{old('break_time_finish')}}" data-error=".break_time_finish">
+                                            <div class="break_time_finish">
+                                                @if ($errors->has('break_time_finish'))
+                                                <span class="text-danger errbk">{{ $errors->first('break_time_finish') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form_align">
+                                        <div class="input-field col s6">
                                             <select name="day" id="day" data-error=".day">
                                                 <option value="Monday" selected>Senin</option>
                                                 <option value="Tuesday" >Selasa</option>
@@ -110,6 +131,12 @@
                     required: true,
                 },
                 off_time: {
+                    required: true,
+                },
+                break_time_start: {
+                    required: true,
+                },
+                break_time_finish: {
                     required: true,
                 },
                 day: {

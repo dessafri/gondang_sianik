@@ -68,6 +68,9 @@
             <audio id="called_sound">
                 <source src="{{asset('app-assets/audio/sound.mp3')}}" type="audio/mpeg">
             </audio>
+            <audio id="break_sound">
+                <source src="{{asset('app-assets/audio/break.mp3')}}" type="audio/mpeg">
+            </audio>
         </section>
     </div>
 </div>
@@ -78,6 +81,42 @@
         var audio = document.getElementById("called_sound");
         audio.play();
     }
+
+    function playBreak() {
+        var audio = document.getElementById("break_sound");
+        audio.play();
+    }
+
+    function refreshPage() {
+        location.reload();
+    }
+
+    function checkTimeRange() {
+        var onTime = "<?php echo $time['break_time_start']; ?>";
+        var offTime = "<?php echo $time['break_time_finish']; ?>";
+
+        var currentTime = new Date();
+        var currentHour = currentTime.getHours();
+        var currentMinute = currentTime.getMinutes();
+
+        var onTimeArray = onTime.split(':');
+        var onHour = parseInt(onTimeArray[0]);
+        var onMinute = parseInt(onTimeArray[1]);
+
+        var offTimeArray = offTime.split(':');
+        var offHour = parseInt(offTimeArray[0]);
+        var offMinute = parseInt(offTimeArray[1]);
+
+        var currentTotalMinutes = currentHour * 60 + currentMinute;
+        var onTotalMinutes = onHour * 60 + onMinute;
+        var offTotalMinutes = offHour * 60 + offMinute;
+
+        if (currentTotalMinutes >= onTotalMinutes && currentTotalMinutes <= offTotalMinutes) {
+            setInterval(playBreak, 30000);
+        }
+    }
+
+    checkTimeRange();
 </script>
 
 <script>
