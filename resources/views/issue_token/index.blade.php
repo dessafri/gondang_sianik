@@ -364,6 +364,7 @@
 
     // Memanggil fungsi setRefreshTime saat halaman dimuat dengan parameter $time['on_time']
     setRefreshTime("<?php echo $time['on_time']; ?>");
+    setRefreshTime("<?php echo $time['off_time']; ?>");
 
 </script>
 @endsection()
