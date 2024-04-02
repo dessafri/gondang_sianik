@@ -253,5 +253,41 @@
             }
         });
     }
+
+    // Fungsi untuk memperbarui halaman
+    function refreshPage() {
+        location.reload();
+    }
+
+    // Fungsi untuk mengatur waktu refresh berdasarkan variabel PHP $time['on_time']
+    function setRefreshTime(onTime) {
+        // Parsing nilai onTime untuk mendapatkan jam, menit, dan detik
+        var onTimeArray = onTime.split(':');
+        var refreshHour = parseInt(onTimeArray[0]);
+        var refreshMinute = parseInt(onTimeArray[1]);
+        var refreshSecond = parseInt(onTimeArray[2]);
+
+        // Mengambil waktu saat ini
+        var currentTime = new Date();
+
+        // Mengatur waktu untuk refresh
+        var refreshTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), refreshHour, refreshMinute, refreshSecond);
+
+        // Menghitung selisih waktu antara waktu saat ini dan waktu refresh
+        var timeDiff = refreshTime.getTime() - currentTime.getTime();
+
+        // Jika selisih waktu negatif, artinya waktu refresh telah berlalu untuk hari ini, maka tambahkan 1 hari
+        if (timeDiff < 0) {
+            refreshTime.setDate(refreshTime.getDate() + 1);
+            timeDiff = refreshTime.getTime() - currentTime.getTime();
+        }
+
+        // Set interval untuk memanggil fungsi refreshPage setelah waktu tertentu (timeDiff)
+        setTimeout(refreshPage, timeDiff);
+    }
+
+    // Memanggil fungsi setRefreshTime saat halaman dimuat dengan parameter $time['on_time']
+    setRefreshTime("<?php echo $time['on_time']; ?>");
+    setRefreshTime("<?php echo $time['off_time']; ?>");
 </script>
 @endsection()
