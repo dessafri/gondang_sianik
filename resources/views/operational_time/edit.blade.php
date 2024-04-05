@@ -21,7 +21,7 @@
                 <div class="col  s12 m8  offset-m2">
                     <div class="card-panel">
                         <div class="row">
-                            <form id="operational_time_form" method="post" action="{{route('operational_time.update',[$operational_time->id])}}">
+                            <form id="operational_time_form" method="post" action="{{route('operational_time.update',[$operational_time->id])}}" enctype="multipart/form-data">
                                 {{@csrf_field()}}
                                 {{method_field('PATCH')}}
                                 <div class="row">
@@ -94,6 +94,20 @@
                                                 <span class="text-danger errbk">{{ $errors->first('status') }}</span>
                                                 @endif
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form_align">
+                                        <div class="file-field input-field col s12">
+                                            <div class="btn">
+                                                <span>Sound istirahat</span>
+                                                <input type="file" name="sound">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
+                                            @if ($errors->has('sound'))
+                                            <span class="text-danger errbk">{{ $errors->first('sound') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="input-field col s12">

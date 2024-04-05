@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        @if($settings->logo && Storage::disk('public')->exists($settings->logo))<div class="pl-3"><img height="40px" width="60px" src="{{$settings->logo_url}}"></div>@endif
+                                        @if($settings->logo && Storage::disk('public')->exists($settings->logo))<div class="pl-3"><img height="40px" width="60px" src="storage/app/public/{{$settings->logo}}"></div>@endif
                                         <div class="file-field input-field col s9">
                                             <div class="btn">
                                                 <span>{{__('messages.settings.logo')}}</span>

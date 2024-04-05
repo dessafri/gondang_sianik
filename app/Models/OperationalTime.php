@@ -16,6 +16,7 @@ class OperationalTime extends Model
         'break_time_start',
         'break_time_finish',
         'day',
-        'status'
+        'status',
+        'sound'
     ];
 }

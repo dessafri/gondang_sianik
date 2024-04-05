@@ -47,7 +47,7 @@
                     <ul class="navbar-list right">
                         @if(isset(session()->get("settings")->logo) && Storage::disk('public')->exists(session()->get("settings")->logo))
                         <li style="padding: 5px 0;">
-                            <img style="max-height:50px" src="{{session()->get('settings')->logo_url}}" alt="avatar">
+                            <img style="max-height:50px" src="storage/app/public/{{session()->get('settings')->logo}}" alt="avatar">
                         </li>
                         @endif
                         <li class="dropdown-language"><a class="waves-effect waves-block waves-light translation-button" href="#" data-target="translation-dropdown"><span class="flag-icon flag-icon-{{\App::currentLocale()}}"></span></a></li>
@@ -61,7 +61,7 @@
 
                         <li><a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);" data-target="profile-dropdown"><span class="avatar-status ">
                                     @if(isset(Auth::user()->image) && Storage::disk('public')->exists(Auth::user()->image))
-                                    <img style="width:28px;height:28px" src="{{Auth::user()->image_url}}" alt="avatar">
+                                    <img style="width:28px;height:28px" src="storage/app/public/{{Auth::user()->image}}" alt="avatar">
                                     @else
                                     <img src="{{asset('app-assets/images/avatar/avatar.png')}}" alt="avatar">
                                     @endif

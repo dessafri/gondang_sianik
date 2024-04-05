@@ -59,7 +59,7 @@
                                         </div>
                                          @if(isset($profile->image) && Storage::disk('public')->exists($profile->image))       
                                         <div class="col s6 ">
-                                            <img class="responsive-img circle z-depth-5" width="80" style="height: 80px;" src="{{$profile->image_url}}" alt="">
+                                            <img class="responsive-img circle z-depth-5" width="80" style="height: 80px;" src="storage/app/public/{{$profile->image}}" alt="">
                                         </div>
                                         @endif
                                     </div>

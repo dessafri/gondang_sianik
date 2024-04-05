@@ -21,7 +21,7 @@
                 <div class="col s12 m8  offset-m2">
                     <div class="card-panel">
                         <div class="row">
-                            <form id="operational_time_form" method="post" action="{{route('operational_time.store')}}">
+                            <form id="operational_time_form" method="post" action="{{route('operational_time.store')}}" enctype="multipart/form-data">
                                 {{@csrf_field()}}
                                 <div class="row">
                                     <div class="row form_align">
@@ -97,7 +97,20 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="row form_align">
+                                        <div class="file-field input-field col s12">
+                                            <div class="btn">
+                                                <span>Sound istirahat</span>
+                                                <input type="file" name="sound">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
+                                            @if ($errors->has('sound'))
+                                            <span class="text-danger errbk">{{ $errors->first('sound') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
                                     <div class="input-field col s12">
                                         <button class="btn waves-effect waves-light right submit" type="submit">{{__('messages.common.submit')}}
                                             <i class="mdi-content-send right"></i>

@@ -238,7 +238,7 @@
                 <source src="{{asset('app-assets/audio/sound.mp3')}}" type="audio/mpeg">
             </audio>
             <audio id="break_sound">
-                <source src="{{asset('app-assets/audio/break.mp3')}}" type="audio/mpeg">
+                <source src="storage/app/public/{{$time['sound']}}" type="audio/mpeg">
             </audio>
         </section>
     </div>

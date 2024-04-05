@@ -63,8 +63,10 @@ class OperationalTimeController extends Controller
             'break_time_start' => 'required',
             'break_time_finish' => 'required',
             'day' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'sound' => 'mimes:mp3'
         ]);
+        // dd($request);
         DB::beginTransaction();
         try {
             $operational_time = $this->operational_time->create($request->all());
@@ -119,7 +121,8 @@ class OperationalTimeController extends Controller
             'break_time_start' => 'required',
             'break_time_finish' => 'required',
             'day' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'sound' => 'mimes:mp3'
         ]);
         DB::beginTransaction();
         try {

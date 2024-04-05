@@ -61,7 +61,7 @@
           <ul class="navbar-list right">
             @if(isset($settings->logo) && Storage::disk('public')->exists($settings->logo))
             <li style="padding: 5px 0;">
-              <img style="max-height:50px" src="{{$settings->logo_url}}" alt="avatar">
+              <img style="max-height:50px" src="storage/app/public/{{$settings->logo}}" alt="avatar">
             </li>
             @endif
             <li class="navbar-list left"><a class="waves-effect waves-block waves-light " onclick="playSound()"><i class="material-icons">volume_up</i></a></li>
