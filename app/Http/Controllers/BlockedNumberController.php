@@ -151,4 +151,24 @@ class BlockedNumberController extends Controller
         $request->session()->flash('success', 'Succesfully deleted the record');
         return redirect()->route('blocked_number.index');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            foreach ($request->blocked_number as $id) {
+                $blockedNumber = BlockedNumber::find($id);
+                if ($blockedNumber) {
+                    $blockedNumber->delete();
+                }
+            }
+            DB::commit();
+            $request->session()->flash('success', 'Successfully deleted the records');
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('error', 'Something went wrong');
+        }
+        return redirect()->route('blocked_number.index');
+    }
+
 }

@@ -87,6 +87,7 @@
                                                         <th width="10px">#</th>
                                                         <th>Nomor</th>
                                                         <th>Total</th>
+                                                        <th>{{__('messages.user_page.action')}}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -95,6 +96,9 @@
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $data->phone }}</td>
                                                         <td>{{ $data->total }}</td>
+                                                        <td>
+                                                            <a class="btn-floating btn-action waves-effect waves-light red tooltipped" href="{{ url('reports/add_block_number?phone='. $data->phone)}}" data-position=top data-tooltip="Blokir Nomor"><i class="material-icons">add</i></a>
+`                                                        </td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -123,14 +127,7 @@
             format: 'yyyy-mm-dd'
         });
 
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
-        var yyyy = today.getFullYear();
-        var currentDate = yyyy + '-' + mm + '-' + dd;
 
-        $('#starting_date').val(currentDate);
-        $('#ending_date').val(currentDate);
 
         $('body').addClass('loaded');
 

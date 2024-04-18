@@ -7,6 +7,7 @@ use App\Models\Counter;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Session;
+use App\Models\BlockedNumber;
 use App\Models\User;
 use App\Repositories\ReportRepository;
 use Carbon\Carbon;
@@ -15,13 +16,17 @@ use App\Exports\QueueExport;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\BlockedNumberRepository;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
     protected $reportRepository;
-    public function __construct(ReportRepository $reportRepository)
+    public $blocked_number;
+    public function __construct(ReportRepository $reportRepository, BlockedNumberRepository $blocked_number)
     {
         $this->reportRepository = $reportRepository;
+        $this->blocked_number = $blocked_number;
     }
     public function showUserReport(Request $request)
     {
@@ -56,6 +61,26 @@ class ReportController extends Controller
         $filename = "Report_Antrian_{$dateToday}.xlsx";
 
         return Excel::download(new QueueExport($startingDate, $endingDate), $filename);
+    }
+
+    public function add_block_number(Request $request)
+    {
+        
+        $phoneNumber = $request->input('phone');
+
+        DB::beginTransaction();
+        try {
+            $blocked_number = $this->blocked_number->create(['phone_number' => $phoneNumber]);
+            Storage::put('public/blocked_number_' . $blocked_number->id . '_display.json', json_encode([]));
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('error', 'Something Went Wrong');
+            return redirect()->route('report_number');
+        }
+        DB::commit();
+
+        $request->session()->flash('success', 'Succesfully inserted the record');
+        return redirect()->route('report_number');
     }
 
     public function showQueueListReport(Request $request)
