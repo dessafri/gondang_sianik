@@ -46,6 +46,7 @@
                                 </div>
                             </div>
                         </form>
+                        <a href="{{ url('reports/exportUserList?&date=' . $selected_date) }}" class="btn btn-success" id="exportBtn">{{ __('Export to Excel') }}</a>
                     </div>
                 </div>
             </div>

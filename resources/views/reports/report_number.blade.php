@@ -66,6 +66,7 @@
                             </div>
                         </div>
                     </form>
+                    <a href="{{ url('reports/exportReportNumber?service_id=' . $selected['service'] . '&starting_date=' . $selected['starting_date']. '&ending_date=' . $selected['ending_date']) }}" class="btn btn-success" id="exportBtn">{{ __('Export to Excel') }}</a>
                 </div>
             </div>
         </div>

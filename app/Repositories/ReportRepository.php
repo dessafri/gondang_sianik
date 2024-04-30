@@ -44,6 +44,31 @@ class ReportRepository
         return $report;
     }
 
+    public function getAntrianListView($data)
+    {
+        $today = $data;
+        $tomorrow = date('Y-m-d', strtotime('+1 day', strtotime($today)));
+        return DB::table('queues_report')
+            ->leftJoin('calls_report', 'calls_report.queue_id', '=', 'queues_report.id')
+            ->join('services', 'services.id', '=', 'queues_report.service_id')
+            ->leftJoin('counters', 'counters.id', '=', 'calls_report.counter_id')
+            ->leftJoin('users', 'users.id', '=', 'calls_report.user_id')
+            ->where('queues_report.created_at', '>=', $today)
+            ->where('queues_report.created_at', '<', $tomorrow)
+            ->select(
+                'services.name AS service_name',
+                DB::raw('SUM(queues_report.called = 0) AS belum_dipanggil'),
+                DB::raw('SUM(queues_report.called = 1) AS terpanggil'),
+                DB::raw('SUM(calls_report.call_status_id = 2 ) AS tidak_hadir'),
+                DB::raw('SUM(calls_report.call_status_id = 1 ) AS dilayani'),
+                DB::raw('COUNT(queues_report.id) AS total_antrian'),
+                DB::raw('MAX(CASE WHEN queues_report.called = 1 THEN queues_report.letter ELSE NULL END) AS letter_called'),
+                DB::raw('MAX(CASE WHEN queues_report.called = 1 THEN queues_report.number ELSE NULL END) AS number_called')
+            )
+            ->groupBy('services.name')
+        ->get();
+    }
+
     public function getAntrianListReport()
     {
         $today = Carbon::today();

@@ -9,19 +9,18 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class QueueExport implements FromCollection, WithHeadings, WithMapping
 {
+    protected $data;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection($startingDate = null, $endingDate = null)
+    public function __construct($data)
     {
-        $query = Queue::select(['letter', 'number', 'name', 'phone', 'nik', 'created_at', 'status_queue']);
+        $this->data = $data;
+    }
 
-        // Tambahkan kondisi berdasarkan starting_date dan ending_date jika disertakan
-        if ($startingDate && $endingDate) {
-            $query->whereBetween('created_at', [$startingDate, $endingDate]);
-        }
-
-        return $query->get();
+    public function collection()
+    {
+        return $this->data;
     }
 
     public function headings(): array

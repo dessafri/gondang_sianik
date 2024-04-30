@@ -61,7 +61,7 @@ class DisplayController extends Controller
     public function showDisplayOnlineUrl()
     {
         return view('display.online', 
-        ['services' => $this->services->getAllActiveServicesWithLimits(),
+        [
         'calls' => $this->services->getCallsForAntrian(),
         'date' => Carbon::now()->toDateString(), 
         'settings' => Setting::first(),

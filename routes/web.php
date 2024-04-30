@@ -84,6 +84,10 @@ Route::middleware(['setLocale'])->group(function () {
             Route::get('reports/user-report', [ReportController::class, 'showUserReport'])->name('user_report');
             Route::get('reports/monthly-report', [ReportController::class, 'showMonthlyReport'])->name('monthly_report');
             Route::get('reports/export/', [ReportController::class, 'export']);
+            Route::get('reports/exportUserReport/', [ReportController::class, 'exportUserReport']);
+            Route::get('reports/exportUserList/', [ReportController::class, 'exportUserList']);
+            Route::get('reports/exportMonthlyReport/', [ReportController::class, 'exportMonthlyReport']);
+            Route::get('reports/exportReportNumber/', [ReportController::class, 'exportReportNumber']);
             Route::get('reports/add_block_number/', [ReportController::class, 'add_block_number']);
             Route::get('reports/queue-list-report', [ReportController::class, 'showQueueListReport'])->name('queue_list_report');
             Route::get('reports/monitor-antrian', [ReportController::class, 'showMonitorAntrian'])->name('monitor_antrian');

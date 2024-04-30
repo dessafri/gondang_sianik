@@ -60,6 +60,7 @@
                                 </div>
                             </div>
                         </form>
+                        <a href="{{ url('reports/exportUserReport?user_id=' . $selected_user_id . '&date=' . $selected_date) }}" class="btn btn-success" id="exportBtn">{{ __('Export to Excel') }}</a>
                     </div>
                 </div>
             </div>
@@ -126,25 +127,22 @@
 <script src="{{asset('app-assets/vendors/data-tables/js/dataTables.select.min.js')}}"></script>
 <script src="{{asset('app-assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 
-
 <script>
     $(document).ready(function() {
         let a = $(".input-field").find('.select-wrapper');
         a.css('display', 'block');
-        // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
-        var yyyy = today.getFullYear();
-        var currentDate = yyyy + '-' + mm + '-' + dd;
-
-        // Mengisi input tanggal dengan tanggal hari ini
-        $('#date').val(currentDate);
 
         // Inisialisasi datepicker
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
+
+        if (user_id && date) {
+            $('#exportBtn').show();
+        } else {
+            // Jika salah satu atau kedua tanggal kosong, sembunyikan tombol export
+            $('#exportBtn').hide();
+        }
 
         // Cek tanggal saat mengganti nilai input
         $('#date').change(function(event) {
@@ -190,7 +188,7 @@
             var placement = $(element).data('error');
             if (placement) {
                 $(placement).append(error)
-            } else {
+            } else {    
                 error.insertAfter(element);
             }
         }

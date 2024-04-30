@@ -126,10 +126,12 @@
                             </div>
                         </div>
                     </form>
+                    <a href="#" class="btn btn-success" onclick="exportBtn()">{{ __('Export to Excel') }}</a>
                 </div>
             </div>
         </div>
     </div>
+    <?php $dateToday = date('d-m-Y H:i:s');?>
     @if($reports)
     <div class="col s12">
         <div class="container" style="width: 99%;">
@@ -233,15 +235,6 @@
             format: 'yyyy-mm-dd'
         });
 
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
-        var yyyy = today.getFullYear();
-        var currentDate = yyyy + '-' + mm + '-' + dd;
-
-        $('#starting_date').val(currentDate);
-        $('#ending_date').val(currentDate);
-
         $('body').addClass('loaded');
 
         var starting_date = $('#starting_date').val();
@@ -301,4 +294,44 @@
         }
     });
 </script>
+<script>
+    function exportBtn() {
+        var service_id = ($('#service_id').val() !== '') ? $('#service_id').val() : null;
+        var counter_id = ($('#counter_id').val() !== '') ? $('#counter_id').val() : null;
+        var user_id = ($('#user_id').val() !== '') ? $('#user_id').val() : null;
+        var call_status = ($('#call_status').val() !== '') ? $('#call_status').val() : null;
+        var starting_date = $('#starting_date').val();
+        var ending_date = $('#ending_date').val();
+        $.ajax({
+            type: 'get',
+            url: '{{ url("reports/exportMonthlyReport") }}',
+            data: {
+                service_id: service_id,
+                counter_id: counter_id,
+                user_id: user_id,
+                call_status: call_status,
+                starting_date: starting_date,
+                ending_date: ending_date
+            },
+            xhrFields: {
+            responseType: 'blob' // Menggunakan responseType 'blob' untuk mengunduh file
+        },
+        success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }); // Tentukan jenis file yang diterima (Excel)
+            var url = window.URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = 'Export_Laporan_Bulanan_<?php echo $dateToday; ?>..xlsx';
+            document.body.appendChild(link);
+            link.click(); // Trigger the download
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        },
+        error: function(xhr, status, error) {
+            console.error('Export failed:', error);
+        }
+        });
+    }
+</script>
+
 @endsection

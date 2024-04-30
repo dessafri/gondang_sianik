@@ -197,7 +197,7 @@ class TokenController extends Controller
                 }
 
             if ($totalQueueToday >= $queueLimit) {
-                return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian sudah Mencapai Limit. Silahkan datang untuk Antri Offline']]]);
+                return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Antrian sudah Mencapai Limit.  Silahkan ambil Antrian di Hari Berikutnya']]]);
             }
             
             $phoneNumber = $request->phone;
