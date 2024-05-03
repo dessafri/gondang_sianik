@@ -7,17 +7,26 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use App\Repositories\ReportRepository;
+use App\Repositories\TokenRepository;
 
 class ApiController extends Controller
 {
     protected $reportRepository;
-    public function __construct(ReportRepository $reportRepository)
+    protected $tokenRepository;
+    public function __construct(ReportRepository $reportRepository,TokenRepository $tokenRepository)
     {
         $this->reportRepository = $reportRepository;
+        $this->tokenRepository = $tokenRepository;
     }
     public function getAntrianList()
     {
         $antrianList = $this->reportRepository->getAntrianListReport();
+
+        return response()->json(['antrian_list' => $antrianList], 200);
+    }
+    public function getPhoneQueueList()
+    {
+        $antrianList = $this->tokenRepository->getPhoneQueueList();
 
         return response()->json(['antrian_list' => $antrianList], 200);
     }

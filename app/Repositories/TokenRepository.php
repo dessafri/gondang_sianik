@@ -56,7 +56,8 @@ class TokenRepository
                     . "Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk\n"
                     . "Layanan : ".$services['name']."\n"
                     . "Antrian : ".$service->letter." - ".$token_number."\n"
-                    . "Tanggal : " . date('d F Y H:i:s') . "\n\n"
+                    . "Tanggal : " . date('d F Y H:i:s') . "\n"
+                    . "Tempat : Mall Pelayanan Publik Kab. Nganjuk\n\n"
                     . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n"
                     . "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran, apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir._*";
         
@@ -140,7 +141,8 @@ class TokenRepository
                     . "Atas Nama : ".$data['name']."\n"
                     . "Layanan : ".$services['name']."\n"
                     . "Antrian : ".$service->letter." - ".$token_number."\n"
-                    . "Tanggal : " . date('d F Y H:i:s', strtotime($data['date'])) . "\n\n"
+                    . "Tanggal : " . date('d F Y H:i:s', strtotime($data['date'])) . "\n"
+                    . "Tempat : Mall Pelayanan Publik Kab. Nganjuk\n\n"
                     . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n"
                     . "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran, apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir._*";
 
@@ -240,5 +242,16 @@ class TokenRepository
             'nik' => $queues->nik,
             'status_queue' => $queues->status_queue,
         ]);
+    }
+
+    public function getPhoneQueueList()
+    {
+        $today = Carbon::today();
+        $tomorrow = Carbon::tomorrow();
+        return DB::table('queues')
+            ->where('queues.created_at', '>=', $today)
+            ->where('queues.created_at', '<', $tomorrow)
+            ->select('queues.phone')
+        ->get();
     }
 }

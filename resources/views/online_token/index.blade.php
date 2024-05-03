@@ -60,7 +60,7 @@
                                 <br>
                                 <span style="font-weight: bold;font-size:25px;color: #a31035">
                                     #Jam Buka Layanan Pukul : <?= $time['on_time'] ?> - <?= $time['off_time'] ?><br>
-                                    #Harap datang sesuai tanggal dan jam operasional Kantor Dispendukcapil - Kab. Nganjuk
+                                    #Harap datang sesuai tanggal dan jam operasional Mall Pelayanan Publik - Kab. Nganjuk
                                 </span>
                                 <div class="divider" style="margin:10px 0 10px 0;"></div>
                                 
