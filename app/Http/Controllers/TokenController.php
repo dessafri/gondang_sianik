@@ -135,9 +135,9 @@ class TokenController extends Controller
         $phone_list_url = "https://sianik.lasmini.cloud/api/phone-queue-list";
         $phone_list_json = file_get_contents($phone_list_url);
         $phone_list = json_decode($phone_list_json);
-
-        foreach ($phone_list as $key => $value) {
-            if ($value->phone_number == $phoneNumber) {
+        
+        foreach ($phone_list->antrian_list as $value) {
+            if ($value->phone == $phoneNumber) {
                 return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
             }
         }
@@ -227,9 +227,9 @@ class TokenController extends Controller
         $phone_list_url = "https://sianik.lasmini.cloud/api/phone-queue-list";
         $phone_list_json = file_get_contents($phone_list_url);
         $phone_list = json_decode($phone_list_json);
-
-        foreach ($phone_list as $key => $value) {
-            if ($value->phone_number == $phoneNumber) {
+        
+        foreach ($phone_list->antrian_list as $value) {
+            if ($value->phone == $phoneNumber) {
                 return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
             }
         }
