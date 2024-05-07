@@ -248,10 +248,11 @@ class TokenRepository
     {
         $today = Carbon::today();
         $tomorrow = Carbon::tomorrow();
-        return DB::table('queues')
+        return Queue::join('services', 'queues.service_id', '=', 'services.id')
             ->where('queues.created_at', '>=', $today)
             ->where('queues.created_at', '<', $tomorrow)
-            ->select('queues.phone')
+            ->where('queues.phone', '!=', NULL)
+            ->select('queues.phone','queues.service_id','services.name')
         ->get();
     }
 }
