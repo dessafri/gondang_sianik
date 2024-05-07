@@ -34,9 +34,11 @@
         if (isset($data->data->phone)) {
             $phone = $data->data->phone;
             $email = $data->data->id;
+            $date_link = $data->data->date;
         } else {
             $phone = null; 
             $email = null;
+            $date_link = null;
         }
     ?>
 <!-- BEGIN: Page Main-->
@@ -122,6 +124,7 @@
                             </div>
                             <input type="hidden" name="email" id="email" value="<?=$email?>">
                             <input type="hidden" name="phone" id="phone" value="<?=$phone?>">
+                            <input type="hidden" name="date_link" id="date_link" value="<?=$date_link?>">
                         </div>
                     </div>
                 </div>
@@ -245,6 +248,7 @@
                     name: $('#name').val(),
                     email: $('#email').val(),
                     phone: $('#phone').val(),
+                    date_link: $('#date_link').val(),
                     nik: $('#nik').val(),
                     with_details: true
                 }

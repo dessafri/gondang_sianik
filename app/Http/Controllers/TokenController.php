@@ -87,10 +87,6 @@ class TokenController extends Controller
     {
         $date = now();
         $dayOfWeek = $date->format('l');
-        $timeNow = $date->format('H:i:s');
-        $operationalTime = OperationalTime::where('day', $dayOfWeek)
-            ->where('status', 'Offline')
-            ->first();
 
         $service_limit_type = DB::table('services')
             ->where('id', $request->service_id)
@@ -123,22 +119,22 @@ class TokenController extends Controller
             if ($existingQueue) {
                 return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
             }
-        }
 
-        $number = DB::table('blocked_numbers')
-            ->where('phone_number', $phoneNumber)
-            ->first();
-        if ($number) {
-            return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf Nomor Telepon terblokir.']]]);
-        }
+            $number = DB::table('blocked_numbers')
+                ->where('phone_number', $phoneNumber)
+                ->first();
+            if ($number) {
+                return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf Nomor Telepon terblokir.']]]);
+            }
 
-        $phone_list_url = "https://sianik.lasmini.cloud/api/phone-queue-list";
-        $phone_list_json = file_get_contents($phone_list_url);
-        $phone_list = json_decode($phone_list_json);
+            $phone_list_url = "https://sianik.lasmini.cloud/api/phone-queue-list";
+            $phone_list_json = file_get_contents($phone_list_url);
+            $phone_list = json_decode($phone_list_json);
         
-        foreach ($phone_list->antrian_list as $value) {
-            if ($value->phone == $phoneNumber) {
-                return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
+            foreach ($phone_list->antrian_list as $value) {
+                if ($value->phone == $phoneNumber) {
+                    return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
+                }
             }
         }
 
@@ -184,12 +180,14 @@ class TokenController extends Controller
 
     public function createTokenOnline(Request $request, Service $service)
     {
-        $requestDate = $request->date;
-        $date_data = Carbon::parse($requestDate);
-        $dayOfWeek = $date_data->format('l');
+        $date_link = $request->date_link;
 
         // Validasi batas maksimum antrian
         $date_inputan = date('Y-m-d', strtotime($request->date));
+
+        if ($date_link != Carbon::now()->format('Y-m-d')) {
+            return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Link tidak bisa digunakan']]]);
+        }
 
         $service_limit_type = DB::table('services')
             ->where('id', $request->service_id)

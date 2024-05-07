@@ -421,7 +421,13 @@ class ReportController extends Controller
         $exportData = [];
         foreach ($monthlyReportData as $data) {
             $antrian = $data->token_letter . '-' . $data->token_number;
-            $status = ($data->status == 'server') ? 'Dilayani' : 'Tidak Hadir';
+            if ($data->status == 'served') {
+                $status = 'Dilayani';
+            } elseif($data->status == 'noshow') {
+                $status = 'Tidak Hadir';
+            }else{
+                $status = 'Menunggu';
+            }
             $exportData[] = [
                 'Pengguna' => $data->user_name,
                 'Nomor Antrian' => $antrian,
