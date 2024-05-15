@@ -118,7 +118,6 @@ class TokenController extends Controller
     public function createToken(Request $request, Service $service)
     {
         $date = now();
-        $dayOfWeek = $date->format('l');
 
         $service_limit_type = DB::table('services')
             ->where('id', $request->service_id)
@@ -164,7 +163,11 @@ class TokenController extends Controller
             $phone_list = json_decode($phone_list_json);
         
             foreach ($phone_list->antrian_list as $value) {
-                if ($value->phone == $phoneNumber) {
+                $service = DB::table('services')
+                ->where('id', $request->service_id)
+                ->first();
+                
+                if (($value->phone == $phoneNumber) && ($value->letter == $service->letter)) {
                     return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
                 }
             }
@@ -259,7 +262,11 @@ class TokenController extends Controller
         $phone_list = json_decode($phone_list_json);
         
         foreach ($phone_list->antrian_list as $value) {
-            if ($value->phone == $phoneNumber) {
+            $service = DB::table('services')
+            ->where('id', $request->service_id)
+            ->first();
+            
+            if (($value->phone == $phoneNumber) && ($value->letter == $service->letter)) {
                 return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, nomor telepon ini sudah membuat antrian pada tanggal ini.']]]);
             }
         }
