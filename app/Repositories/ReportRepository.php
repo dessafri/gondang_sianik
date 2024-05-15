@@ -39,7 +39,7 @@ class ReportRepository
             ->Leftjoin('counters', 'counters.id', '=', 'calls_report.counter_id')
             ->Leftjoin('users', 'users.id', '=', 'calls_report.user_id')
             ->where('queues_report.created_at', '>=', Carbon::parse($starting_date)->startOfDay())->where('queues_report.created_at', '<', Carbon::parse($ending_date)->endOfDay())
-            ->select('services.name as service_name', 'queues_report.status_queue', 'queues_report.name', 'queues_report.nik', 'queues_report.phone', 'queues_report.created_at as date', 'queues_report.number as token_number', 'queues_report.letter as token_letter', 'queues_report.called', 'users.name as user_name', 'counters.name as counter_name')
+            ->select('services.name as service_name', 'queues_report.id', 'queues_report.status_queue', 'queues_report.name', 'queues_report.nik', 'queues_report.phone', 'queues_report.created_at as date', 'queues_report.number as token_number', 'queues_report.letter as token_letter', 'queues_report.called', 'users.name as user_name', 'counters.name as counter_name')
             ->get();
         return $report;
     }

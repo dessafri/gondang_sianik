@@ -57,29 +57,61 @@ class TokenController extends Controller
 
     public function onlineToken()
     {
-        $date = now();
-        $dayOfWeek = $date->format('l');
-        $timeNow = $date->format('H:i:s');
+        $curl = curl_init();
 
-        $operationalTime = OperationalTime::where('day', $dayOfWeek)
-            ->where('status', 'Online')
-            ->where('on_time', '<=', $timeNow)
-            ->where('off_time', '>=', $timeNow)
-            ->first();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://lasmini.cloud/api/decrypt',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS =>'{
+            "token":"'.$_GET['q'].'"
+            }',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
+            ),
+            ));
 
-        $time = OperationalTime::where('day', $dayOfWeek)
-            ->where('status', 'Online')
-            ->first();
+        $response = curl_exec($curl);
+        curl_close($curl);
 
-        return view(
-            'online_token.index',
-            [
-                'services' => $this->services->getAllActiveServicesWithLimitsOnline(),
-                'settings' => Setting::first(),
-                'operationalTime' => $operationalTime,
-                'time' => $time,
-            ]
-        );
+        $data = json_decode($response);
+        $date_link = $data->data->date;
+
+        if  ($date_link != Carbon::now()->format('Y-m-d')) {
+            // return response()->json(['status_code' => 422, 'errors' => ['limit' => ['Maaf, Link tidak bisa digunakan']]]);
+            echo "<script>alert('Maaf, Link tidak bisa digunakan');</script>";
+        }else{
+        
+            $date = now();
+            $dayOfWeek = $date->format('l');
+            $timeNow = $date->format('H:i:s');
+
+            $operationalTime = OperationalTime::where('day', $dayOfWeek)
+                ->where('status', 'Online')
+                ->where('on_time', '<=', $timeNow)
+                ->where('off_time', '>=', $timeNow)
+                ->first();
+
+            $time = OperationalTime::where('day', $dayOfWeek)
+                ->where('status', 'Online')
+                ->first();
+
+            return view(
+                'online_token.index',
+                [
+                    'services' => $this->services->getAllActiveServicesWithLimitsOnline(),
+                    'settings' => Setting::first(),
+                    'operationalTime' => $operationalTime,
+                    'time' => $time,
+                ]
+            );
+        }
     }
 
     //input ke antrian dan mendapatkan token

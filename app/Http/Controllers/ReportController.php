@@ -20,6 +20,7 @@ use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\BlockedNumberRepository;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ExportDataFromArray implements FromArray, WithHeadings
 {
@@ -485,5 +486,54 @@ class ReportController extends Controller
         $exportClass = new ExportReportNumberFromArray($exportData);
 
         return Excel::download($exportClass, $filename);
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $queueData = DB::table('queues_report')->where('id', $request->id)->first();
+        $service = DB::table('services')->where('id', $queueData->service_id)->first();
+
+        $reply_message = "Bukti Reservasi Sistem Antrian Offline\n"
+        . "Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk\n"
+        . "Layanan : " . $service->name . "\n"
+        . "Antrian : " . $service->letter . " - " . $queueData->number . "\n"
+        . "Tanggal : " . date('d F Y H:i:s') . "\n"
+        . "Tempat : Mall Pelayanan Publik Kab. Nganjuk\n\n"
+        . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n\n";
+    
+        if ($service->letter == 'A') {
+            $reply_message .= "Catatan :  1 nomor antrian hanya untuk pencetakan 1 Keping KTP-EL. Bila mau mencetak \n"
+                . "lebih dari 1 keping maka silahkan ambil nomor antrian kembali dengan nomor Whatsapp yang berbeda\n\n";
+        }
+        
+        $reply_message .= "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran, apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir._*\n";
+        
+                $post = [
+                    'userId' => $queueData->phone,
+                    'message' => $reply_message
+                ];
+                
+                $curl_message = curl_init();
+                curl_setopt_array($curl_message, array(
+                    CURLOPT_URL => 'https://lasmini.cloud/api/sendMessagePhone',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => json_encode($post),
+                    CURLOPT_HTTPHEADER => array(
+                        'Content-Type: application/json',
+                        'Cookie: PHPSESSID=fib4rasu96joh5opks1ubre3g5'
+                    ),
+                ));
+        
+                $response_message = curl_exec($curl_message);
+                curl_close($curl_message);  
+
+            $request->session()->flash('success', 'Successfully deleted the record');
+            return redirect()->route('queue_list_report');
     }
 }

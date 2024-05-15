@@ -94,7 +94,12 @@
                                                         <td>{{$report->token_letter}}-{{$report->token_number}}</td>
                                                         <td>{{$report->name}}</td>
                                                         <td>{{$report->nik}}</td>
-                                                        <td>{{$report->phone}}</td>
+                                                        <td>
+                                                            {{$report->phone}}<br>
+                                                            <?php if ($report->phone) { ?>
+                                                                <a href="{{ url('reports/sendMessage?id=' . $report->id) }}" class="btn btn-info">{{ __('Kirim Pesan') }}</a>
+                                                            <?php } ?>
+                                                        </td>
                                                         <td>{{$report->status_queue}}</td>
                                                         <td>{{$report->called ==1 ? 'Yes' : 'No'}}</td>
                                                         <td>{{$report->user_name ? $report->user_name : 'Nil' }}</td>

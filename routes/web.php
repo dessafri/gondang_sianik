@@ -88,6 +88,7 @@ Route::middleware(['setLocale'])->group(function () {
             Route::get('reports/exportUserList/', [ReportController::class, 'exportUserList']);
             Route::get('reports/exportMonthlyReport/', [ReportController::class, 'exportMonthlyReport']);
             Route::get('reports/exportReportNumber/', [ReportController::class, 'exportReportNumber']);
+            Route::get('reports/sendMessage/', [ReportController::class, 'sendMessage']);
             Route::get('reports/add_block_number/', [ReportController::class, 'add_block_number']);
             Route::get('reports/queue-list-report', [ReportController::class, 'showQueueListReport'])->name('queue_list_report');
             Route::get('reports/monitor-antrian', [ReportController::class, 'showMonitorAntrian'])->name('monitor_antrian');
