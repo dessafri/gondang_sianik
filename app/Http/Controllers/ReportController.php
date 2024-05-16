@@ -497,13 +497,12 @@ class ReportController extends Controller
         . "Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk\n"
         . "Layanan : " . $service->name . "\n"
         . "Antrian : " . $service->letter . " - " . $queueData->number . "\n"
-        . "Tanggal : " . date('d F Y H:i:s') . "\n"
+        . "Tanggal : " . date('d F Y H:i:s', strtotime($queueData->created_at)) . "\n"
         . "Tempat : Mall Pelayanan Publik Kab. Nganjuk\n\n"
         . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n\n";
     
         if ($service->letter == 'A') {
-            $reply_message .= "Catatan :  1 nomor antrian hanya untuk pencetakan 1 Keping KTP-EL. Bila mau mencetak \n"
-                . "lebih dari 1 keping maka silahkan ambil nomor antrian kembali dengan nomor Whatsapp yang berbeda\n\n";
+            $reply_message .= "Catatan :  1 nomor antrian hanya untuk pencetakan 1 Keping KTP-EL. Bila mau mencetak lebih dari 1 keping maka silahkan ambil nomor antrian kembali dengan nomor Whatsapp yang berbeda\n\n";
         }
         
         $reply_message .= "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran, apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir._*\n";
@@ -533,7 +532,7 @@ class ReportController extends Controller
                 $response_message = curl_exec($curl_message);
                 curl_close($curl_message);  
 
-            $request->session()->flash('success', 'Successfully deleted the record');
+                $request->session()->flash('success', 'Successfully send the message');
             return redirect()->route('queue_list_report');
     }
 }

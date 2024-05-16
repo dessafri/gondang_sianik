@@ -189,6 +189,7 @@ class ReportRepository
         ->whereNotNull('phone')
         ->groupBy('phone')
         ->havingRaw('COUNT(*) > 2')
+        ->orderByDesc('total')
         ->get();
     }
 }

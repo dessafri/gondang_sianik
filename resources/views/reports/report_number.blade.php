@@ -95,11 +95,15 @@
                                                     @foreach($report_numbers as $index => $data)
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $data->phone }}</td>
+                                                        <td>{{ $data->phone }}
+                                                            @if(\App\Models\BlockedNumber::where('phone_number', $data->phone)->exists())
+                                                                ❌
+                                                            @endif
+                                                        </td>
                                                         <td>{{ $data->total }}</td>
                                                         <td>
                                                             <a class="btn-floating btn-action waves-effect waves-light red tooltipped" href="{{ url('reports/add_block_number?phone='. $data->phone)}}" data-position=top data-tooltip="Blokir Nomor"><i class="material-icons">add</i></a>
-`                                                        </td>
+                                                        </td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
