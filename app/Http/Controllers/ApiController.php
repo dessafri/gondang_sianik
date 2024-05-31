@@ -35,7 +35,7 @@ class ApiController extends Controller
         $dataArray = [
             "starting_date" => "2024-05-01",
             "ending_date" => "2024-05-31",
-            "service" => "2"
+            "service_id" => "2"
         ];
         
         $jsonData = json_encode($dataArray);
