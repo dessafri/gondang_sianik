@@ -32,11 +32,11 @@ class ApiController extends Controller
     }
     public function getReportNumberList()
     {
-        $data = array(
+        $data = [
             "starting_date" => "2024-05-01",
             "ending_date" => "2024-05-31",
             "service" => "2"
-        );
+        ];
         $report = $this->reportRepository->getReportNumbers($data);
 
         return response()->json(['data' => $report], 200);
