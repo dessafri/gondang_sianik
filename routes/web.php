@@ -139,5 +139,6 @@ Route::middleware(['setLocale'])->group(function () {
     //API
     Route::get('api/antrian-list', [ApiController::class, 'getAntrianList'])->name('antrian-list');
     Route::get('api/phone-queue-list', [ApiController::class, 'getPhoneQueueList'])->name('phone-queue-list');
+    Route::post('api/report-number', [ApiController::class, 'getReportNumberList'])->name('report-number');
     // });
 });
