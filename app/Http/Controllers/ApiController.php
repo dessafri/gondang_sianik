@@ -30,9 +30,14 @@ class ApiController extends Controller
 
         return response()->json(['antrian_list' => $antrianList], 200);
     }
-    public function getReportNumberList(Request $request)
+    public function getReportNumberList()
     {
-        $report = $this->reportRepository->getReportNumbers($request);
+        $data = array(
+            "starting_date" => "2024-05-01",
+            "ending_date" => "2024-05-31",
+            "service" => "2"
+        );
+        $report = $this->reportRepository->getReportNumbers($data);
 
         return response()->json(['data' => $report], 200);
     }
