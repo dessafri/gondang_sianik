@@ -52,19 +52,19 @@ class TokenRepository
 
             $services = $this->services->getServiceById($service->id);
             if (!empty($data['phone'])) {        
-                $reply_message = "Bukti Reservasi Sistem Antrian Offline\n"
-                    . "Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk\n"
-                    . "Layanan : ".$services['name']."\n"
-                    . "Antrian : ".$service->letter." - ".$token_number."\n"
-                    . "Tanggal : " . date('d F Y H:i:s') . "\n"
-                    . "Tempat : Mall Pelayanan Publik Kab. Nganjuk\n\n"
-                    . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n\n";
-    
-                    if ($service->letter == 'A') {
-                        $reply_message .= "Catatan :  1 nomor antrian hanya untuk pencetakan 1 Keping KTP-EL. Bila mau mencetak lebih dari 1 keping maka silahkan ambil nomor antrian kembali dengan nomor Whatsapp yang berbeda\n\n";
-                    }
-                    
-                    $reply_message .= "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran, apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir._*\n";
+                $reply_message = "Bukti Antrian Offline\n"
+                . "Dinas Dukcapil Kab. Nganjuk\n\n"
+                . "No Antrian : ".$service->letter." - ".$token_number."\n\n"
+                . "Layanan : ".$services['name']."\n"
+                . "Tanggal : " . date('d F Y H:i:s') . "\n"
+                . "Tempat : Mall Pelayanan Publik Kab. Nganjuk\n\n"
+                . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n\n";
+
+                if ($service->letter == 'A') {
+                    $reply_message .= "Catatan : 1 nomor antrian hanya untuk pencetakan 1 Keping KTP-EL.\n\n";
+                }
+                
+                $reply_message .= "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran._*\n";
         
                 $post = [
                     'userId' => $data['phone'],
@@ -141,8 +141,8 @@ class TokenRepository
 
             $services = $this->services->getServiceById($service->id);
     
-            $reply_message = "Bukti Reservasi Sistem Antrian Online\n"
-                    . "Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk\n"
+            $reply_message = "Bukti Antrian Online\n"
+                    . "Dinas Dukcapil Kab. Nganjuk\n\n"
                     . "Atas Nama : ".$data['name']."\n"
                     . "Layanan : ".$services['name']."\n"
                     . "Antrian : ".$service->letter." - ".$token_number."\n"

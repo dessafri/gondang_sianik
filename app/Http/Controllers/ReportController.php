@@ -493,19 +493,19 @@ class ReportController extends Controller
         $queueData = DB::table('queues_report')->where('id', $request->id)->first();
         $service = DB::table('services')->where('id', $queueData->service_id)->first();
 
-        $reply_message = "Bukti Reservasi Sistem Antrian Offline\n"
-        . "Dinas Kependudukan Dan Pencatatan Sipil Kabupaten Nganjuk\n"
+        $reply_message = "Bukti Antrian Offline\n"
+        . "Dinas Dukcapil Kab. Nganjuk\n\n"
+        . "No Antrian : " . $service->letter . " - " . $queueData->number . "\n\n"
         . "Layanan : " . $service->name . "\n"
-        . "Antrian : " . $service->letter . " - " . $queueData->number . "\n"
         . "Tanggal : " . date('d F Y H:i:s', strtotime($queueData->created_at)) . "\n"
         . "Tempat : Mall Pelayanan Publik Kab. Nganjuk\n\n"
         . "Silahkan datang pada tanggal yang tertera. Terima Kasih\n\n";
     
         if ($service->letter == 'A') {
-            $reply_message .= "Catatan :  1 nomor antrian hanya untuk pencetakan 1 Keping KTP-EL. Bila mau mencetak lebih dari 1 keping maka silahkan ambil nomor antrian kembali dengan nomor Whatsapp yang berbeda\n\n";
+            $reply_message .= "Catatan : 1 nomor antrian hanya untuk pencetakan 1 Keping KTP-EL.\n\n";
         }
         
-        $reply_message .= "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran, apabila 3x panggilan tidak ada, maka akan dilayani setelah no antrian terakhir._*\n";
+        $reply_message .= "*_Mohon datang tepat waktu, Pelayanan sesuai dengan nomer pendaftaran._*\n";
         
                 $post = [
                     'userId' => $queueData->phone,
